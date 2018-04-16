@@ -1,0 +1,42 @@
+#chat-microtec{
+	position: fixed;
+	width: 320px;
+	right: 65px;
+	bottom: -300px;
+	height: 350px;
+}
+
+#chat-microtec .chat-input input{
+	width: 205px;
+}
+
+#chat-microtec .chat-input textarea{
+	resize: none;
+	max-height: 3rem;
+	overflow-y: auto;
+	width: 205px;
+}
+
+#chat-microtec .chat-input{
+	position: absolute;
+	bottom: 3px;
+	left: inherit;
+}
+
+#chat-microtec .chat-content{
+	overflow-y: auto;
+	height: 218px;
+	/*position: relative;*/
+}
+
+#chat-microtec .chat-content .microtec img{
+	width: 40px;
+	height: 40px;
+}
+#chat-microtec .chat-content .fecha{
+	display: block;
+	text-align: right;
+	width: 100%;
+	font-style: italic;
+	font-size: .7em;
+}
