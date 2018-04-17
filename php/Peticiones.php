@@ -23,6 +23,7 @@ function registrar($post){
 
 function checkSession($var=""){
 	session_start();
+	//$_SESSION['idUser'] = 1;
 	//la sesion esta iniciada
 	if( isset( $_SESSION['idUser'] ) ){
 		$id = $_SESSION['idUser'];
@@ -89,29 +90,18 @@ function enviarMsg($post){
 	return $data;
 }
 
-function getPaciente($post){
+function getMsg($post){
 	session_start();
-	$id = $_SESSION['id'];
-	$paciente = new Paciente();
-	$data = $paciente->get($id);
+	$chat = new Chat();
+	$infoMsg = $chat->getOne($post['idChat']);
+	if( $infoMsg ){
+		$data = array('status'=>1, 'msg'=>$infoMsg);
+	}
+	else{
+		$data = array('status'=>0, 'msg'=> 'No existe Msg');
+	}
 	return $data;
 }
-
-function paso2($post){
-
-	session_start();
-
-	$paciente = new Paciente();
-	$paciente->frecuenciaRespiratoria = $post['fr'];
-	$paciente->vt = $post['vt'];
-	$paciente->presionPico = $post['pico'];
-	$paciente->presionMeseta = $post['meseta'];
-	$paciente->peep = $post['peep'];
-	$paciente->poderMecanico = $post['poderMecanico'];
-	$affec = $paciente->update( $_SESSION['id'] );
-	return  array('filas' => $affec );
-}
-
 
 
 $data = $fn($_POST);

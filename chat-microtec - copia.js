@@ -16,6 +16,8 @@ var config = {
 };
 firebase.initializeApp(config);
 
+var bandera = 0;
+
 $(function(){
  	//autoScroll al inicio
  	//autoScroll('#chat-microtec .chat-content');
@@ -45,63 +47,6 @@ $(function(){
  	});
  	
  	//verificamos si hay sesion activa
- 	
- 	$.ajax({
-		url: 'php/Peticiones.php',
-		type: 'POST',
-		dataType: 'json',
-		data: {'fn': 'checkSession'},
-	}).done(function(resp) {
-		console.log(resp);
-		if( resp.status == 0 ){
-			//Si la sesion no existe o expiro, no modificamos nada el DOM, solo asiganmos el evento
-			//submit al formulario de registro.
-			enviarRegistro();
-		  	//esto es clave cuando se checa la peticion si la sesion esta iniciada o no, si no esta iniciada o expiro empieze a escuchar las altas en la BD
-		  	//puedo usar el mismo ya que como no hay nada no dibujara nada
-		  	//
-		  	//este listen esuchara todas las conversaciones y solo necesito que dibuje las del usuario que se registro
-		  	//entonces no debe de ir aqui el listenMsg
-		  	//deberia ir cuando ya manda mensajes ya se registro
-		  	//listenMsg();
-
-		}
-		//si es falso es por que la sesion aun esta vigente, entonces cambiamos el DOM con los msg de la sesion.
-		else{
-			//parte complicada.
-			//console.log(resp.msg);
-			//agrego el nodo chat content
-			var divChat = nodoChat();
-			$('#chat-microtec .card-body').empty();
-			$('#chat-microtec .card-body').html(divChat);
-			addSubmitChat();//agrego el evento submit al chat
-			
-			//el bucle me entra la duda de como combinarlo con el listen de firebase.}
-			//pensandolo bien, el evento de firebase es como si fuera un bucle, entonsces no hay que combinarlo si no sustituirlos
-			/*
-			resp.msg.forEach(msg=>{
-				var msg;
-				if( msg.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
-					msg = user(msg.mensaje, msg.fecha);
-				}
-				else{//si no es asi lo mando microtec
-					msg = microtec(msg.mensaje, msg.fecha);
-				}
-				$('#chat-microtec .chat-content').append(msg);
-				autoScroll('#chat-microtec .chat-content');
-			});
-			*/
-			//este listen esta mas dificil, por que debo de recuperar lo que ya estaba con anterioridad.
-			//aqui debeo escuhar solo los del usuario
-			//resp.msg[0].userId
-			listenMsg( resp.msg[0].userId );
-		}
-	
-	}).fail(function(){
-		console.log('Falló la petición');
-		enviarRegistro();
-	});
- 	/*
  	$.ajax({
 		url: 'php/Peticiones.php',
 		type: 'POST',
@@ -125,7 +70,7 @@ $(function(){
 			addSubmitChat();//agrego el evento submit al chat
 			
 			//el bucle me entra la duda de como combinarlo con el listen de firebase.
-			/////////////////////////////////////////////////////////////////////
+			/*******************************/
 			resp.msg.forEach(msg=>{
 				var msg;
 				if( msg.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
@@ -137,13 +82,13 @@ $(function(){
 				$('#chat-microtec .chat-content').append(msg);
 				autoScroll('#chat-microtec .chat-content');
 			});
-			///////////////////////////////////////////////////////////////////////////////
+			/**************************************/
+
 		}
 	
 	}).fail(function(){
 		console.log('Falló la petición')
 	});
-	*/
 
 
 });//DocumentReady
@@ -303,7 +248,6 @@ var enviarRegistro = function(){
 	 			$('#chat-microtec .card-body').empty();
 	 			$('#chat-microtec .card-body').html(divChat);
 	 			addSubmitChat();
-	 			listenMsg(resp.id);
 
  			}
  			else{
@@ -335,8 +279,6 @@ var enviarRegistro = function(){
 var addSubmitChat = function(){
 	$('#chat-microtec #form-chat').submit( (ev)=>{
 		ev.preventDefault();
-		
-
 		if( $('#chat-microtec #msg').val().length > 0 ){
 			
 			var data = $('#chat-microtec #form-chat').serializeArray();
@@ -349,9 +291,6 @@ var addSubmitChat = function(){
 		  	//al mismo tiempo para verse mas real agrego el nodo inmediatamente,
 		  	//en resumen por tras envio el ajax cual el ajax se haya completado cargo el nodo con append
 		  	
-		  	//inseto en mi base de datos.
-		  	//despues inserto en la pagina 
-		  	//despues inserto en firebase.
 		  	$.ajax({
  			url: 'php/Peticiones.php',
  			type: 'POST',
@@ -360,11 +299,11 @@ var addSubmitChat = function(){
  			}).done((resp)=>{
  				console.log(resp);
  				if( resp.status == 1 ){
- 					//var nodoMsg = user( resp.msg[0].mensaje, resp.msg[0].fecha );
-		  			//$('#chat-microtec .chat-content').append(nodoMsg);
-			 		//autoScroll('#chat-microtec .chat-content');
+ 					var nodoMsg = user( resp.msg[0].mensaje, resp.msg[0].fecha );
+		  			$('#chat-microtec .chat-content').append(nodoMsg);
 			 		document.querySelector('#chat-microtec #form-chat').reset();
-		  			firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
+			 		autoScroll('#chat-microtec .chat-content');
+		  			firebase.database().ref('Chat').push({name: resp.msg[0].userId, msg: resp.msg[0].mensaje});
  				}
  				
 
@@ -372,16 +311,25 @@ var addSubmitChat = function(){
  				console.log('Fallo el envio');
  				swal("Upss!!", "Lo sentimos ocurrio un error durante el envio del mensaje, intente nuevamente, gracias", "error");
  			});
-		}
-
-
-
-
+ 			/*
+		  	$('#chat-microtec .chat-content').append(nodoMsg);
+		 	document.querySelector('#chat-microtec #form-chat').reset();
+		 	autoScroll('#chat-microtec .chat-content');
+		  	//firebase.database().ref('Chat').push({name: nombre.value, msg: msg.value});
+		 	*/
+		 	/*
+		 	//respueta automatica
+		 	setTimeout( ()=>{
+				var nodoMt = microtec('Probando chat', '2018-04-16 12:58:14');
+				$('#chat-microtec .chat-content').append(nodoMt);
+				autoScroll('#chat-microtec .chat-content');
+		 	}, 500);
+		 	*/
+		}	
  	});
 }
 
-var listenMsg = function(usuario){
-	var usuario = usuario || '';
+var listenMsg = function(){
 	//tengo una funcion que escucha cuando cambia la base datos de firebase
 	//entonces yo se que cuando cambie la base de datos de firebase, alguin escribio un mensaje y mi tarea sera
 	//realizar una consulta a la base de datos mia, al usuario actual, y ver el ultimo mensaje que me enviaron
@@ -393,78 +341,8 @@ var listenMsg = function(usuario){
 	firebase.database().ref('Chat').on('child_added', snapshot=>{
   		//el problema que pense era como recuperar el mensaje del usuario al que se le mando.
   		//o se ase que cambio la base de datos pero el registro de quien, pues para eso uso la base de datos de firebase.
-  		console.log('id del Chat', snapshot.val().idChat);
-  		var userMongo = snapshot.val().userId;
-  		var chatId = snapshot.val().idChat;
-  		var elMsg = snapshot.val().msg;
+  		console.log('id del usuario', snapshot.val().name);
 
-  		if( userMongo == usuario ){//si el user de MONGODB es igual al que esta en la pagina web entonces dibujamos su mensaje
-  			console.log('elMsg: ' + elMsg );
-  			//aqui dibujare mis noditos entonces es aqui que hago el ajax y recupero el registro
-  			
-	 		var data = [{ name: 'fn', value: 'getMsg' }];
-	 		data.push( { name: 'idChat', value: chatId });
-	 		$.ajax({
-	 			url: 'php/Peticiones.php',
-	 			type: 'POST',
-	 			dataType: 'json',
-	 			data: data
-	 		}).done(function(resp){
-	 			console.log(resp);
-	 			
-	 			var nodoMsg;
-	 			if( resp.msg[0].remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
-					nodoMsg = user(resp.msg[0].mensaje, resp.msg[0].fecha);
-				}
-				else{//si no es asi lo mando microtec
-					nodoMsg = microtec(resp.msg[0].mensaje, resp.msg[0].fecha);
-				}
-				$('#chat-microtec .chat-content').append(nodoMsg);
-				autoScroll('#chat-microtec .chat-content');
-	 			
-
-	 		}).fail(function(){
-	 			console.log('fallo peticion chatId');
-	 		});
-	  			
-
-
-  		}
-  		else{
-  			//si es falso quiere decir que el mensaje no pertenece al usuario y por lo tanto no necesito saber nada de el.
-  		}
-  		/*
-  		en el foreach el parametro msg contiene todo el registro del chat.
-  			en el FIREBASE el elemento idChat tiene el id del chat entonces deberia de hacer una consulta a ese id del chat, para ahorar peticiones creo que guardare
-  			el id del usuario en MONGODB
-  			mi variable snapchot.val() posee lo siguiente
-  				idChat, el id del registro en mYSQL
-  				userId el id del usuario al que pertenece el CHAT
-  				msg como tal creo que no lo usare pero ahi esta.
-  			entonces en mi foreach el firebase me devolvera el evento de toda la base. esta bien no puedo cambiar eso pero si como controlar lo que tenga.
-  			para eso usare el userId
-  		resp.msg.forEach(msg=>{
-			var msg;
-			if( msg.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
-				msg = user(msg.mensaje, msg.fecha);
-			}
-			else{//si no es asi lo mando microtec
-				msg = microtec(msg.mensaje, msg.fecha);
-			}
-			//var nodoMsg = user( resp.msg[0].mensaje, resp.msg[0].fecha );
-			
-
-			$('#chat-microtec .chat-content').append(msg);
-		  	//$('#chat-microtec .chat-content').append(nodoMsg);
-			
-			//autoScroll('#chat-microtec .chat-content');
-			autoScroll('#chat-microtec .chat-content');
-
-
-
-			 		
-		});
-		*/
-
+  		//bandera = 1;
   	});
 }
