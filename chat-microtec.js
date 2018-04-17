@@ -16,6 +16,8 @@ var config = {
 };
 firebase.initializeApp(config);
 
+var bandera = 0;
+
 $(function(){
  	//autoScroll al inicio
  	//autoScroll('#chat-microtec .chat-content');
@@ -46,43 +48,47 @@ $(function(){
  	
  	//verificamos si hay sesion activa
  	$.ajax({
- 			url: 'php/Peticiones.php',
- 			type: 'POST',
- 			dataType: 'json',
- 			data: {'fn': 'checkSession'},
- 		}).done(function(resp) {
- 			console.log(resp);
- 			if( resp.status == 0 ){
- 				//Si la sesion no existe o expiro, no modificamos nada el DOM, solo asiganmos el evento
- 				//submit al formulario de registro.
- 				enviarRegistro();
- 			}
- 			//si es falso es por que la sesion aun esta vigente, entonces cambiamos el DOM con los msg de la sesion.
- 			else{
- 				//parte complicada.
- 				//console.log(resp.msg);
- 				//agrego el nodo chat content
-				var divChat = nodoChat();
-				$('#chat-microtec .card-body').empty();
- 				$('#chat-microtec .card-body').html(divChat);
- 				addSubmitChat();//agrego el evento submit al chat
- 				resp.msg.forEach(msg=>{
- 					var msg;
-					if( msg.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
-						 msg = user(msg.mensaje, msg.fecha);
-					}
-					else{//si no es asi lo mando microtec
-						msg = microtec(msg.mensaje, msg.fecha);
-					}
-					$('#chat-microtec .chat-content').append(msg);
-					autoScroll('#chat-microtec .chat-content');
- 				});
- 			}
- 		
- 		}).fail(function(){
- 			console.log('Falló la petición')
- 		});
+		url: 'php/Peticiones.php',
+		type: 'POST',
+		dataType: 'json',
+		data: {'fn': 'checkSession'},
+	}).done(function(resp) {
+		console.log(resp);
+		if( resp.status == 0 ){
+			//Si la sesion no existe o expiro, no modificamos nada el DOM, solo asiganmos el evento
+			//submit al formulario de registro.
+			enviarRegistro();
+		}
+		//si es falso es por que la sesion aun esta vigente, entonces cambiamos el DOM con los msg de la sesion.
+		else{
+			//parte complicada.
+			//console.log(resp.msg);
+			//agrego el nodo chat content
+			var divChat = nodoChat();
+			$('#chat-microtec .card-body').empty();
+			$('#chat-microtec .card-body').html(divChat);
+			addSubmitChat();//agrego el evento submit al chat
+			
+			//el bucle me entra la duda de como combinarlo con el listen de firebase.
+			/*******************************/
+			resp.msg.forEach(msg=>{
+				var msg;
+				if( msg.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
+					msg = user(msg.mensaje, msg.fecha);
+				}
+				else{//si no es asi lo mando microtec
+					msg = microtec(msg.mensaje, msg.fecha);
+				}
+				$('#chat-microtec .chat-content').append(msg);
+				autoScroll('#chat-microtec .chat-content');
+			});
+			/**************************************/
 
+		}
+	
+	}).fail(function(){
+		console.log('Falló la petición')
+	});
 
 
 });//DocumentReady
@@ -94,6 +100,7 @@ var autoScroll = function(nodo){
 }
 
 var user = function(msg, fecha){
+	fecha = fecha || "1970-01-01 00:00:00";
 	var nodo = '<div class="user rounded p-1 my-2" style="background: #EBEBEB">'+ msg +
 		'<span class="fecha">'+ formatearFecha(fecha) +'</span>'+
 	'</div>';
@@ -117,6 +124,45 @@ var formatearFecha = function(fecha){
 	var tiempo = fecha.split(' ');
 	var hora = tiempo[1].substring(0, 5);
 	if( hora.substring(0, 2) >= '12' ){
+		var minutosPM = hora.substring(2);
+		hora = hora.substring(0, 2);
+		hora = parseInt(hora);
+		switch (hora) {
+			case 13:
+				hora = "01";
+				break;
+			case 14:
+				hora = "02";
+				break;
+			case 15:
+				hora = "03";
+				break;
+			case 16:
+				hora = "04";
+				break;
+			case 17:
+				hora = "05";
+				break;
+			case 18:
+				hora = "06";
+				break;
+			case 19:
+				hora = "07";
+				break;
+			case 20:
+				hora = "08";
+				break;
+			case 21:
+				hora = "09";
+				break;
+			case 22:
+				hora = "10";
+				break;
+			case 23:
+				hora = "11";
+				break;
+		}
+		hora = hora+minutosPM; 
 		var viewFecha = hora +" PM";
 	}
 	else{
@@ -250,20 +296,26 @@ var addSubmitChat = function(){
  			type: 'POST',
  			dataType: 'json',
  			data: data
- 			/*beforeSend: ()=>{
- 				$('#chat-microtec .card-body').html('<img src="imgs/cargando2.gif" class="d-block mx-auto" style="width: 60px; margin-top: 4em;" />');
- 			}*/
  			}).done((resp)=>{
  				console.log(resp);
+ 				if( resp.status == 1 ){
+ 					var nodoMsg = user( resp.msg[0].mensaje, resp.msg[0].fecha );
+		  			$('#chat-microtec .chat-content').append(nodoMsg);
+			 		document.querySelector('#chat-microtec #form-chat').reset();
+			 		autoScroll('#chat-microtec .chat-content');
+		  			firebase.database().ref('Chat').push({name: resp.msg[0].userId, msg: resp.msg[0].mensaje});
+ 				}
+ 				
+
  			}).fail(()=>{
- 				console.log('Fallo el envio')
+ 				console.log('Fallo el envio');
+ 				swal("Upss!!", "Lo sentimos ocurrio un error durante el envio del mensaje, intente nuevamente, gracias", "error");
  			});
-			
  			/*
 		  	$('#chat-microtec .chat-content').append(nodoMsg);
-		  	//firebase.database().ref('Chat').push({name: nombre.value, msg: msg.value});
 		 	document.querySelector('#chat-microtec #form-chat').reset();
 		 	autoScroll('#chat-microtec .chat-content');
+		  	//firebase.database().ref('Chat').push({name: nombre.value, msg: msg.value});
 		 	*/
 		 	/*
 		 	//respueta automatica
@@ -277,6 +329,20 @@ var addSubmitChat = function(){
  	});
 }
 
-var enviarMsg = function(){
-	firebase.database().ref('Chat').push({name: nombre.value, msg: msg.value});
+var listenMsg = function(){
+	//tengo una funcion que escucha cuando cambia la base datos de firebase
+	//entonces yo se que cuando cambie la base de datos de firebase, alguin escribio un mensaje y mi tarea sera
+	//realizar una consulta a la base de datos mia, al usuario actual, y ver el ultimo mensaje que me enviaron
+	//que si me lo enviaron, como caracteristica tendre:
+		//el remitente sera diferente de null,(por que alguien ya me contesto)
+		//el reigstor tendra mi id de usuario temporal,
+		//sera el ultimo registro que me mandaron, ya sea el mio o de soporte
+	//firebase.database().ref('Chat').on('value', snapshot=>{
+	firebase.database().ref('Chat').on('child_added', snapshot=>{
+  		//el problema que pense era como recuperar el mensaje del usuario al que se le mando.
+  		//o se ase que cambio la base de datos pero el registro de quien, pues para eso uso la base de datos de firebase.
+  		console.log('id del usuario', snapshot.val().name);
+
+  		//bandera = 1;
+  	});
 }

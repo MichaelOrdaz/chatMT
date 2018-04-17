@@ -36,6 +36,13 @@ class Chat extends DB{
 			return $this->data;	
 		}
 	}
+	public function getOne($id=""){
+		if( $id != "" ){
+			$this->sql = "SELECT * FROM chat_microtec.chats WHERE idChat = $id";
+			$this->runQuery();
+			return $this->data;
+		}
+	}
 
 
 }

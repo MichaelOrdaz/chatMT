@@ -80,7 +80,8 @@ function enviarMsg($post){
 	//var_dump($chat);
 	$lastId = $chat->set();
 	if( $lastId > 0 ){
-		$data = array('status'=>1, 'id'=>$lastId);
+		$infoMsg = $chat->getOne($lastId);
+		$data = array('status'=>1, 'msg'=>$infoMsg);
 	}
 	else{
 		$data = array('status'=>0, 'msg'=>'mensaje no enviado');
