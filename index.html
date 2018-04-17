@@ -4,28 +4,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Probando Firebase</title>
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="chat.css">
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/chat.css">
 </head>
 <body>
-<!--
-	<form action="#" method="get" accept-charset="utf-8">
-		<div>
-			<label for="name">Nombre</label>
-			<input type="text" name="name" id="name" placeholder="nombre">		
-		</div>
-		<div>
-			<label for="name">Mensaje</label>
-			<textarea name="msg" id="msg" placeholder="Escribir mensaje"></textarea>
-		</div>
-		<div>
-			<button type="button" id="enviar">Enviar</button>
-		</div>
-	</form>
-	<ul id="chatUl">
-
-	</ul>
--->
 <div class="card bg-light mb-0 border border-primary border-bottom-0" id="chat-microtec">
   <div class="card-header bg-primary text-white">
   	<button type="button" class="close" title="Cerrar Sesión" id="closeSession">
@@ -62,65 +44,14 @@
 			</div>
 			<button type="submit" class="btn btn-primary btn-block">Chatear</button>
 		</form>
-    	<!--
-    		<div class="chat-content">
-    		<div class="microtec">
-    			<div class="media">
-				  <img class="mr-3 mt-2" src="https://i1.wp.com/wp.micro-tec.com.mx/wp-content/uploads/2017/11/cropped-microtec-2-1.png" alt="logo-micro-tec" />
-				  <div class="media-body border border-primary bg-primary rounded p-1 my-2 text-white">
-				  	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				  	<span class="fecha">2018-11-28 12:45pm</span>
-				  </div>
-				</div>
-    		</div>
-    		<div class="user border border-secondary bg-light rounded p-1 my-2">
-    			Lorem ipsum dolor sit amet, consectetur adipisicing elit, ed do eiusmod
-    			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
-				<span class="fecha">2018-11-28 12:47pm</span>
-    		</div>
-    	</div>
-    	<div class="chat-input border-top">
-    		<form class="form-inline mt-1" id="form-chat" method="POST" action="#">
-			  <label class="sr-only" for="inlineFormInputName2">Name</label>
-			  <input class="form-control form-control-sm" name="msg" id="msg" placeholder="Escribir mensaje" autocomplete="off" />
-			  <button type="submit" class="btn btn-primary btn-sm ml-2">Enviar</button>
-			</form>
-    	</div>
-    	-->
   	</div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
-<script src="jquery/jquery-3.3.1.min.js"></script>
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="fontawesome/js/fontawesome-all.min.js"></script>
-<script src="chat-microtec.js"></script>
-<script>
-  // Initialize Firebase
-  
-  /*
-  var nombre = document.querySelector("#name");
-  var msg = document.querySelector("#msg");
-  var btn = document.querySelector("#enviar");
-
-  btn.addEventListener('click', (ev)=>{
-  	//console.log(nombre, msg, btn)
-  	//document.querySelector("#chatUl").innerHTML += "<li>"+nombre.value+" "+msg.value+"</li>";
-  	firebase.database().ref('Chat').push({name: nombre.value, msg: msg.value});
-  });
-
-  	firebase.database().ref('Chat').on('value', snapshot=>{
-  		var lista = '';
-  		snapshot.forEach( (e, i)=> {
-  			var element = e.val();
-  			var name = element.name;
-  			var msg = element.msg;
-  			lista += "<li>"+name+" "+msg+"</li>";
-  		});
-  		document.querySelector("#chatUl").innerHTML = lista;
-  	});
-	*/
-</script>
-
+<script src="assets/jquery/jquery-3.3.1.min.js"></script>
+<script src="assets/popover/popover.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/fontawesome/js/fontawesome-all.min.js"></script>
+<script src="assets/js/chat-microtec.js"></script>
 </body>
 </html>

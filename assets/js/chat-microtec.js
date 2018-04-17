@@ -17,6 +17,7 @@ var config = {
 firebase.initializeApp(config);
 
 $(function(){
+
  	$('#chat-microtec #colapsar').click(function(event) {
  		var clase = $(this).children().eq(0).attr('class');
  		if( clase == 'up' ){
