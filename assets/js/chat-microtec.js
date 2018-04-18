@@ -188,7 +188,7 @@ var enviarRegistro = function(){
  			dataType: 'json',
  			data: data,
  			beforeSend: ()=>{
- 				$('#chat-microtec .card-body').html('<img src="imgs/cargando2.gif" class="d-block mx-auto" style="width: 60px; margin-top: 4em;" />');
+ 				$('#chat-microtec .card-body').html('<img src="assets/imgs/cargando2.gif" class="d-block mx-auto" style="width: 60px; margin-top: 4em;" />');
  			}
  		}).done(function(resp) {
  			console.log(resp);

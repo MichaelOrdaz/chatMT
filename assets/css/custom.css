@@ -1,14 +1,17 @@
 /* Mi estilo estandar css */
-body.login{
-	/*background: radial-gradient(white, black);*/
-	margin-top: 6em;
+body, html{
+	width: 100vw;
+}
+body{
+	margin-top: 8rem;
 	background-image: url("../imgs/fondoLG.jpg");
-	background-position: center center;
+	background-position: center;
 	background-repeat: no-repeat;
-	background-attachment: fixed;
 	background-size: cover;
 	background-color: #EEEEEE;
 }
+
+/*
 body#dashboard{
 	background-color: #F8F8F8;
 }
@@ -29,7 +32,6 @@ body#dashboard{
 }
 
 
-/* make sidebar nav vertical */ 
 @media (min-width: 768px) {
   .sidebar-nav .navbar .navbar-collapse {
     padding: 0;
@@ -82,3 +84,4 @@ div#contextMenu{
 	position: absolute;
 	display: none;
 }
+*/
