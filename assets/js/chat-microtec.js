@@ -130,10 +130,12 @@ var nodoChat = function(){
 	var nodo = '<div class="chat-content">'+
     	'</div>'+
     	'<div class="chat-input border-top">'+
-    		'<form class="form-inline mt-1" id="form-chat" method="POST" action="#">'+
+    		'<form class="form-inline mt-1" id="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
 			  '<label class="sr-only" for="inlineFormInputName2">Name</label>'+
 			  '<input class="form-control form-control-sm" name="msg" id="msg" placeholder="Escribir mensaje" autocomplete="off" />'+
-			  '<button type="submit" class="btn btn-primary btn-sm ml-2">Enviar</button>'+
+			  //'<button type="submit" class="btn btn-primary btn-sm ml-2">Enviar</button>'+
+			  '<button type="button" id="adjunto" class="btn btn-primary rounded-circle btn-sm ml-2" title="Seleccionar Archivo"><i class="fas fa-paperclip"></i></button>'+
+			  '<button type="submit" class="btn btn-primary rounded-circle btn-sm ml-2" title="Enviar"><i class="fas fa-location-arrow"></i></button>'+
 			'</form>'+
     	'</div>';
     	return nodo;
@@ -198,6 +200,7 @@ var enviarRegistro = function(){
 	 			$('#chat-microtec .card-body').html(divChat);
 	 			addSubmitChat();
 	 			listenMsg(resp.id);
+
  			}
  			else{
  				console.log('error de proceso')
@@ -225,6 +228,9 @@ var enviarRegistro = function(){
 }
 
 var addSubmitChat = function(){
+
+	btnAdjunto();
+
 	$('#chat-microtec #form-chat').submit( (ev)=>{
 		ev.preventDefault();
 		if( $('#chat-microtec #msg').val().length > 0 ){
@@ -285,4 +291,40 @@ var listenMsg = function(usuario){
   			//si es falso quiere decir que el mensaje no pertenece al usuario y por lo tanto no necesito saber nada de el.
   		}
   	});
+}
+
+
+var btnAdjunto = function(){
+	//var inputFile =  $('#chat-microtec #adjunto');
+	var inputHidden = '<input type="file" name="attachment" id="attachment" class="d-none" />';
+	$("#chat-microtec #form-chat #msg").after(inputHidden);
+	
+	$("#chat-microtec #form-chat #attachment").change((ev)=>{
+		var nodoFile = document.querySelector("#chat-microtec #form-chat #attachment");
+		var txt = "";
+		if('files' in nodoFile){
+			if (nodoFile.files.length == 0) {
+		        txt += "Seleccionar Archivo";
+		    } else {
+		        
+		        for (var i = 0; i < nodoFile.files.length; i++) {
+		            if ('name' in nodoFile.files[i]) {
+		                txt += nodoFile.files[i].name;
+		            }
+		            else
+		            	txt += 'Desconocido';
+		        }
+
+		    }
+
+		}
+		$('#chat-microtec #adjunto').attr('title', txt);
+	});
+
+
+
+	$('#chat-microtec #adjunto').on('click', function(event) {
+		$("#chat-microtec #form-chat #attachment").trigger('click');
+	});
+
 }

@@ -12,8 +12,8 @@ $(document).ready(function(){
 		data: {'fn': 'checkSession'}
 	}).done(function(json){
 			console.log(json);
-			if(json.status == 1){
-				window.location.href = "manager";
+			if(json.status == 1){	
+				window.location.href = "dashboard";
 			}
 	}).fail(function(jqXHR, textStatus, errorThrown){
 		$("#resp").html('<div class="alert alert-danger"><b>Algo Mal,</b> Error en la Petición, intenta nuevamente</div>');
@@ -43,7 +43,10 @@ $("form#logeo").submit(function(ev){
 			$("#logeo :submit").prop("disabled", false);
 			if(json.status === 1){
 				$("#resp").html('<div class="alert alert-success"><b>Correcto!! </b>sera redirigido automaticamente.</div>');
-				var timer = setTimeout( ()=>{ window.location.href="dashboard"; }, 2000);
+				var timer = setTimeout( ()=>{ 
+					$("#resp").empty();	
+					window.location.href="dashboard"; 
+				}, 2000);
 			}
 			else{
 				$("#resp").html('<div class="alert alert-danger"><b>Algo Mal,</b> '+json.msg+'.</div>');

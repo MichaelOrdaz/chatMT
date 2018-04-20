@@ -7,33 +7,10 @@
 		<title>Microtec</title>
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<!-- <link href="js/jquery-ui/jquery-ui.min.css" /> -->
-		<style type="text/css" media="screen">
-			body, html{
-				position: relative;
-				min-height: 100vh;
-			}
-			.navbar-brand>img{
-				padding: 0;
-				height: 100%;
-			}
-			footer{
-				position: absolute;
-				text-align: center;
-				font-size: 1.5em;
-				bottom: 0;
-				left:0;
-				background: #2C386C;
-				color: #fff;
-				width: 100vw;
-				height: 3em;
-				line-height: 3;
-			}
-			.nav-pills > li.active > a{
-				background: black !important;
-			}
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="assets/alertify/css/alertify.min.css">
+		<link rel="stylesheet" type="text/css" href="assets/alertify/css/themes/semantic.min.css">
+		<link rel="stylesheet" type="text/css" href="assets/DataTables/datatables.min.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/dashboard.css">
 	</head>
 	<body>
 	<div class="container-fluid">
@@ -44,18 +21,37 @@
 			      <a class="navbar-brand" href="#"><img src="assets/imgs/logo.png" class="img-responsive" /></a>
 			    </div>
 			    <ul class="nav navbar-nav navbar-right">
-			      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Nombre</a></li>
-			      <li><a href="#" id="logout" ><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
+			      <li><a href="javascript://" ><span class="glyphicon glyphicon-user"></span> </a></li>
+			      <li><a href="javascript://" id="logout" ><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
 			    </ul>
 			  </div>
 			</nav>
 			<!-- end Navigation -->
 		</div>
+		<div class="row">
+			<h1 class="text-center">Manager de Chats <small>Soporte</small></h1>
+			<div class="col-sm-5 col-sm-offset-3" id="tablaChatDetenidos">
+				<table class="table table-bordered table-hover table-condensed" id="chats-detenidos">
+					<caption>Chats No Contestados</caption>
+					<thead>
+						<tr>
+							<th>Cliente</th>
+							<th>Fecha</th>
+							<th>Chatear</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="row" id="containerChats">
+			
+		</div>
 	</div>
-
-
-<div class="container-fluid">
-	<div class="row">
+		<!--
 		<div class="col-sm-2">
 			<ul class="nav nav-pills nav-stacked">
 			  <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
@@ -87,18 +83,22 @@
 
 			</div>
 		</div>
+		-->
   	</div>
 </div>
 
 	<footer>
 		© Microtecnología del Golfo S.A. de C.V.
 	</footer>
+	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
 	<script src="assets/jquery/jquery-3.3.1.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/js/dashboard.js"></script>
 	<script src="assets/swal/swalalert.js"></script>
+	<script type="text/javascript" src="assets/DataTables/datatables.min.js"></script>
 	<script src="assets/fontawesome/js/fontawesome-all.min.js"></script>
-
-
+	<script type="text/javascript" src="assets/alertify/alertify.min.js"></script>
+	
 	</body>
 </html>

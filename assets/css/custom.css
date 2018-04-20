@@ -1,17 +1,25 @@
 /* Mi estilo estandar css */
-body, html{
-	width: 100vw;
+/*
+html{
+	background: url("../imgs/fondoLG.jpg") no-repeat center center; 
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
 }
-body{
+*/
+html{
 	margin-top: 8rem;
-	background-image: url("../imgs/fondoLG.jpg");
+	background-image: url("../imgs/fondo2.jpg");
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-color: #EEEEEE;
 }
-
+body{
+	background-color: transparent;
+}
 /*
+
 body#dashboard{
 	background-color: #F8F8F8;
 }

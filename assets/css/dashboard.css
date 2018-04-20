@@ -1,0 +1,97 @@
+/*
+body, html{
+	position: relative;
+	min-height: 100%;
+}
+*/
+html{
+	position: relative;
+	min-height: 100vh;
+}
+body{
+	margin: 0 0 10rem 0;
+}
+footer{
+	position: absolute;
+	text-align: center;
+	font-size: 1.5em;
+	bottom: 0;
+	left:0;
+	background: #000;
+	color: #fff;
+	min-width: 100vw;
+	height: 3em;
+	line-height: 3;
+}
+
+.navbar-brand>img{
+	padding: 0;
+	height: 100%;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover{
+	background: #000;
+}
+.borderar{
+	border: 1px solid gray;
+	border-radius: 6px;
+}
+
+table#chats-detenidos{
+	position: relative;
+}
+
+table#chats-detenidos th,
+table#chats-detenidos td
+{text-align: center;
+	vertical-align: middle;}
+
+#tablaChatDetenidos{
+	overflow-y: auto;
+	max-height: 500px;
+	box-shadow: 0 -0 6px 0 black;
+	border-radius: 4px;
+}
+
+.panel .panel-body{
+	height: 300px;
+	position: relative;
+}
+
+.panel .panel-body .chat-content{
+	max-height: 225px;
+	overflow-y: auto;
+}
+
+.panel .panel-body .fecha{
+	display: block;
+	text-align: right;
+	width: 100%;
+	font-style: italic;
+	font-size: .7em;
+}
+.user, .microtec .media-body{
+	margin: 4px 0;
+	border-radius: 4px;
+	padding: 4px;
+}
+
+.panel-body .microtec img{
+	width: 40px;
+	height: 40px;
+}
+
+.chat-input{
+	width: 100%;
+	padding: 5px;
+	position: absolute;
+	bottom: 2px;
+	left: 0;
+	border-top: solid gray 2px;
+}
+/*
+.chat-input input#msg{
+	width: 75%;
+}
+
+*/

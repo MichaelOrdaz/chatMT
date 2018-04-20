@@ -23,10 +23,57 @@ function checkSession($var=""){
 	//la sesion esta iniciada
 	if( isset( $_SESSION['idSoporte'] ) ){
 		$id = $_SESSION['idSoporte'];
-		return array('status'=>1, 'msg'=>'Sesion existente');
+		$soporte = new UserSoporte();
+		$data = $soporte->getxId($id);
+		return array('status'=>1, 'msg'=>$data);
 	}
 	else{
 		return array('status'=>0, 'msg'=>'No hay variables de sesion');
+	}
+}
+
+function logOut($var=""){
+	session_start();
+	$_SESSION = array();
+	if (session_destroy() )
+		return array('status'=>1, 'msg'=>'sesión destruida');
+	else
+		return array('status'=>0, 'msg'=>'Error al eliminar sesion');
+}
+
+function chatDetenidos( $post = array() ){
+	session_start();
+	$chats = new Chat();
+	$data = $chats->chatDetenidos();
+	if($data){
+		return array('status'=>1, 'chats'=>$data);
+	}
+	else{
+		return array('status'=>0, 'msg'=>$data);
+	}
+}
+
+function cargarMsgs( $post = array() ){
+	session_start();
+	$chat = new Chat();
+	$data = $chat->get( $post['cliente'] );
+	if($data){
+		return array('status'=>1, 'chats'=>$data);
+	}
+	else{
+		return array('status'=>0, 'msg'=>'Sin Mensajes');
+	}
+}
+
+
+function getOne($post){
+	$chat = new Chat();
+	$msg = $chat->getOne( $post['chat'] );
+	if($msg){
+		return array('status'=>1, 'chats'=>$msg);
+	}
+	else{
+		return array('status'=>0, 'msg'=>'Sin Mensaje');
 	}
 }
 
