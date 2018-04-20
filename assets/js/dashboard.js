@@ -112,7 +112,7 @@ var initChat = function(){
 
   		var formulario = nodoFormChat();
   		$('#containerChats #'+idUser+' .panel-body .chat-input').html(formulario);
-
+  		addSubmit();
   		//asignar el atendioId
   		$.ajax({
 			url: "php/peticionesManager.php",
@@ -300,6 +300,54 @@ var microtec = function(msg, fecha){
     return nodo;
 }
 
+var addSubmit = function(){
+
+$('.form-chat').submit( (ev)=>{
+	ev.preventDefault();
+	//console.log( $().serializeArray() );
+	console.log(this);
+	console.log( $(this) );
+	console.log(ev.target);
+	console.log('se escucho submit del formulario');
+
+	/*
+	asta aqui llego mi dia perros
+	
+
+	 */
+	/*
+	if( $('#chat-microtec #msg').val().length > 0 ){
+		var data = $('#chat-microtec #form-chat').serializeArray();
+			data.push({name: 'fn', value: 'enviarMsg'});
+			data.push({name: 'remitente', value: 1});//el que escrivbe es el cliente
+			data.push({name: 'atendio', value: $('#chat-microtec #form-chat #atendio').val() });//el que escrivbe es el cliente 
+			data.push({name: 'status', value: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 ) });//SI no hay atendio el status es 0
+			
+			console.log(data);
+	  	$.ajax({
+			url: 'php/Peticiones.php',
+			type: 'POST',
+			dataType: 'json',
+			data: data
+			}).done((resp)=>{
+				console.log(resp);
+				if( resp.status == 1 ){
+					//var nodoMsg = user( resp.msg[0].mensaje, resp.msg[0].fecha );
+	  			//$('#chat-microtec .chat-content').append(nodoMsg);
+		 		//autoScroll('#chat-microtec .chat-content');
+		 		document.querySelector('#chat-microtec #form-chat').reset();
+	  			firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
+				}
+			}).fail(()=>{
+				console.log('Fallo el envio');
+				swal("Upss!!", "Lo sentimos ocurrio un error durante el envio del mensaje, intente nuevamente, gracias", "error");
+			});
+	}
+	*/
+	});
+
+}
+
 var formatearFecha = function(fecha){
 	var tiempo = fecha.split(' ');
 	var hora = tiempo[1].substring(0, 5);
@@ -341,10 +389,10 @@ var autoScroll = function(nodo){
 
 
 var nodoFormChat = function(){
-	var nodo ='<div class="row"><form class="" id="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
-			  '<div class="col-xs-10"><input class="form-control" name="msg" id="msg" placeholder="Escribir mensaje" autocomplete="off" /> </div>'+
+	var nodo ='<div class="row"><form class="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
+			  '<div class="col-xs-9"><input class="form-control" name="msg" id="msg" placeholder="Escribir mensaje" autocomplete="off" /> </div>'+
 			  //'<button type="submit" class="btn btn-primary btn-sm ml-2">Enviar</button>'+
-			  '<div class="col-xs-2"><button type="button" style="margin-right: 2px;" id="adjunto" class="btn btn-primary btn-sm" title="Seleccionar Archivo"><i class="fas fa-paperclip"></i></button>'+
+			  '<div class="col-xs-3"><button type="button" style="margin-right: 2px;" id="adjunto" class="btn btn-primary btn-sm" title="Seleccionar Archivo"><i class="fas fa-paperclip"></i></button>'+
 			  '<button type="submit" class="btn btn-primary btn-sm" title="Enviar"><i class="fas fa-location-arrow"></i></button></div>'+
 			'</form></div>';
     	return nodo;
