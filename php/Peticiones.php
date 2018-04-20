@@ -78,6 +78,8 @@ function enviarMsg($post){
 	$chat->mensaje = $post['msg'];
 	$chat->userId = $_SESSION['idUser'];
 	$chat->remitente = $post['remitente'];
+	$chat->atendioId = $post['atendio'];
+	$chat->status = $post['status'];
 	//var_dump($chat);
 	$lastId = $chat->set();
 	if( $lastId > 0 ){

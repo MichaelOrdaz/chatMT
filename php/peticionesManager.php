@@ -77,6 +77,35 @@ function getOne($post){
 	}
 }
 
+function asignarManager( $post ){
+	session_start();
+	$soporte = $_SESSION['idSoporte'];
+	$chat = new Chat();
+	$chat->asignarManager( $post['cliente'], $soporte );
+	return array('status'=>1);
+
+}
+
+function enviarMsg($post){
+	session_start();
+	$chat = new Chat();
+	$chat->mensaje = $post['msg'];
+	$chat->userId = $post['cliente'];
+	$chat->remitente = 2;
+	$chat->atendioId = $_SESSION['idSoporte'];
+	$chat->status = 1;
+	$lastId = $chat->set();
+	if( $lastId > 0 ){
+		$infoMsg = $chat->getOne($lastId);
+		$data = array('status'=>1, 'msg'=>$infoMsg);
+	}
+	else{
+		$data = array('status'=>0, 'msg'=>'mensaje no enviado');
+	}
+	return $data;
+}
+
+
 $data = $fn($_POST);
 echo json_encode($data);
 ?>

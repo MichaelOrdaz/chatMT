@@ -131,7 +131,7 @@ var nodoChat = function(){
     	'</div>'+
     	'<div class="chat-input border-top">'+
     		'<form class="form-inline mt-1" id="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
-			  '<label class="sr-only" for="inlineFormInputName2">Name</label>'+
+			  '<input type="hidden" name="atendio" id="atendio" />'+
 			  '<input class="form-control form-control-sm" name="msg" id="msg" placeholder="Escribir mensaje" autocomplete="off" />'+
 			  //'<button type="submit" class="btn btn-primary btn-sm ml-2">Enviar</button>'+
 			  '<button type="button" id="adjunto" class="btn btn-primary rounded-circle btn-sm ml-2" title="Seleccionar Archivo"><i class="fas fa-paperclip"></i></button>'+
@@ -237,6 +237,10 @@ var addSubmitChat = function(){
 			var data = $('#chat-microtec #form-chat').serializeArray();
  			data.push({name: 'fn', value: 'enviarMsg'});
  			data.push({name: 'remitente', value: 1});//el que escrivbe es el cliente
+ 			data.push({name: 'atendio', value: $('#chat-microtec #form-chat #atendio').val() });//el que escrivbe es el cliente 
+ 			data.push({name: 'status', value: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 ) });//SI no hay atendio el status es 0
+ 			
+ 			console.log(data);
 		  	$.ajax({
  			url: 'php/Peticiones.php',
  			type: 'POST',
@@ -275,6 +279,7 @@ var listenMsg = function(usuario){
 	 			data: data
 	 		}).done(function(resp){
 	 			var nodoMsg;
+	 			$('#chat-microtec #form-chat #atendio').val(resp.msg[0].atendioId);
 	 			if( resp.msg[0].remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
 					nodoMsg = user(resp.msg[0].mensaje, resp.msg[0].fecha);
 				}

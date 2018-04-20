@@ -110,12 +110,25 @@ var initChat = function(){
   			ev.target.parentNode.parentNode.style.display = 'none';
   		}, false);
 
-
   		var formulario = nodoFormChat();
   		$('#containerChats #'+idUser+' .panel-body .chat-input').html(formulario);
 
-  		console.log('ejecutar ajax');
+  		//asignar el atendioId
+  		$.ajax({
+			url: "php/peticionesManager.php",
+			type: "POST",
+			dataType: "json",
+			data: {'fn': 'asignarManager', 'cliente': idUser}
+		}).done(function(json){
+			console.log(json);
+			
+		}).fail(function(jqXHR, textStatus, errorThrown){
+			console.error(jqXHR);
+			console.error(textStatus);
+		});
+
   		//ev.target.parentNode.parentNode.hide('slow');
+  		//ajax que me carga los messajes del usuario qye ya estan en espera
   		$.ajax({
 			url: "php/peticionesManager.php",
 			type: "POST",
@@ -144,13 +157,35 @@ var initChat = function(){
 					nodoMsg = microtec(chat.mensaje, chat.fecha);
 				}
 				$('#containerChats #'+idUser+' .panel-body .chat-content').append(nodoMsg);
-				autoScroll('#containerChats #'+idUser+' .panel-body');
+				autoScroll('#containerChats #'+idUser+' .panel-body .chat-content');
 			});
 
-				var test = microtec('SOy Soporte');
-				$('#containerChats #'+idUser+' .panel-body .chat-content').append(test);
-				autoScroll('#containerChats #'+idUser+' .panel-body .chat-content');
-				
+			//mi mansaje automatico
+			var msgBot = 'En unos momentos uno de nuestros Agentes se comunicará contigo';
+			var msgSoporte = microtec(msgBot);
+				$.ajax({
+					url: "php/peticionesManager.php",
+					type: "POST",
+					dataType: "json",
+					data: {'fn': 'enviarMsg', 'cliente': idUser, 'msg': msgBot}
+				}).done(function(json){
+					console.log(json);
+					if( json.status == 1 ){
+						firebase.database().ref('Chat').push({idChat: json.msg[0].idChat, msg: json.msg[0].mensaje, userId: json.msg[0].userId });
+					}
+					else{
+						console.log('No se envio el msg');
+					}
+
+				}).fail(function(jqXHR, textStatus, errorThrown){
+					console.error(jqXHR);
+					console.error(textStatus);
+				});
+
+			//$('#containerChats #'+idUser+' .panel-body .chat-content').append(test);
+			//autoScroll('#containerChats #'+idUser+' .panel-body .chat-content');
+			
+
 			swal.close();
 
 		}).fail(function(jqXHR, textStatus, errorThrown){
@@ -218,8 +253,6 @@ var listenFirebase = function(){
 					autoScroll('#containerChats #'+userMongo+' .panel-body .chat-content');
 				});
 					
-				swal.close();
-
 			}).fail(function(jqXHR, textStatus, errorThrown){
 				alertify.message('Fallando el envio');
 				console.error(jqXHR);
@@ -257,7 +290,7 @@ var microtec = function(msg, fecha){
 	fecha = fecha || "1970-01-01 00:00:00";
 	var nodo = '<div class="microtec">'
     			+'<div class="media">'
-				  +'<img class="media-object pull-left img-circle" src="https://i1.wp.com/wp.micro-tec.com.mx/wp-content/uploads/2017/11/cropped-microtec-2-1.png" alt="logo-micro-tec" />'
+				  +'<img class="media-object pull-right img-circle" src="https://i1.wp.com/wp.micro-tec.com.mx/wp-content/uploads/2017/11/cropped-microtec-2-1.png" alt="logo-micro-tec" />'
 				  +'<div class="media-body bg-primary">'
 				  	+ msg
 				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'

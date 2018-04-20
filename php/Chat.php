@@ -9,8 +9,8 @@ class Chat extends DB{
 	}
 
 	public function set(){
-		$this->sql = "INSERT INTO chat_microtec.chats(mensaje, userId, remitente, atendioId) VALUES ( ?, ?, ?, ? )";
-		$this->runQuery( [$this->mensaje, $this->userId, $this->remitente, null] );
+		$this->sql = "INSERT INTO chat_microtec.chats(mensaje, userId, remitente, atendioId, status) VALUES ( ?, ?, ?, ?, ? )";
+		$this->runQuery( [$this->mensaje, $this->userId, $this->remitente, $this->atendioId == '' ? null: $this->atendioId, $this->status] );
 		return $this->data;
 	}
 
@@ -47,6 +47,12 @@ class Chat extends DB{
 	public function chatDetenidos(){
 		$this->sql = "SELECT us.nombre, ch.userId, (SELECT MAX(ch.fecha) ) as ultimoMsg FROM chat_microtec.chats ch INNER JOIN chat_microtec.usertemporal us ON ch.userId=us.idUser where status = 0 GROUP BY userId ORDER BY ultimoMsg DESC";
 		$this->runQuery();
+		return $this->data;
+	}
+
+	public function asignarManager( $idUser = "", $atendio = "" ){
+		$this->sql = "UPDATE chat_microtec.chats SET atendioId = ?, status = 1 WHERE userId = ?";
+		$this->runQuery([ $atendio, $idUser ]);
 		return $this->data;
 	}
 
