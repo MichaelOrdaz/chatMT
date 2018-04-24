@@ -45,8 +45,12 @@ $(function(){
 
 	//cerrar la sesion del cliente
 	$('#chat-microtec #closeSession').click(function(event) {
-		console.log('click sobre cerrar');
+		//console.log('click sobre cerrar');
 
+		if( typeof $('#chat-microtec #form-chat #atendio').val() === 'undefined' ){
+			alertify.message('Inicia sesion por favor');
+		}
+		else{
 
 		//para cerrar la sesión lo que necesito es hacer que se efectuen las siguientes acciones.
 		//  eliminar las variables de sesion. SOLUCION una petición ajax eliminanado las variables de sesion
@@ -59,31 +63,16 @@ $(function(){
 		//y finalmente oculto el chat, recargando la peticion
 
 		//primero ajax que elimina las variables de sesion
-		$.ajax({
-			url: 'php/Peticiones.php',
-			type: 'POST',
-			dataType: 'json',
-			data: {'fn': 'logOut'}
-		}).done((resp)=>{
-			if( resp.status == 1 ){
-
-
-	 			
+		//debeo de hacerlo al reves mandar el msnaje si no se elimna la sesion pero mama cuando envie el mensaje
+			 			
 	 			//si se elimino la sesion, mando el mensaje que el usuario abandono la coversacion
-	 			var data = $('#chat-microtec #form-chat').serializeArray();
-				data.push({name: 'fn', value: 'enviarMsg'});
-				data.push({name: 'remitente', value: 1});//el que escrivbe es el cliente
-				data.push({name: 'atendio', value: $('#chat-microtec #form-chat #atendio').val() });//el que escrivbe es el cliente 
-				data.push({name: 'status', value: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 ) });//SI no hay atendio el status es 0
-				
-				//console.log(data);
-		  		$.ajax({
+	 			$.ajax({
 					url: 'php/Peticiones.php',
 					type: 'POST',
 					dataType: 'json',
 					data: { fn: 'enviarMsg', 
 							remitente: 1, 
-							atendio: $('#chat-microtec #form-chat #atendio').val(), 
+							atendio: $('#chat-microtec #form-chat #atendio').val(),
 							status: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 ),
 							msg: 'El cliente abandono la conversación'
 						}
@@ -94,28 +83,54 @@ $(function(){
 		  				firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
 						//se mostrara el mensaje, pero que se vaya ocultando el div
 						//aqui debeo de recordar que es clase. si esta abierto deberia ser down
-						$('#chat-microtec').animate({
-			 				bottom: '-300px'
-			 			}, 1000);
-			 			$(this).children().eq(0).removeClass(clase);
-			 			$(this).children().eq(0).addClass('up');
-			 			$(this).children().eq(0).html('<i class="fas fa-sort-up fa-lg"></i>');
-			 			$(this).children().eq(0).attr('title', 'Maximizar');
-
+						var clase = $('#chat-microtec #colapsar').children().eq(0).attr('class');
+				 		if( clase == 'up' ){
+				 			/*
+				 			$('#chat-microtec').animate({
+				 				bottom: '0'
+				 			}, 1000);
+				 			$(this).children().eq(0).removeClass(clase);
+				 			$(this).children().eq(0).addClass('down');
+				 			$(this).children().eq(0).html('<i class="fas fa-sort-down fa-lg"></i>');
+				 			$(this).children().eq(0).attr('title', 'Minimizar');
+				 			*/
+				 		}
+				 		else{
+				 			$('#chat-microtec').animate({
+				 				bottom: '-300px'
+				 			}, 1000);
+				 			$('#chat-microtec #colapsar').children().eq(0).removeClass(clase);
+				 			$('#chat-microtec #colapsar').children().eq(0).addClass('up');
+				 			$('#chat-microtec #colapsar').children().eq(0).html('<i class="fas fa-sort-up fa-lg"></i>');
+				 			$('#chat-microtec #colapsar').children().eq(0).attr('title', 'Maximizar');
+				 		}
+				 		alertify.message("Conversación finalizada, gracias");
+				 		//aqui termino la ssesion de destruirla
+				 		$.ajax({
+							url: 'php/Peticiones.php',
+							type: 'POST',
+							dataType: 'json',
+							data: {'fn': 'logOut'}
+						}).done((resp)=>{
+							if( resp.status == 1 ){
+								//Finalmente verificamos la sesion que como sabemos debe de haberse finalizado y deberia verse el formulario.
+			 					
+								var divForm = nodoForm();
+								$('#chat-microtec .card-body').html(divForm);
+			 					verificarSesion();
+							}
+						}).fail(()=>{
+							console.log('Fallo al Cerrar sesion');
+							alertify.error("Error al cerrar sesión, comprueba que se haya cerrado, gracias");
+						});
+			 			
 					}
 				}).fail(()=>{
 					console.log('Fallo el envio');
 					alertify.error("Error el enviar mensaje, intenta nuevamente");
 				});
 
-
-
-			}
-		}).fail(()=>{
-			console.log('Fallo al Cerrar sesion');
-			alertify.error("Error al cerrar sesión, comprueba que se haya cerrado, gracias");
-		});
-
+			}//fin del else
 
 	});//ENDCLICK
 

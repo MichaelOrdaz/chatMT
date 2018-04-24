@@ -14,7 +14,7 @@ abstract class DB{
 	private static $h = "localhost";
 	private static $u = "root";
 	private static $p = "";
-	protected $dbName = "ventilacion";
+	protected $dbName = "chat_microtec";
 	
 	protected $pdo;//objeto pdostatement
 	protected $sql;//sql
