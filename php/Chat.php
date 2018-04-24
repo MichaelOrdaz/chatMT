@@ -45,7 +45,7 @@ class Chat extends DB{
 	}
 
 	public function chatDetenidos(){
-		$this->sql = "SELECT us.nombre, ch.userId, (SELECT MAX(ch.fecha) ) as ultimoMsg FROM chat_microtec.chats ch INNER JOIN chat_microtec.usertemporal us ON ch.userId=us.idUser where status = 0 GROUP BY userId ORDER BY ultimoMsg DESC";
+		$this->sql = "SELECT us.nombre, ch.userId, us.correo, (SELECT MAX(ch.fecha) ) as ultimoMsg FROM chat_microtec.chats ch INNER JOIN chat_microtec.usertemporal us ON ch.userId=us.idUser where status = 0 GROUP BY userId ORDER BY ultimoMsg DESC";
 		$this->runQuery();
 		return $this->data;
 	}

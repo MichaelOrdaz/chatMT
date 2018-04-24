@@ -40,14 +40,97 @@ $(function(){
  		}
  	});
  	
- 	//verificamos si hay sesion activa
+ 	
+ 	verificarSesion();
+
+	//cerrar la sesion del cliente
+	$('#chat-microtec #closeSession').click(function(event) {
+		console.log('click sobre cerrar');
+
+
+		//para cerrar la sesión lo que necesito es hacer que se efectuen las siguientes acciones.
+		//  eliminar las variables de sesion. SOLUCION una petición ajax eliminanado las variables de sesion
+		//  colapsar el chat, SOLUCION animacion con jquery
+		//  recargar el nodo. SOLUCION creo que seria la funcion checkSession
+		// tambien neceito quye cuando se cierre la sesion se mande un mesaje al manager de que el usurio cerro su sesion. SOLUCION, enviar un mensaje
+		//del add submit ya copie el codigo que manda el msg
+		
+		//para cerrar conrrectamente, primero deberia de eliminar mis variables de sesion, si fue correcto mando el mensaje de que abandono la sesion.
+		//y finalmente oculto el chat, recargando la peticion
+
+		//primero ajax que elimina las variables de sesion
+		$.ajax({
+			url: 'php/Peticiones.php',
+			type: 'POST',
+			dataType: 'json',
+			data: {'fn': 'logOut'}
+		}).done((resp)=>{
+			if( resp.status == 1 ){
+
+
+	 			
+	 			//si se elimino la sesion, mando el mensaje que el usuario abandono la coversacion
+	 			var data = $('#chat-microtec #form-chat').serializeArray();
+				data.push({name: 'fn', value: 'enviarMsg'});
+				data.push({name: 'remitente', value: 1});//el que escrivbe es el cliente
+				data.push({name: 'atendio', value: $('#chat-microtec #form-chat #atendio').val() });//el que escrivbe es el cliente 
+				data.push({name: 'status', value: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 ) });//SI no hay atendio el status es 0
+				
+				//console.log(data);
+		  		$.ajax({
+					url: 'php/Peticiones.php',
+					type: 'POST',
+					dataType: 'json',
+					data: { fn: 'enviarMsg', 
+							remitente: 1, 
+							atendio: $('#chat-microtec #form-chat #atendio').val(), 
+							status: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 ),
+							msg: 'El cliente abandono la conversación'
+						}
+				}).done((resp)=>{
+					if( resp.status == 1 ){
+			 			//SI el mensaje se mando correctamente, el manager estara notificado de eso asi que pude el cerrar su sesion. no tengo que limpiar nada.
+			 			//document.querySelector('#chat-microtec #form-chat').reset();
+		  				firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
+						//se mostrara el mensaje, pero que se vaya ocultando el div
+						//aqui debeo de recordar que es clase. si esta abierto deberia ser down
+						$('#chat-microtec').animate({
+			 				bottom: '-300px'
+			 			}, 1000);
+			 			$(this).children().eq(0).removeClass(clase);
+			 			$(this).children().eq(0).addClass('up');
+			 			$(this).children().eq(0).html('<i class="fas fa-sort-up fa-lg"></i>');
+			 			$(this).children().eq(0).attr('title', 'Maximizar');
+
+					}
+				}).fail(()=>{
+					console.log('Fallo el envio');
+					alertify.error("Error el enviar mensaje, intenta nuevamente");
+				});
+
+
+
+			}
+		}).fail(()=>{
+			console.log('Fallo al Cerrar sesion');
+			alertify.error("Error al cerrar sesión, comprueba que se haya cerrado, gracias");
+		});
+
+
+	});//ENDCLICK
+
+});//DocumentReady
+
+var verificarSesion = function(){
+
+//verificamos si hay sesion activa
  	$.ajax({
 		url: 'php/Peticiones.php',
 		type: 'POST',
 		dataType: 'json',
 		data: {'fn': 'checkSession'},
 	}).done(function(resp) {
-		console.log(resp);
+		//console.log(resp);
 		if( resp.status == 0 ){
 			enviarRegistro();
 		}
@@ -61,13 +144,14 @@ $(function(){
 		}
 	
 	}).fail(function(){
-		console.log('Falló la petición');
+		console.log('Falló la petición, verificar sesión');
 		enviarRegistro();
 	});
-});//DocumentReady
+
+}
 
 var autoScroll = function(nodo){
-	$(nodo).animate({ scrollTop: $(nodo)[0].scrollHeight}, 100);
+	$(nodo).animate({ scrollTop: $(nodo)[0].scrollHeight}, 0);
 }
 
 var user = function(msg, fecha){
@@ -81,7 +165,7 @@ var user = function(msg, fecha){
 var microtec = function(msg, fecha){
 	var nodo = '<div class="microtec">'
     			+'<div class="media">'
-				  +'<img class="mr-3 mt-2" src="https://i1.wp.com/wp.micro-tec.com.mx/wp-content/uploads/2017/11/cropped-microtec-2-1.png" alt="logo-micro-tec" />'
+				  +'<img class="mr-3 mt-2" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
 				  +'<div class="media-body bg-primary rounded p-1 my-2 text-white">'
 				  	+ msg
 				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
@@ -193,7 +277,7 @@ var enviarRegistro = function(){
  				$('#chat-microtec .card-body').html('<img src="assets/imgs/cargando2.gif" class="d-block mx-auto" style="width: 60px; margin-top: 4em;" />');
  			}
  		}).done(function(resp) {
- 			console.log(resp);
+ 			//console.log(resp);
  			if( resp.status === 1 ){
  				var divChat = nodoChat();
 	 			$('#chat-microtec .card-body').empty();
@@ -203,7 +287,7 @@ var enviarRegistro = function(){
 
  			}
  			else{
- 				console.log('error de proceso')
+ 				//console.log('error de proceso')
  				var divAlert = nodoAlert();
 	 			$('#chat-microtec .card-body').html(divAlert);
 	 			$('#chat-microtec .card-body #alertFail').on('close.bs.alert', ev=>{
@@ -229,7 +313,7 @@ var enviarRegistro = function(){
 
 var addSubmitChat = function(){
 
-	btnAdjunto();
+	//btnAdjunto();
 
 	$('#chat-microtec #form-chat').submit( (ev)=>{
 		ev.preventDefault();
@@ -240,14 +324,14 @@ var addSubmitChat = function(){
  			data.push({name: 'atendio', value: $('#chat-microtec #form-chat #atendio').val() });//el que escrivbe es el cliente 
  			data.push({name: 'status', value: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 ) });//SI no hay atendio el status es 0
  			
- 			console.log(data);
+ 			//console.log(data);
 		  	$.ajax({
  			url: 'php/Peticiones.php',
  			type: 'POST',
  			dataType: 'json',
  			data: data
  			}).done((resp)=>{
- 				console.log(resp);
+ 				//console.log(resp);
  				if( resp.status == 1 ){
  					//var nodoMsg = user( resp.msg[0].mensaje, resp.msg[0].fecha );
 		  			//$('#chat-microtec .chat-content').append(nodoMsg);
@@ -257,7 +341,7 @@ var addSubmitChat = function(){
  				}
  			}).fail(()=>{
  				console.log('Fallo el envio');
- 				swal("Upss!!", "Lo sentimos ocurrio un error durante el envio del mensaje, intente nuevamente, gracias", "error");
+ 				alertify.error("Error el enviar mensaje, intenta nuevamente");
  			});
 		}
  	});
@@ -289,7 +373,7 @@ var listenMsg = function(usuario){
 				$('#chat-microtec .chat-content').append(nodoMsg);
 				autoScroll('#chat-microtec .chat-content');
 	 		}).fail(function(){
-	 			console.log('fallo peticion chatId');
+	 			console.log('fallo peticion chatId en firebase');
 	 		});
   		}
   		else{
