@@ -23,7 +23,6 @@ $(document).ready(function(){
 		else{
 			window.location.href = "manager";
 		}
-			
 	}).fail(function(jqXHR, textStatus, errorThrown){
 		console.error(jqXHR);
 		console.error(textStatus);
@@ -349,21 +348,42 @@ var microtec = function(msg, fecha){
 var addClickClose = function(selector, id){
 //addClickClose('div#'+idUser+' div.panel-heading > span.cerraridUser');
 	$(selector).click(ev=>{
-		ev.currentTarget.parentNode.parentNode.parentNode.parentNode.removeChild(ev.currentTarget.parentNode.parentNode.parentNode);
-		//una vez removido el nodo, tambien lo elimino del localStorage
-		var paneles = JSON.parse( localStorage.getItem('paneles') );
-		var misId = [];
-		paneles.paneles.forEach( function(element, index) {
-			misId.push( element.id );
-		});
-		var index = misId.indexOf(id);
-		if( index !== -1 ){
-			paneles.paneles.splice( index, 1 );
-			localStorage.setItem('paneles', JSON.stringify(paneles) );
-		}
 		
-	});
+		swal({
+		  title: '¿Eliminar?',
+		  text: "Seguro que deseas cerrar la conversación",
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Si, cerrar!',
+		  cancelButtonText: 'cancelar'
+		}).then((result) => {
+		  if (result.value) {
+		   	
+		   	ev.currentTarget.parentNode.parentNode.parentNode.parentNode.removeChild(ev.currentTarget.parentNode.parentNode.parentNode);
+			//una vez removido el nodo, tambien lo elimino del localStorage
+			var paneles = JSON.parse( localStorage.getItem('paneles') );
+			var misId = [];
+			paneles.paneles.forEach( function(element, index) {
+				misId.push( element.id );
+			});
+			var index = misId.indexOf(id);
+			if( index !== -1 ){
+				paneles.paneles.splice( index, 1 );
+				localStorage.setItem('paneles', JSON.stringify(paneles) );
+			}
 
+		   	swal(
+		      '¡Eliminado!',
+		      'Conversación finalizada',
+		      'success'
+		    )
+		  
+		  }
+		})
+
+	});
 }
 
 var addSubmit = function(selector){

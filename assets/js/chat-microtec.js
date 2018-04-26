@@ -116,6 +116,7 @@ $('#chat-microtec .card-header').on('click', (ev)=>{
 							if( resp.status == 1 ){
 								//Finalmente verificamos la sesion que como sabemos debe de haberse finalizado y deberia verse el formulario.
 			 					
+								$('#chat-microtec #closeSession').css('visibility', 'hidden');
 								var divForm = nodoForm();
 								$('#chat-microtec .card-body').html(divForm);
 			 					verificarSesion();
@@ -152,6 +153,7 @@ var verificarSesion = function(){
 		}
 		//si es falso es por que la sesion aun esta vigente, entonces cambiamos el DOM con los msg de la sesion.
 		else{
+			$('#chat-microtec #closeSession').css('visibility', 'visible');
 			var divChat = nodoChat();
 			$('#chat-microtec .card-body').empty();
 			$('#chat-microtec .card-body').html(divChat);
@@ -305,6 +307,8 @@ var enviarRegistro = function(){
  		}).done(function(resp) {
  			//console.log(resp);
  			if( resp.status === 1 ){
+
+			$('#chat-microtec #closeSession').css('visibility', 'visible');
  				var divChat = nodoChat();
 	 			$('#chat-microtec .card-body').empty();
 	 			$('#chat-microtec .card-body').html(divChat);
@@ -461,6 +465,8 @@ var listenMsg = function(usuario){
 								}).done((resp)=>{
 									if( resp.status == 1 ){
 										//Finalmente verificamos la sesion que como sabemos debe de haberse finalizado y deberia verse el formulario.
+										
+										$('#chat-microtec #closeSession').css('visibility', 'hidden');
 										var divForm = nodoForm();
 										$('#chat-microtec .card-body').html(divForm);
 					 					verificarSesion();
