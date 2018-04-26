@@ -18,27 +18,28 @@ firebase.initializeApp(config);
 
 $(function(){
 
- 	$('#chat-microtec #colapsar').click(function(event) {
- 		var clase = $(this).children().eq(0).attr('class');
+$('#chat-microtec .card-header').on('click', (ev)=>{
+	var clase = $('#chat-microtec #colapsar').children().eq(0).attr('class');
  		if( clase == 'up' ){
  			$('#chat-microtec').animate({
  				bottom: '0'
  			}, 1000);
- 			$(this).children().eq(0).removeClass(clase);
- 			$(this).children().eq(0).addClass('down');
- 			$(this).children().eq(0).html('<i class="fas fa-sort-down fa-lg"></i>');
- 			$(this).children().eq(0).attr('title', 'Minimizar');
+ 			$('#chat-microtec #colapsar').children().eq(0).removeClass(clase);
+ 			$('#chat-microtec #colapsar').children().eq(0).addClass('down');
+ 			$('#chat-microtec #colapsar').children().eq(0).html('<i class="fas fa-sort-down fa-lg"></i>');
+ 			$('#chat-microtec #colapsar').children().eq(0).attr('title', 'Minimizar');
  		}
  		else{
  			$('#chat-microtec').animate({
  				bottom: '-300px'
  			}, 1000);
- 			$(this).children().eq(0).removeClass(clase);
- 			$(this).children().eq(0).addClass('up');
- 			$(this).children().eq(0).html('<i class="fas fa-sort-up fa-lg"></i>');
- 			$(this).children().eq(0).attr('title', 'Maximizar');
+ 			$('#chat-microtec #colapsar').children().eq(0).removeClass(clase);
+ 			$('#chat-microtec #colapsar').children().eq(0).addClass('up');
+ 			$('#chat-microtec #colapsar').children().eq(0).html('<i class="fas fa-sort-up fa-lg"></i>');
+ 			$('#chat-microtec #colapsar').children().eq(0).attr('title', 'Maximizar');
  		}
- 	});
+});
+
  	
  	
  	verificarSesion();
@@ -70,11 +71,11 @@ $(function(){
 					url: 'php/Peticiones.php',
 					type: 'POST',
 					dataType: 'json',
-					data: { fn: 'enviarMsg', 
+					data: { fn: 'enviarMsg',
 							remitente: 1, 
 							atendio: $('#chat-microtec #form-chat #atendio').val(),
 							status: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 ),
-							msg: 'El cliente abandono la conversación'
+							msg: 'El cliente abandonó la conversación'
 						}
 				}).done((resp)=>{
 					if( resp.status == 1 ){
@@ -178,10 +179,19 @@ var user = function(msg, fecha){
 }
 
 var microtec = function(msg, fecha){
+	var f = new Date();
+	var y, mo, d, h, min, s;
+	y = f.getFullYear();
+	mo = (f.getMonth()+1) < 10 ? '0'+(f.getMonth()+1): (f.getMonth()+1);
+	d = f.getDay() < 10 ? '0'+f.getDay(): f.getDay()
+	h = f.getHours() < 10 ? '0'+f.getHours(): f.getHours()
+	min = f.getMinutes() < 10 ? '0'+f.getMinutes(): f.getMinutes();
+	s = f.getSeconds() < 10 ? '0'+f.getSeconds(): f.getSeconds();
+	fecha = fecha || y+"-"+mo+"-"+d+" "+h+":"+min+":"+s;
 	var nodo = '<div class="microtec">'
     			+'<div class="media">'
 				  +'<img class="mr-3 mt-2" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
-				  +'<div class="media-body bg-primary rounded p-1 my-2 text-white">'
+				  +'<div class="media-body bg-microtec rounded p-1 my-2 text-white">'
 				  	+ msg
 				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
 				  +'</div>'
@@ -227,6 +237,7 @@ var formatearFecha = function(fecha){
 
 var nodoChat = function(){
 	var nodo = '<div class="chat-content">'+
+		microtec('Gracias por contactar el chat en vivo de MicroTec, ¿En que podemos ayudarle?')+
     	'</div>'+
     	'<div class="chat-input border-top">'+
     		'<form class="form-inline mt-1" id="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
@@ -234,7 +245,7 @@ var nodoChat = function(){
 			  '<input class="form-control form-control-sm" name="msg" id="msg" placeholder="Escribir mensaje" autocomplete="off" />'+
 			  //'<button type="submit" class="btn btn-primary btn-sm ml-2">Enviar</button>'+
 			  '<button type="button" id="adjunto" class="btn btn-primary rounded-circle btn-sm ml-2" title="Seleccionar Archivo"><i class="fas fa-paperclip"></i></button>'+
-			  '<button type="submit" class="btn btn-primary rounded-circle btn-sm ml-2" title="Enviar"><i class="fas fa-location-arrow"></i></button>'+
+			  '<button type="submit" class="btn btn-primary rounded-circle btn-sm ml-2" title="Enviar"><i class="far fa-arrow-alt-circle-right"></i></button>'+
 			'</form>'+
     	'</div>';
     	return nodo;
@@ -353,6 +364,7 @@ var addSubmitChat = function(){
 			 		//autoScroll('#chat-microtec .chat-content');
 			 		document.querySelector('#chat-microtec #form-chat').reset();
 		  			firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
+
  				}
  			}).fail(()=>{
  				console.log('Fallo el envio');
@@ -364,7 +376,14 @@ var addSubmitChat = function(){
 
 var listenMsg = function(usuario){
 	var usuario = usuario || '';
+	var seg = 0;
+	
+
 	firebase.database().ref('Chat').on('child_added', snapshot=>{
+
+		//cada que se reciba un mensaje debo de hacer un timer o reiniciarlo.
+		
+
   		var userMongo = snapshot.val().userId;
   		var chatId = snapshot.val().idChat;
   		var elMsg = snapshot.val().msg;
@@ -378,6 +397,7 @@ var listenMsg = function(usuario){
 	 			data: data
 	 		}).done(function(resp){
 	 			var nodoMsg;
+
 	 			$('#chat-microtec #form-chat #atendio').val(resp.msg[0].atendioId);
 	 			if( resp.msg[0].remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
 					nodoMsg = user(resp.msg[0].mensaje, resp.msg[0].fecha);
@@ -387,6 +407,81 @@ var listenMsg = function(usuario){
 				}
 				$('#chat-microtec .chat-content').append(nodoMsg);
 				autoScroll('#chat-microtec .chat-content');
+
+
+				//Parte que le da vida a la sesion y la destruye en caso de que el tiempo se haya excedido
+				if(typeof timer !== 'undefined'){
+					clearInterval(timer);
+					seg = 0;
+				}
+				timer = setInterval(()=>{
+					//console.log('contando ' + seg++);
+					seg++;
+					if( seg >= 600 ){
+						//console.log('se cierra la sesion');
+						clearInterval(timer);
+						delete timer;
+						//cuando supere el tiempo de vida le damos cuello	
+						$.ajax({
+							url: 'php/Peticiones.php',
+							type: 'POST',
+							dataType: 'json',
+							data: { fn: 'enviarMsg',
+								remitente: 1, 
+								atendio: $('#chat-microtec #form-chat #atendio').val(),
+								status: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 ),
+								msg: 'El tiempo de la sesión expiró'
+							}
+						}).done((resp)=>{
+							if( resp.status == 1 ){
+					 			//SI el mensaje se mando correctamente, el manager estara notificado de eso asi que pude el cerrar su sesion. no tengo que limpiar nada.
+				  				firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
+								//se mostrara el mensaje, pero que se vaya ocultando el div
+								//aqui debeo de recordar que es clase. si esta abierto deberia ser down
+								var clase = $('#chat-microtec #colapsar').children().eq(0).attr('class');
+						 		if( clase == 'up' ){
+						 			//nada por aqui
+						 		}
+						 		else{
+						 			$('#chat-microtec').animate({
+						 				bottom: '-300px'
+						 			}, 1000);
+						 			$('#chat-microtec #colapsar').children().eq(0).removeClass(clase);
+						 			$('#chat-microtec #colapsar').children().eq(0).addClass('up');
+						 			$('#chat-microtec #colapsar').children().eq(0).html('<i class="fas fa-sort-up fa-lg"></i>');
+						 			$('#chat-microtec #colapsar').children().eq(0).attr('title', 'Maximizar');
+						 		}
+						 		alertify.message("El tiempo de la conversación se termino, gracias");
+						 		//aqui termino la ssesion de destruirla
+						 		$.ajax({
+									url: 'php/Peticiones.php',
+									type: 'POST',
+									dataType: 'json',
+									data: {'fn': 'logOut'}
+								}).done((resp)=>{
+									if( resp.status == 1 ){
+										//Finalmente verificamos la sesion que como sabemos debe de haberse finalizado y deberia verse el formulario.
+										var divForm = nodoForm();
+										$('#chat-microtec .card-body').html(divForm);
+					 					verificarSesion();
+									}
+								}).fail(()=>{
+									console.log('Fallo al Cerrar sesion');
+									alertify.error("Error al destruir la sesion por tiempo expirado");
+								});
+					 			
+							}
+						}).fail(()=>{
+							//console.log('Fallo el envio');
+							//alertify.error("Error el enviar mensaje, intenta nuevamente");
+						});
+						//End AjaxExterno
+					}
+				}, 1000);
+				//End verificar vida de sesion
+				
+
+
 	 		}).fail(function(){
 	 			console.log('fallo peticion chatId en firebase');
 	 		});

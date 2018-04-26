@@ -56,6 +56,11 @@ class Chat extends DB{
 		return $this->data;
 	}
 
+	public function algo(){
+		$this->sql = "UPDATE chat_microtec.chats SET atendioId = ?, status = 1 WHERE userId = ?";
+		$this->runQuery([ $atendio, $idUser ]);
+		return $this->data;
+	}
 
 }
 

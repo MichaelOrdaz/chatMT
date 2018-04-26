@@ -4,6 +4,12 @@ body, html{
 	min-height: 100%;
 }
 */
+:root{
+	--txt-white: #fff;
+}
+.text-white{
+	color: var(--txt-white) !important;
+}
 html{
 	position: relative;
 	min-height: 100vh;

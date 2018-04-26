@@ -106,6 +106,13 @@ function getMsg($post){
 }
 
 
+function algo($post){
+
+	$chat = new Chat();
+
+}
+
+
 $data = $fn($_POST);
 echo json_encode($data);
 ?>
