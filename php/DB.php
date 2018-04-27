@@ -5,9 +5,9 @@
 require_once "autoload.php"; 
 abstract class DB{
 
-	private static $h = "35.164.0.45";
-	private static $u = "devmicrotec";
-	private static $p = "dev19MicroTec";
+	private static $h = "localhost";
+	private static $u = "root";
+	private static $p = "";
 	protected $dbName = "chat_microtec";
 	
 	protected $pdo;//objeto pdostatement
