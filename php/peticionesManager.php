@@ -105,6 +105,39 @@ function enviarMsg($post){
 	return $data;
 }
 
+function consultarID($post){
+	session_start();
+	return array('id'=>$_SESSION['idSoporte']);
+}
+
+
+/* jose Luis*/
+function test_subirArchivo($post){
+	session_start();
+
+	$chat = new Chat();
+	$chat->file = $post['nombre'];
+	$chat->ruta = md5($post['nombre'].$_SESSION['idSoporte']);
+
+	$chat->mensaje = 'archivo adjunto '. $post['nombre'];
+	$chat->userId = $post['idUsuario'];
+	$chat->remitente = 2;
+	$chat->atendioId = $_SESSION['idSoporte'];
+	$chat->status = 1;
+
+	$lastId = $chat->set();
+
+	if( $lastId ){
+		$infoMsg = $chat->getOne($lastId);
+		$data = array('status'=>1, 'msg'=>$infoMsg);
+	}
+	else{
+		$data = array('status'=>0, 'msg'=> 'No existe Msg');
+	}
+	return $data;
+}
+/*jose Luis*/
+
 
 $data = $fn($_POST);
 echo json_encode($data);

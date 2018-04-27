@@ -45,8 +45,17 @@
 	width: 100%;
 	font-style: italic;
 	font-size: .7em;
+	text-decoration: none !important;
 }
 
 .user .microtec .media-body{
 	word-wrap: break-word;
+}
+
+.userAdjunto{
+	background: #EBEBEB;
+	cursor: pointer;
+	text-decoration: underline;
+	font-weight: bold;
+	color: navy;
 }

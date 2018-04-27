@@ -75,12 +75,15 @@ function logOut($var = ""){
 function enviarMsg($post){
 	session_start();
 	$chat = new Chat();
+	$chat->file = null;
+	$chat->ruta = null;
 	$chat->mensaje = $post['msg'];
 	$chat->userId = $_SESSION['idUser'];
 	$chat->remitente = $post['remitente'];
 	$chat->atendioId = $post['atendio'];
 	$chat->status = $post['status'];
 	//var_dump($chat);
+
 	$lastId = $chat->set();
 	if( $lastId > 0 ){
 		$infoMsg = $chat->getOne($lastId);
@@ -106,11 +109,38 @@ function getMsg($post){
 }
 
 
-function algo($post){
+function consultarID($post){
+	session_start();
+	return array('id'=>$_SESSION['idUser']);
+}
+
+
+/* jose Luis*/
+function test_subirArchivo($post){
+	session_start();
 
 	$chat = new Chat();
+	$chat->file = $post['nombre'];
+	$chat->ruta = md5($post['nombre'].$_SESSION['idUser']);
 
+	$chat->mensaje = 'archivo adjunto '. $post['nombre'];
+	$chat->userId = $_SESSION['idUser'];
+	$chat->remitente = 1;
+	$chat->atendioId = $post['atendio'];
+	$chat->status = $post['status'];
+
+	$lastId = $chat->set();
+
+	if( $lastId ){
+		$infoMsg = $chat->getOne($lastId);
+		$data = array('status'=>1, 'msg'=>$infoMsg);
+	}
+	else{
+		$data = array('status'=>0, 'msg'=> 'No existe Msg');
+	}
+	return $data;
 }
+/*jose Luis*/
 
 
 $data = $fn($_POST);

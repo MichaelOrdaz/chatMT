@@ -55,6 +55,38 @@ $(document).ready(function(){
 	});
 
 
+ 	/* Jose Luis */
+ 	$('body').on('change','.fileToUpload',function (evt) {
+ 		//var binario =  'path';
+ 		var binario =  $(this)[0].files[0];
+ 		var nombre = $(this)[0].files[0].name;
+ 		var tipo = $(this)[0].files[0].type;
+ 		var idUser = $(this).data('user');
+ 		console.log("$(this)", $(this));
+ 		console.log("idUser", idUser);
+ 		
+ 		$.ajax({
+			url: 'php/peticionesManager.php',
+			type: 'POST',
+			dataType: 'json',
+			data: { fn: 'consultarID'}
+		}).done((resp)=>{
+
+ 			console.log("binario", binario);
+ 			console.log("nombre", nombre);
+ 			console.log("tipo", tipo);
+			console.log('resp.id',resp.id);
+ 			test_subirArchivo(resp.id, nombre, binario,tipo,idUser);
+
+			
+		}).fail(()=>{
+			console.log('error')	
+		});
+
+ 	});
+ 	/* #END Jose Luis*/
+
+
 	//cargamos los chat que no han sido atendidos, pero esto con un setTimeout y ademas sera cada 30 segundos que se haga la verificacion de las peticiones.
 	//ajaxChatDetenidos();
 	listenFirebase();
@@ -90,7 +122,7 @@ $(document).ready(function(){
 	  		
 	  		//agrego el evento click de cerrar al panel
   			addClickClose('div#'+info.id+' div.panel-heading > span.cerrar', info.id);
-	  		addSubmit( selector );
+	  		addSubmit( selector, info.id );
 
 		});
 
@@ -165,7 +197,7 @@ var initChat = function(){
   		//agrego el evento click de cerrar al panel
   		addClickClose('div#'+idUser+' div.panel-heading > span.cerrar', idUser);
 
-  		addSubmit( selector );
+  		addSubmit( selector,idUser );
   		//asignar el atendioId
   		$.ajax({
 			url: "php/peticionesManager.php",
@@ -287,12 +319,36 @@ var listenFirebase = function(){
 				json.chats.forEach( chat=>{
 					
 					var nodoMsg;
+		 			/*
 		 			if( chat.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
 						nodoMsg = user(chat.mensaje, chat.fecha);
 					}
 					else{//si no es asi lo mando microtec
 						nodoMsg = microtec(chat.mensaje, chat.fecha);
 					}
+					*/
+					///----------------------
+					if( chat.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
+						
+						if( chat.file !== null ){
+							nodoMsg = userAdjunto(chat.mensaje, chat.fecha, chat.file, chat.userId);
+						}
+						else{//si no es un adjuinto
+
+							nodoMsg = user(chat.mensaje, chat.fecha);
+						}
+					}
+					else{//si no es asi lo mando microtec
+
+						if( chat.file !== null ){
+							nodoMsg = microtecAdjunto(chat.mensaje, chat.fecha,chat.file, chat.userId);
+						}
+						else{
+							
+							nodoMsg = microtec(chat.mensaje, chat.fecha);
+						}
+					}
+
 					$('#containerChats #'+userMongo+' .panel-body .chat-content').append(nodoMsg);
 					autoScroll('#containerChats #'+userMongo+' .panel-body .chat-content');
 				});
@@ -330,6 +386,15 @@ var user = function(msg, fecha){
 	return nodo;
 }
 
+var userAdjunto = function(msg, fecha, file, id){
+	fecha = fecha || "1970-01-01 00:00:00";
+	var nodo = '<div class="user" style="background: #EBEBEB">'+
+		"<a  href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'>" + msg + "</a> "+
+		'<span class="fecha">'+ formatearFecha(fecha) +'</span>'+
+	'</div>';
+	return nodo;
+}
+
 var microtec = function(msg, fecha){
 	fecha = fecha || "1970-01-01 00:00:00";
 	var nodo = '<div class="microtec">'
@@ -337,6 +402,19 @@ var microtec = function(msg, fecha){
 				  +'<img class="media-object pull-right" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
 				  +'<div class="media-body bg-primary">'
 				  	+ msg
+				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
+				  +'</div>'
+				+'</div>'
+    		+'</div>'
+    return nodo;
+}
+
+var microtecAdjunto = function(msg, fecha, file, id){
+	var nodo = '<div class="microtec">'
+    			+'<div class="media">'
+				  +'<img class="media-object pull-right" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
+				  +'<div class="media-body bg-primary">'
+				  	+"<a href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'>" + msg + "</a> "
 				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
 				  +'</div>'
 				+'</div>'
@@ -386,8 +464,8 @@ var addClickClose = function(selector, id){
 	});
 }
 
-var addSubmit = function(selector){
-
+var addSubmit = function(selector,idUser){
+	btnAdjunto(selector,idUser);
 //$('.form-chat').submit( (ev)=>{
 $(selector).submit( (ev)=>{
 	ev.preventDefault();
@@ -470,8 +548,95 @@ var nodoFormChat = function(){
 	var nodo ='<div class="row"><form class="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
 			  '<div class="col-xs-9"><input class="form-control msg" name="msg" placeholder="Escribir mensaje" autocomplete="off" /> </div>'+
 			  //'<button type="submit" class="btn btn-primary btn-sm ml-2">Enviar</button>'+
-			  '<div class="col-xs-3"><button type="button" style="margin-right: 2px;" id="adjunto" class="btn btn-primary btn-sm" title="Seleccionar Archivo"><i class="fas fa-paperclip"></i></button>'+
+			  '<div class="col-xs-3"><button type="button" style="margin-right: 2px;"  class="btn btn-primary btn-sm adjunto" title="Seleccionar Archivo"><i class="fas fa-paperclip"></i></button>'+
 			  '<button type="submit" class="btn btn-primary btn-sm" title="Enviar"><i class="fas fa-location-arrow"></i></button></div>'+
 			'</form></div>';
     	return nodo;
+}
+
+
+var btnAdjunto = function(selector,idUser){
+	//var inputFile =  $('#chat-microtec #adjunto');
+	//<input type="file" class="fileToUpload">
+	var inputHidden = '<input type="file" data-user="'+idUser+'" name="attachment"  class="hide fileToUpload" />';
+	$(selector+" .msg").after(inputHidden);
+	
+
+	$(selector+' .adjunto').on('click', function(event) {
+		$(selector+" .fileToUpload").trigger('click');
+		console.log('algo');
+	});
+
+}
+
+/*Jose Luis*/
+var test_subirArchivo = function(id,nombre,binario,tipo,idUser){
+	console.log("idUser tsa", idUser);
+	console.log("fun js test_subirArchivo");
+
+/*test subir archivo*/
+var data = new FormData();
+data.append("archivo", binario);
+data.append("nombre", nombre+idUser );
+//data.append("nombre", nombre);
+var url = 'php/upld.php';
+
+if(tipo == "image/jpeg" ||tipo == "image/jgp" ||tipo == "image/png" || tipo == 'application/pdf'){
+	$.ajax({
+	    url: url,
+	    type: 'POST',
+	    dataType: 'json',
+	    contentType: false,
+	    processData: false,
+	    data: data,
+	    beforeSend: function() {
+	        swal({
+			  title: 'Cargando archivo..',
+			  onOpen: () => {
+			    swal.showLoading()
+			  },
+			  allowOutsideClick: false
+			});
+	    },
+	    success: function(result) {
+		    swal.close();
+		    console.log("result", result);
+		    guardarRuta_file(nombre,idUser);
+
+	    },
+	    error: function (xhr, ajaxOptions, thrownError){
+			console.log(xhr);
+		}
+	});
+	
+}
+else{
+	console.log('formato de archivo no aceptado');
+}
+
+
+/* #END# subir archivo */
+
+}
+
+var guardarRuta_file = function(nombre,idUser) {
+	console.log("idUser grf", idUser);
+	console.log("nombre grf", nombre);
+		$.ajax({
+		url: 'php/peticionesManager.php',
+		type: 'POST',
+		dataType: 'json',
+		data: {'fn': 'test_subirArchivo',
+			'nombre': nombre,
+			idUsuario: idUser
+		},
+		success:function(resp) {
+			console.log("response", resp);
+			//$('div#'+idUser+' .form-chat')[0].reset();
+		  	firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
+		},
+		error: function (xhr, ajaxOptions, thrownError){
+			console.log(xhr);
+		}
+	});
 }

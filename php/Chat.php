@@ -9,8 +9,12 @@ class Chat extends DB{
 	}
 
 	public function set(){
-		$this->sql = "INSERT INTO chat_microtec.chats(mensaje, userId, remitente, atendioId, status) VALUES ( ?, ?, ?, ?, ? )";
-		$this->runQuery( [$this->mensaje, $this->userId, $this->remitente, $this->atendioId == '' ? null: $this->atendioId, $this->status] );
+		$atendio = $this->atendioId == '' ? null: $this->atendioId;
+		$file = !isset( $this->file ) ? null: $this->file;
+		$ruta = !isset( $this->ruta ) ? null: $this->ruta;
+		$valores = [$this->mensaje, $this->userId, $this->remitente, $atendio, $this->status, $file, $ruta];
+		$this->sql = "INSERT INTO chat_microtec.chats(mensaje, userId, remitente, atendioId, status, file, ruta) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+		$this->runQuery( $valores );
 		return $this->data;
 	}
 
