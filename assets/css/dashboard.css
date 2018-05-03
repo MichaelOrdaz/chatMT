@@ -7,9 +7,7 @@ body, html{
 :root{
 	--txt-white: #fff;
 }
-.text-white{
-	color: var(--txt-white) !important;
-}
+
 html{
 	position: relative;
 	min-height: 100vh;
@@ -55,7 +53,7 @@ table#chats-detenidos td
 #tablaChatDetenidos{
 	overflow-y: auto;
 	max-height: 500px;
-	box-shadow: 0 -0 6px 0 black;
+	/*box-shadow: 0 -0 6px 0 black;*/
 	border-radius: 4px;
 	min-height: 60vh;
 	max-height: 90vh;
@@ -102,9 +100,25 @@ table#chats-detenidos td
 	left: 0;
 	border-top: solid gray 2px;
 }
+
+.bg-primary{
+	background: rgba(26, 179, 148, .9) !important;
+}
+
+img.filterGray{
+	-webkit-filter: grayscale(50%);
+	-moz-filter: grayscale(50%);
+	filter: grayscale(50%);
+}
+
+.text-white{
+	color: white;
+	text-shadow: 0 -2px 6px rgba(255, 255, 255, .2);
+	letter-spacing: 1px;
+}
+
 /*
 .chat-input input#msg{
 	width: 75%;
 }
-
 */

@@ -139,6 +139,31 @@ function test_subirArchivo($post){
 /*jose Luis*/
 
 
+function getChats($post = ""){
+	$chat = new Chat();
+	$data = $chat->userHistory();
+	if($data){
+		return array('status'=>1, 'chats'=>$data);
+	}
+	else{
+		return array('status'=>0, 'msg'=>'Sin Conversaciones');
+	}
+}
+
+
+function getCoversacion($post = ""){
+
+	$chat = new Chat();
+	$data = $chat->history($post['user']);
+	if($data){
+		return array('status'=>1, 'chat'=>$data);
+	}
+	else{
+		return array('status'=>0, 'msg'=>'Sin Conversación');
+	}
+
+}
+
 $data = $fn($_POST);
 echo json_encode($data);
 ?>

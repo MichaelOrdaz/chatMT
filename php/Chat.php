@@ -60,11 +60,20 @@ class Chat extends DB{
 		return $this->data;
 	}
 
-	public function algo(){
-		$this->sql = "UPDATE chat_microtec.chats SET atendioId = ?, status = 1 WHERE userId = ?";
-		$this->runQuery([ $atendio, $idUser ]);
-		return $this->data;
+	public function userHistory(){
+			$this->sql = "SELECT us.nombre, ch.userId, ch.fecha FROM chat_microtec.chats ch INNER JOIN chat_microtec.usertemporal us ON ch.userId=us.idUser where status = 1 GROUP BY userId ORDER BY ch.fecha DESC";
+			$this->runQuery();
+			return $this->data;
 	}
+
+	public function history( $id = "" ){
+		if( $id != "" ){
+			$this->sql = "SELECT * FROM chats WHERE userId = ? ORDER BY fecha ASC";
+			$this->runQuery([ $id ]);
+			return $this->data;
+		}
+	}
+
 
 }
 

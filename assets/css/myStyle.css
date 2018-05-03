@@ -1,0 +1,21 @@
+/*Mis estilos CSS*/
+:root{
+	
+}
+
+body{
+	min-height: 100vh !important;
+}
+#page-wrapper{
+	min-height: 100vh !important;
+}
+
+.profile-img{
+	width: 70px;
+	filter: grayscale(100%);
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	-o-filter: grayscale(100%);
+	box-shadow: 0 0 8px 0 white;
+}
+

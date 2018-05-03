@@ -18,7 +18,7 @@ $(document).ready(function(){
 	}).done(function(json){
 		//console.log(json);
 		if(json.status == 1){	
-			$('.nav.navbar-nav.navbar-right span.glyphicon.glyphicon-user').after(" "+json.msg[0].nombre);
+			$('#nameSoporte').html(json.msg[0].nombre);
 		}
 		else{
 			window.location.href = "manager";
@@ -45,9 +45,10 @@ $(document).ready(function(){
 				window.location.href = 'manager';
 			}
 			else{
-				alertify.error('No se cerro la sesión, intenta nuevamente');
+				alertify.error('No se cerró la sesión, intenta nuevamente');
 			}
 		}).fail(function(jqXHR, textStatus, errorThrown){
+			alertify.error('No se cerró la sesión, intenta nuevamente');
 			console.error(jqXHR);
 			console.error(textStatus);
 		});
@@ -155,7 +156,10 @@ var ajaxChatDetenidos = function(){
 			});
 			$('#chats-detenidos tbody').html( tbody );
 			
+			$('#badgeChat').html( json.chats.length );
+			//console.log( 'tamaño de cuantos chat son contenstar ' + json.chats.length );
 			initChat();
+
 		}
 		else{
 			$('#chats-detenidos tbody').empty();
@@ -239,12 +243,33 @@ var initChat = function(){
 			json.chats.forEach( chat=>{
 				
 				var nodoMsg;
+				/*
 	 			if( chat.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
 					nodoMsg = user(chat.mensaje, chat.fecha);
 				}
 				else{//si no es asi lo mando microtec
 					nodoMsg = microtec(chat.mensaje, chat.fecha);
 				}
+				*/
+				if( chat.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
+					
+					if( chat.file !== null ){
+						nodoMsg = userAdjunto(chat.mensaje, chat.fecha, chat.file, chat.userId);
+					}
+					else{//si no es un adjuinto
+						nodoMsg = user(chat.mensaje, chat.fecha);
+					}
+				}
+				else{//si no es asi lo mando microtec
+
+					if( chat.file !== null ){
+						nodoMsg = microtecAdjunto(chat.mensaje, chat.fecha,chat.file, chat.userId);
+					}
+					else{
+						nodoMsg = microtec(chat.mensaje, chat.fecha);
+					}
+				}
+
 				$('#containerChats #'+idUser+' .panel-body .chat-content').append(nodoMsg);
 				autoScroll('#containerChats #'+idUser+' .panel-body .chat-content');
 			});
@@ -319,23 +344,20 @@ var listenFirebase = function(){
 				json.chats.forEach( chat=>{
 					
 					var nodoMsg;
-		 			/*
-		 			if( chat.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
-						nodoMsg = user(chat.mensaje, chat.fecha);
-					}
-					else{//si no es asi lo mando microtec
-						nodoMsg = microtec(chat.mensaje, chat.fecha);
-					}
-					*/
-					///----------------------
 					if( chat.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
 						
 						if( chat.file !== null ){
 							nodoMsg = userAdjunto(chat.mensaje, chat.fecha, chat.file, chat.userId);
 						}
 						else{//si no es un adjuinto
-
 							nodoMsg = user(chat.mensaje, chat.fecha);
+
+							if( chat.mensaje === 'El cliente abandonó la conversación' || chat.mensaje === 'El tiempo de la sesión expiró' ){
+								$('#containerChats #'+userMongo+' .panel-body .msg').prop('disabled', true);
+								$('#containerChats #'+userMongo+' .panel-body .adjunto').prop('disabled', true);
+								$('#containerChats #'+userMongo+' .panel-body :submit').prop('disabled', true);
+							}
+
 						}
 					}
 					else{//si no es asi lo mando microtec
@@ -370,7 +392,7 @@ var listenFirebase = function(){
 var nodoChatSoporte = function(idUser){
 	//modificar el popover
 	var panel = '<div id="'+idUser+'" class="col-sm-6 ventanaChat"><div class="panel panel-primary" style="margin: 10px 0;">'+
-	  '<div class="panel-heading">Conversación con <a href="javascript://" style="color: orange; font-weight: bold"> </a> <span id="cerrar'+idUser+'" class="cerrar pull-right" style="cursor: pointer" title="cerrar"> <i class="fas fa-times fa-lg"></i> </span> </div>'+
+	  '<div class="panel-heading">Conversación con <a href="javascript://" style="color: orange; font-weight: bold"> </a> <span id="cerrar'+idUser+'" class="cerrar pull-right" style="cursor: pointer" title="cerrar"> <i class="fa fa-times fa-lg"></i> </span> </div>'+
 	  '<div class="panel-body">'+
 	  '<div class="chat-content"></div>'+
 	  '<div class="chat-input"></div>'+
@@ -399,7 +421,7 @@ var microtec = function(msg, fecha){
 	fecha = fecha || "1970-01-01 00:00:00";
 	var nodo = '<div class="microtec">'
     			+'<div class="media">'
-				  +'<img class="media-object pull-right" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
+				  +'<img class="media-object pull-right img-circle filterGray" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
 				  +'<div class="media-body bg-primary">'
 				  	+ msg
 				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
@@ -412,7 +434,7 @@ var microtec = function(msg, fecha){
 var microtecAdjunto = function(msg, fecha, file, id){
 	var nodo = '<div class="microtec">'
     			+'<div class="media">'
-				  +'<img class="media-object pull-right" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
+				  +'<img class="media-object pull-right img-circle" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
 				  +'<div class="media-body bg-primary">'
 				  	+"<a href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'>" + msg + "</a> "
 				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
@@ -548,8 +570,8 @@ var nodoFormChat = function(){
 	var nodo ='<div class="row"><form class="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
 			  '<div class="col-xs-9"><input class="form-control msg" name="msg" placeholder="Escribir mensaje" autocomplete="off" /> </div>'+
 			  //'<button type="submit" class="btn btn-primary btn-sm ml-2">Enviar</button>'+
-			  '<div class="col-xs-3"><button type="button" style="margin-right: 2px;"  class="btn btn-primary btn-sm adjunto" title="Seleccionar Archivo"><i class="fas fa-paperclip"></i></button>'+
-			  '<button type="submit" class="btn btn-primary btn-sm" title="Enviar"><i class="fas fa-location-arrow"></i></button></div>'+
+			  '<div class="col-xs-3"><button type="button" style="margin-right: 2px;"  class="btn btn-primary btn-sm adjunto" title="Seleccionar Archivo"><i class="fa fa-paperclip"></i></button>'+
+			  '<button type="submit" class="btn btn-primary btn-sm" title="Enviar"> <i class="fa fa-paper-plane" aria-hidden="true"></i> </button></div>'+
 			'</form></div>';
     	return nodo;
 }
