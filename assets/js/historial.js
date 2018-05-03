@@ -47,7 +47,7 @@ $(document).ready(function(){
 
 
 
-	$('#historialConversaciones').on('click', 'tr', function(event) {
+	$('#historialConversaciones tbody').on('click', 'tr', function(event) {
 		//event.preventDefault();
 		console.log( $(this).data('user') );
 		var userId = $(this).data('user');
