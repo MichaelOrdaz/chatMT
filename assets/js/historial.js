@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	//priemro verificar si la sesion ya  se inicio
+	/*
 	$.ajax({
 		url: "php/peticionesManager.php",
 		type: "POST",
@@ -17,6 +18,7 @@ $(document).ready(function(){
 		console.error(jqXHR);
 		console.error(textStatus);
 	});
+	*/
 
 
 
@@ -44,6 +46,7 @@ $(document).ready(function(){
 		});
 
 	});
+
 
 
 
@@ -163,7 +166,7 @@ function getChats(){
 
 		}
 		else{
-			alertify.error('No se pudierón obtener los chats.');
+			alertify.message('No hay Conversaciones');
 		}
 		swal.close();
 	}).fail(function(jqXHR, textStatus, errorThrown){

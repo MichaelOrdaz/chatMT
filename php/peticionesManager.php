@@ -5,6 +5,16 @@ date_default_timezone_set('America/Mexico_City');
 
 $fn = $_POST['fn'];
 
+/*
+
+despues de logearse las variables de sesion disponibles son:
+ $_SESSION['userEncry'];
+ $_SESSION['name'];
+ $_SESSION['id'];
+ $_SESSION['user'];
+ */
+
+/*
 function login($post){
 	session_start();
 	$soporte = new UserSoporte();
@@ -17,7 +27,8 @@ function login($post){
 		return array('status'=>0, 'msg'=>'No hay registro');;
 	}
 }
-
+*/
+/*
 function checkSession($var=""){
 	session_start();
 	//la sesion esta iniciada
@@ -31,6 +42,7 @@ function checkSession($var=""){
 		return array('status'=>0, 'msg'=>'No hay variables de sesion');
 	}
 }
+*/
 
 function logOut($var=""){
 	session_start();
@@ -78,8 +90,7 @@ function getOne($post){
 }
 
 function asignarManager( $post ){
-	session_start();
-	$soporte = $_SESSION['idSoporte'];
+	$soporte = $post['id'];
 	$chat = new Chat();
 	$chat->asignarManager( $post['cliente'], $soporte );
 	return array('status'=>1);
@@ -92,7 +103,7 @@ function enviarMsg($post){
 	$chat->mensaje = $post['msg'];
 	$chat->userId = $post['cliente'];
 	$chat->remitente = 2;
-	$chat->atendioId = $_SESSION['idSoporte'];
+	$chat->atendioId = $post['id'];
 	$chat->status = 1;
 	$lastId = $chat->set();
 	if( $lastId > 0 ){
@@ -104,11 +115,12 @@ function enviarMsg($post){
 	}
 	return $data;
 }
-
+/*
 function consultarID($post){
 	session_start();
-	return array('id'=>$_SESSION['idSoporte']);
+	return array('id'=>$_SESSION['id']);
 }
+*/
 
 
 /* jose Luis*/
@@ -117,12 +129,12 @@ function test_subirArchivo($post){
 
 	$chat = new Chat();
 	$chat->file = $post['nombre'];
-	$chat->ruta = md5($post['nombre'].$_SESSION['idSoporte']);
+	$chat->ruta = md5($post['nombre'].$post['id']);
 
 	$chat->mensaje = 'archivo adjunto '. $post['nombre'];
 	$chat->userId = $post['idUsuario'];
 	$chat->remitente = 2;
-	$chat->atendioId = $_SESSION['idSoporte'];
+	$chat->atendioId = $post['id'];
 	$chat->status = 1;
 
 	$lastId = $chat->set();

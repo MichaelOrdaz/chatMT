@@ -77,9 +77,8 @@ table#chats-detenidos td
 	font-size: .7em;
 }
 .user, .microtec .media-body{
-	margin: 4px 0;
 	border-radius: 4px;
-	padding: 4px;
+	padding: 2px;
 	word-wrap: break-word;
 }
 
@@ -88,8 +87,8 @@ table#chats-detenidos td
 	height: 30px;
 }
 
-.panel-body .microtec{
-	margin: 2px 0;
+.panel-body .microtec, .user{
+	margin: 3px 0;
 }
 
 .chat-input{
@@ -117,8 +116,18 @@ img.filterGray{
 	letter-spacing: 1px;
 }
 
-/*
-.chat-input input#msg{
-	width: 75%;
+
+.userAdjunto{
+	background: #EBEBEB;
+	font-weight: bold;
+	color: navy;
 }
-*/
+.userAdjunto a{
+	text-decoration: underline;
+	cursor: pointer;
+}
+.media-body a{
+	text-decoration: underline;
+	cursor: pointer;
+	font-weight: bold;
+}

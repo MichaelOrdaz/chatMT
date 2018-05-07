@@ -20,6 +20,7 @@ $(document).ready(function(){
 		console.error(jqXHR);
 		console.error(textStatus);
 	});
+	
 });
 
 

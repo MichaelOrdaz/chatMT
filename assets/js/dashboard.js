@@ -10,6 +10,7 @@ firebase.initializeApp(config);
 
 $(document).ready(function(){
 	//priemro verificar si la sesion ya  se inicio
+	/*
 	$.ajax({
 		url: "php/peticionesManager.php",
 		type: "POST",
@@ -27,7 +28,7 @@ $(document).ready(function(){
 		console.error(jqXHR);
 		console.error(textStatus);
 	});
-
+*/
 
 
 
@@ -35,24 +36,22 @@ $(document).ready(function(){
 	$('#logout').click(function(event) {
 		event.preventDefault();
 		$.ajax({
-		url: "php/peticionesManager.php",
+		url: "php/cs.php",
 		type: "POST",
-		dataType: "json",
-		data: {'fn': 'logOut'}
+		dataType: "json"
 		}).done(function(json){
 			//console.log('success');
 			if(json.status === 1){
-				window.location.href = 'manager';
+				window.location.href = 'manager.html';
 			}
 			else{
-				alertify.error('No se cerró la sesión, intenta nuevamente');
+				alertify.error('Error al cerrar la sesión, intenta nuevamente');
 			}
 		}).fail(function(jqXHR, textStatus, errorThrown){
 			alertify.error('No se cerró la sesión, intenta nuevamente');
 			console.error(jqXHR);
 			console.error(textStatus);
 		});
-
 	});
 
 
@@ -65,7 +64,7 @@ $(document).ready(function(){
  		var idUser = $(this).data('user');
  		console.log("$(this)", $(this));
  		console.log("idUser", idUser);
- 		
+ 		/*
  		$.ajax({
 			url: 'php/peticionesManager.php',
 			type: 'POST',
@@ -83,6 +82,12 @@ $(document).ready(function(){
 		}).fail(()=>{
 			console.log('error')	
 		});
+		*/
+			console.log("binario", binario);
+ 			console.log("nombre", nombre);
+ 			console.log("tipo", tipo);
+			console.log('resp.id', $('#idUser').text());
+ 			test_subirArchivo($('#idUser').text(), nombre, binario,tipo,idUser);
 
  	});
  	/* #END Jose Luis*/
@@ -155,8 +160,8 @@ var ajaxChatDetenidos = function(){
 				'<td><button type="button" class="btn btn-primary initChat" data-chat="'+chat.userId+'" data-correo="'+chat.correo+'">Chatear</button></td></tr>';
 			});
 			$('#chats-detenidos tbody').html( tbody );
-			
-			$('#badgeChat').html( json.chats.length );
+		
+			$('#badgeChat').html( (json.chats.length > 0 ? json.chats.length : 0) );
 			//console.log( 'tamaño de cuantos chat son contenstar ' + json.chats.length );
 			initChat();
 
@@ -183,7 +188,7 @@ var initChat = function(){
   		$('#containerChats').append(newChat);
   		ev.target.disabled = true;
   		ev.target.parentNode.parentNode.style.opacity = '0';
-  		ev.target.parentNode.parentNode.style.transition = 'all ease-out 1s';
+  		ev.target.parentNode.parentNode.style.transition = 'all ease 1s';
   		ev.target.parentNode.parentNode.addEventListener('transitionend', ()=>{
   			ev.target.parentNode.parentNode.style.display = 'none';
   		}, false);
@@ -207,7 +212,7 @@ var initChat = function(){
 			url: "php/peticionesManager.php",
 			type: "POST",
 			dataType: "json",
-			data: {'fn': 'asignarManager', 'cliente': idUser}
+			data: {'fn': 'asignarManager', 'cliente': idUser, id: $('#idUser').text() }
 		}).done(function(json){
 			//el ajax lo hago simplemente para amarrar al cliente con un usuario de Soporte
 			//aqui tambien guardo en localStorage la informacion del cliente.
@@ -275,13 +280,13 @@ var initChat = function(){
 			});
 
 			//mi mansaje automatico
-			var msgBot = 'Hola, le atiende ' + $('body > div > div:nth-child(1) > nav > div > ul > li:nth-child(1) > a').text() + ". ¿En qué puedo ayudarle?";
+			var msgBot = 'Hola, le atiende ' + $('#nameSoporte > span:nth-child(2)').text() + ". ¿En qué puedo ayudarle?";
 			var msgSoporte = microtec(msgBot);
 				$.ajax({
 					url: "php/peticionesManager.php",
 					type: "POST",
 					dataType: "json",
-					data: {'fn': 'enviarMsg', 'cliente': idUser, 'msg': msgBot}
+					data: {'fn': 'enviarMsg', 'cliente': idUser, 'msg': msgBot, id: $('#idUser').text()}
 				}).done(function(json){
 					console.log(json);
 					if( json.status == 1 ){
@@ -408,10 +413,11 @@ var user = function(msg, fecha){
 	return nodo;
 }
 
+
 var userAdjunto = function(msg, fecha, file, id){
 	fecha = fecha || "1970-01-01 00:00:00";
-	var nodo = '<div class="user" style="background: #EBEBEB">'+
-		"<a  href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'>" + msg + "</a> "+
+	var nodo = '<div class="user userAdjunto text-center" style="background: #EBEBEB">'+
+		"<a href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'> <img src='assets/imgs/Descargar2.png' height='50' title='"+msg+"' alt='"+msg+"' /> </a> "+
 		'<span class="fecha">'+ formatearFecha(fecha) +'</span>'+
 	'</div>';
 	return nodo;
@@ -435,15 +441,14 @@ var microtecAdjunto = function(msg, fecha, file, id){
 	var nodo = '<div class="microtec">'
     			+'<div class="media">'
 				  +'<img class="media-object pull-right img-circle" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
-				  +'<div class="media-body bg-primary">'
-				  	+"<a href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'>" + msg + "</a> "
+				  +'<div class="media-body bg-primary text-center">'
+				  	+"<a href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'> <img src='assets/imgs/Descargar2.png' height='50' title='"+msg+"' alt='"+msg+"' /> </a>"
 				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
 				  +'</div>'
 				+'</div>'
     		+'</div>'
     return nodo;
 }
-
 //agregar el evento click al boton cerrar
 var addClickClose = function(selector, id){
 //addClickClose('div#'+idUser+' div.panel-heading > span.cerraridUser');
@@ -503,6 +508,7 @@ $(selector).submit( (ev)=>{
 		var data = [];
 		data.push({name: 'fn', value: 'enviarMsg'});
 		data.push({name: 'msg', value:  msg});
+		data.push({name: 'id', value:  $('#idUser').text() });
 		data.push({name: 'cliente', value: idCliente});
 		
 		//console.log(data);
@@ -600,6 +606,7 @@ var test_subirArchivo = function(id,nombre,binario,tipo,idUser){
 var data = new FormData();
 data.append("archivo", binario);
 data.append("nombre", nombre+idUser );
+data.append("id", id );
 //data.append("nombre", nombre);
 var url = 'php/upld.php';
 
@@ -650,7 +657,8 @@ var guardarRuta_file = function(nombre,idUser) {
 		dataType: 'json',
 		data: {'fn': 'test_subirArchivo',
 			'nombre': nombre,
-			idUsuario: idUser
+			idUsuario: idUser,
+			id: $('#idUser').text()
 		},
 		success:function(resp) {
 			console.log("response", resp);

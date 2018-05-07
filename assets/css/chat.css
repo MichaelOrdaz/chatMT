@@ -2,9 +2,18 @@
 	position: fixed;
 	width: 320px;
 	right: 65px;
-	bottom: -300px;
+	bottom: -295px;
 	height: 350px;
-	box-shadow: 0 0 8px -2px black;
+	box-shadow: 0 0 6px 0px black;
+	margin: 0;
+	border-bottom: none;
+}
+
+
+#chat-microtec .panel-heading{
+	cursor: pointer;
+	font-size: 120%;
+	padding: 15px;
 }
 
 #chat-microtec .bg-microtec{
@@ -23,15 +32,25 @@
 	width: 205px;
 }
 
+#chat-microtec .btn-circle{
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-o-border-radius: 50%;
+	-ms-border-radius: 50%;
+}
+
 #chat-microtec .chat-input{
 	position: absolute;
 	bottom: 3px;
 	left: inherit;
+	border-top: 2px gray solid;
+	padding-top: 2px;
 }
 
 #chat-microtec .chat-content{
 	overflow-y: auto;
-	height: 218px;
+	height: 225px;
 	/*position: relative;*/
 }
 
@@ -48,14 +67,61 @@
 	text-decoration: none !important;
 }
 
-.user .microtec .media-body{
+#chat-microtec .user, #chat-microtec .microtec .media-body{
 	word-wrap: break-word;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-o-border-radius: 4px;
+	-ms-border-radius: 4px;
+	padding: 3px;
 }
 
-.userAdjunto{
+#chat-microtec .microtec .media-body{
+	color: white;
+}
+
+#chat-microtec .user, #chat-microtec .microtec{
+	margin: 4px 0;
+}
+
+#chat-microtec .ml{
+	margin-left: 2px;
+}
+
+#chat-microtec .userAdjunto{
 	background: #EBEBEB;
-	cursor: pointer;
-	text-decoration: underline;
 	font-weight: bold;
 	color: navy;
+}
+#chat-microtec .userAdjunto a{
+	text-decoration: underline;
+	cursor: pointer;
+}
+/*
+#chat-microtec .userAdjunto a:after{
+	content: url("../imgs/iconfile2.png");
+}
+*/
+#chat-microtec .media-body a{
+	text-decoration: underline;
+	cursor: pointer;
+	font-weight: bold;
+}
+/*
+#chat-microtec .media-body a:after{
+	content: url("../imgs/iconfile.png");
+}
+*/
+
+#chat-microtec .text-white{
+	color: white !important;
+}
+
+#chat-microtec .boxShadow{
+	box-shadow: 0 0 6px 0 gray;
+	-webkit-box-shadow: 0 0 6px 0 gray;
+	-moz-box-shadow: 0 0 6px 0 gray;
+	-ms-box-shadow: 0 0 6px 0 gray;
+	-o-box-shadow: 0 0 6px 0 gray;
 }

@@ -1,45 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Probando Firebase</title>
-	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="assets/alertify/css/alertify.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/alertify/css/themes/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/inspinia/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="assets/css/chat.css">
 </head>
 <body>
-<div class="card bg-light mb-0 border border-bottom-0" id="chat-microtec">
-  <div class="card-header bg-microtec text-white" style="cursor: pointer">
+<div class="panel panel-primary" id="chat-microtec">
+  <div class="panel-heading bg-microtec">
   	<button type="button" class="close" title="Cerrar Sesión" id="closeSession" style="color: white; visibility: hidden;">
-  		<span class="end"> <i class="fas fa-sign-out-alt"></i> </span>
+  		<span class="end"> <i class="fa fa-sign-out"></i> </span>
 	</button>
-  	<button type="button" class="close mx-2" id="colapsar" title="Maximizar" style="color: white; visibility: hidden;" >
-  		<span class="up"><i class="fas fa-sort-up fa-lg"></i></span>
+  	<button type="button" class="close" id="colapsar" title="Maximizar" style="margin: 0 2px; color: white; visibility: hidden;" >
+  		<span class="up"><i class="fa fa-sort-up fa-lg"></i></span>
 	</button>
   	Chat Micro-tec
   	</div>
-  	<div class="card-body">
-  		<div class="alert alert-info mb-3 p-1">
+  	<div class="panel-body">
+  		<div class="alert alert-info" >
   			Para poder Chatear con nosotros por favor llena el formulario.
   		</div>
   		<form action="#" method="GET" accept-charset="utf-8" role="formulario" id="loginChat">
 			<div class="form-group">
 				<label class="sr-only" for="name">Nombre</label>
 				<div class="input-group">
-				    <div class="input-group-prepend">
-				    	<div class="input-group-text" id="btnGroupAddon"><i class="fas fa-user"></i></div>
-				    </div>
+				    <span class="input-group-addon"><i class="fa fa-user"></i></span>
 					<input type="text" name="name" id="name" class="form-control" placeholder="Ingresa tu nombre" title="Tu nombre" autocomplete="off" required />
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="sr-only" for="correo">Correo</label>
 				<div class="input-group">
-				    <div class="input-group-prepend">
-				    	<div class="input-group-text" id="btnGroupAddon"><i class="fas fa-envelope"></i></div>
-				    </div>
+				    	<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
 					<input type="email" name="correo" id="correo" class="form-control" placeholder="Ingresa tu correo eletrónico" title="Tu correo" autocomplete="off" required />
 				</div>
 			</div>
@@ -51,11 +49,9 @@
 <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
 <script src="assets/jquery/jquery-3.3.1.min.js"></script>
 <script src="assets/popover/popover.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/fontawesome/js/fontawesome-all.min.js"></script>
-<script type="text/javascript" src="assets/swal/swalalert.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript" src="assets/alertify/alertify.min.js"></script>
-
 <script src="assets/js/chat-microtec.js"></script>
 </body>
 </html>

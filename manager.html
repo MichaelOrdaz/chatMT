@@ -1,15 +1,20 @@
 <!doctype html>
 <html>
 	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1"  />
+		
 		<meta charset="utf-8">
-		<link rel="shortcut icon" href="assets/imgs/favicon.png" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Microtec</title>
+
+	    <link href="assets/inspinia/css/bootstrap.min.css" rel="stylesheet">
+	    <link href="assets/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+		<link rel="shortcut icon" href="assets/imgs/favicon.png" />
 		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link rel="stylesheet" href="assets/css/custom.css" />
 	</head>
 	<body>
+<div id="cuerpo">
+	
    <div class="container">
 	<div class="row">
 		<div class="col-sm-5 center-block">
@@ -28,24 +33,49 @@
 						</div>
 						<div class="form-group">
 							<label for="pass">Contraseña</label>
-							<input type="password" name="pass" class="form-control" disabled id="pass" maxlength="20" placeholder="Contraseña" required />
+							<input type="password" name="pass" class="form-control" id="pass" maxlength="20" placeholder="Contraseña" required />
+						</div>
+						<div class="form-group">
+							<label>Click en "No soy un robot"</label>
+							<div class="text-center" id="rcap"> </div>
 						</div>
 						<button type="submit" class="btn btn-primary btn-block btn-lg">Entrar</button>
 					</form>
 					<br>
-					<div id="resp">
-						
-					</div>
+					<div id="resp"> </div>
 				</div>
 			</div>
 		
 		</div>
 	</div>
    </div>
+
+</div><!-- end #cuerpo -->
+<div id="scripting">
+	
 	<script src="assets/jquery/jquery-3.3.1.min.js"></script>
+    <script src="assets/inspinia/js/bootstrap.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="assets/swal/swalalert.js"></script>
-	<script src="assets/js/loginManager.js"></script>
+	<script src="https://www.google.com/recaptcha/api.js"></script>
+	<script type="text/javascript" src="assets/js/scriptLog.js"></script>
+	
+	<script type="text/javascript" id="local">
+		$(function(){
+			//si esta en sesion que se redireccione
+			vLog();
+
+			//el capcha siempre lo carga
+			recaptcha();
+
+			$('form#logeo').on('submit', ev=>{
+				ev.preventDefault();
+				console.log('Se mando el formulario');
+				checkLogin();
+			});
+		})
+
+	</script>
+
+</div>
 	</body>
 </html>

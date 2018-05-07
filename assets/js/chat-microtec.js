@@ -18,7 +18,7 @@ firebase.initializeApp(config);
 
 $(function(){
 
-$('#chat-microtec .card-header').on('click', (ev)=>{
+$('#chat-microtec .panel-heading').on('click', (ev)=>{
 	var clase = $('#chat-microtec #colapsar').children().eq(0).attr('class');
  		if( clase == 'up' ){
  			$('#chat-microtec').animate({
@@ -26,16 +26,16 @@ $('#chat-microtec .card-header').on('click', (ev)=>{
  			}, 1000);
  			$('#chat-microtec #colapsar').children().eq(0).removeClass(clase);
  			$('#chat-microtec #colapsar').children().eq(0).addClass('down');
- 			$('#chat-microtec #colapsar').children().eq(0).html('<i class="fas fa-sort-down fa-lg"></i>');
+ 			$('#chat-microtec #colapsar').children().eq(0).html('<i class="fa fa-sort-down fa-lg"></i>');
  			$('#chat-microtec #colapsar').children().eq(0).attr('title', 'Minimizar');
  		}
  		else{
  			$('#chat-microtec').animate({
- 				bottom: '-300px'
+ 				bottom: '-295px'
  			}, 1000);
  			$('#chat-microtec #colapsar').children().eq(0).removeClass(clase);
  			$('#chat-microtec #colapsar').children().eq(0).addClass('up');
- 			$('#chat-microtec #colapsar').children().eq(0).html('<i class="fas fa-sort-up fa-lg"></i>');
+ 			$('#chat-microtec #colapsar').children().eq(0).html('<i class="fa fa-sort-up fa-lg"></i>');
  			$('#chat-microtec #colapsar').children().eq(0).attr('title', 'Maximizar');
  		}
 });
@@ -146,7 +146,7 @@ $('#chat-microtec .card-header').on('click', (ev)=>{
 			 					
 								$('#chat-microtec #closeSession').css('visibility', 'hidden');
 								var divForm = nodoForm();
-								$('#chat-microtec .card-body').html(divForm);
+								$('#chat-microtec .panel-body').html(divForm);
 			 					verificarSesion();
 							}
 						}).fail(()=>{
@@ -168,6 +168,31 @@ $('#chat-microtec .card-header').on('click', (ev)=>{
 
 var verificarSesion = function(){
 
+/**
+	para verficiar en los portales donde ya existe un usuario, que previamente se logeo, deberia hacer un proceso distinto.
+	primero que nada ya no se debe registrar. ya se registro previamente
+	los mensaje suq se carguen deben ser por lo menos del dia. o cada que inicie sesion se resetee el chat
+
+	otra cosa es, en donde va a esta el Chat.
+	en todas las áginas disponibles??? de los portales.
+	en una en especifico.
+	para que apartir de ahi, se coloque el chat.
+	otra cosa, para verificar la sesion debo de sber que variable de sesion ya posee los datos del usuario.
+
+	para evitar echar a perder lo que ya tengo. debo tomar esa variable de sesion o lo que sea y registrarlo en automatico, necesitaria, el nombre del usuario
+	y su correo por medio te una consulta en esta funcion veridicarSEsion.
+
+	hago un query a la api de hugo rescato el nombre y su correo.
+	despues de ese AJAX, hago mi AJAX. que lo inserta en la base de datoos mia "usertemporal"
+	
+	pero esto lo haria cada que entre en la pagiuna si es que es solo una.
+
+	necesito que cargue en la pagina los mensaje ya anteriores.
+
+	
+
+ */
+
 //verificamos si hay sesion activa
  	$.ajax({
 		url: 'php/Peticiones.php',
@@ -183,8 +208,8 @@ var verificarSesion = function(){
 		else{
 			$('#chat-microtec #closeSession').css('visibility', 'visible');
 			var divChat = nodoChat();
-			$('#chat-microtec .card-body').empty();
-			$('#chat-microtec .card-body').html(divChat);
+			$('#chat-microtec .panel-body').empty();
+			$('#chat-microtec .panel-body').html(divChat);
 			addSubmitChat();//agrego el evento submit al chat
 			listenMsg( resp.msg[0].userId );
 		}
@@ -202,7 +227,7 @@ var autoScroll = function(nodo){
 
 var user = function(msg, fecha){
 	fecha = fecha || "1970-01-01 00:00:00";
-	var nodo = '<div class="user rounded p-1 my-2" style="background: #EBEBEB">'+ msg +
+	var nodo = '<div class="user" style="background: #EBEBEB">'+ msg +
 		'<span class="fecha">'+ formatearFecha(fecha) +'</span>'+
 	'</div>';
 	return nodo;
@@ -210,13 +235,12 @@ var user = function(msg, fecha){
 
 var userAdjunto = function(msg, fecha, file, id){
 	fecha = fecha || "1970-01-01 00:00:00";
-	var nodo = '<div class="user userAdjunto rounded p-1 my-2" >'
-		+"<a class='label label-info' href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'>" + msg + "</a> "
+	var nodo = '<div class="user userAdjunto text-center" >'
+		+"<a href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'> <img src='assets/imgs/Descargar2.png' height='50' title='"+msg+"' alt='"+msg+"' /> </a> "
 		+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'+
 	'</div>';
 	return nodo;
 }
-
 
 var microtec = function(msg, fecha){
 	var f = new Date();
@@ -228,28 +252,34 @@ var microtec = function(msg, fecha){
 	min = f.getMinutes() < 10 ? '0'+f.getMinutes(): f.getMinutes();
 	s = f.getSeconds() < 10 ? '0'+f.getSeconds(): f.getSeconds();
 	fecha = fecha || y+"-"+mo+"-"+d+" "+h+":"+min+":"+s;
+
+
 	var nodo = '<div class="microtec">'
-    			+'<div class="media">'
-				  +'<img class="mr-3 mt-2" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
-				  +'<div class="media-body bg-microtec rounded p-1 my-2 text-white">'
-				  	+ msg
-				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
-				  +'</div>'
-				+'</div>'
-    		+'</div>'
+		+'<div class="media">'
+			+'<div class="media-left">'
+		  		+'<img class="media-object" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
+		  	+'</div>'
+		  	+'<div class="media-body bg-microtec text-white">'
+		  		+'<p>'+msg+'</p>'
+		  		+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
+			+'</div>'
+		+'</div>'
+	+'</div>';
     return nodo;
 }
 
 var microtecAdjunto = function(msg, fecha, file, id){
 	var nodo = '<div class="microtec">'
-    			+'<div class="media">'
-				  +'<img class="mr-3 mt-2" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
-				  +'<div class="media-body bg-microtec rounded p-1 my-2 text-white">'
-				  	+"<a class='label label-info' href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'>" + msg + "</a> "
-				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
-				  +'</div>'
-				+'</div>'
-    		+'</div>'
+		+'<div class="media">'
+			+'<div class="media-left">'
+		  		+'<img class="media-object" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
+		  	+'</div>'
+		  	+'<div class="media-body bg-microtec text-white text-center">'
+		  		+"<p> <a href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'> <img src='assets/imgs/Descargar2.png' height='50' title='"+msg+"' alt='"+msg+"' /> </a> </p>"
+		  		+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
+			+'</div>'
+		+'</div>'
+	+'</div>';
     return nodo;
 }
 
@@ -292,43 +322,38 @@ var nodoChat = function(){
 	var nodo = '<div class="chat-content">'+
 		microtec('Gracias por contactar el chat en vivo de MicroTec, ¿En que podemos ayudarle?')+
     	'</div>'+
-    	'<div class="chat-input border-top">'+
-    		'<form class="form-inline mt-1" id="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
+    	'<div class="chat-input">'+
+    		'<form class="form-inline" id="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
 			  '<input type="hidden" name="atendio" id="atendio" />'+
 			  '<input class="form-control form-control-sm" name="msg" id="msg" placeholder="Escribir mensaje" autocomplete="off" />'+
-			  //'<button type="submit" class="btn btn-primary btn-sm ml-2">Enviar</button>'+
-			  '<button type="button" id="adjunto" class="btn btn-primary rounded-circle btn-sm ml-2" title="Seleccionar Archivo"><i class="fas fa-paperclip"></i></button>'+
-			  '<button type="submit" class="btn btn-primary rounded-circle btn-sm ml-2" title="Enviar"><i class="far fa-arrow-alt-circle-right"></i></button>'+
+			  '<button type="button" id="adjunto" class="btn btn-primary btn-circle btn-sm ml" title="Seleccionar Archivo"><i class="fa fa-paperclip"></i></button>'+
+			  '<button type="submit" class="btn btn-primary btn-circle btn-sm ml" title="Enviar"><i class="fa fa-paper-plane"></i></button>'+
 			'</form>'+
     	'</div>';
     	return nodo;
 }
 
 var nodoForm = function(){
-	var divForm = '<div class="alert alert-info mb-3 p-1">'+
-			'Para poder Chatear con nosotros por favor llena el formulario.'+
-		'</div>'+
-		'<form action="#" method="GET" accept-charset="utf-8" role="formulario" id="loginChat">'+
-		'<div class="form-group">'+
-			'<label class="sr-only" for="name">Nombre</label>'+
-			'<div class="input-group">'+
-			    '<div class="input-group-prepend">'+
-			    	'<div class="input-group-text" id="btnGroupAddon"><i class="fas fa-user"></i></div>'+
-			    '</div>'+
-				'<input type="text" name="name" id="name" class="form-control" placeholder="Ingresa tu nombre" title="Tu nombre" autocomplete="off" required />'+
-			'</div>'+
-		'</div>'+
-		'<div class="form-group">'+
-			'<label class="sr-only" for="correo">Correo</label>'+
-			'<div class="input-group">'+
-			    '<div class="input-group-prepend">'+
-			    	'<div class="input-group-text" id="btnGroupAddon"><i class="fas fa-envelope"></i></div>'+
-			    '</div>'+
-				'<input type="email" name="correo" id="correo" class="form-control" placeholder="Ingresa tu correo eletrónico" title="Tu correo" autocomplete="off" required />'+
-			'</div>'+
-		'</div>'+
-		'<button type="submit" class="btn btn-primary btn-block">Chatear</button>'+
-	'</form>';
+	var divForm = '<div class="alert alert-info" >'
+  			+'Para poder Chatear con nosotros por favor llena el formulario.'
+  		+'</div>'
+  		+'<form action="#" method="GET" accept-charset="utf-8" role="formulario" id="loginChat">'
+			+'<div class="form-group">'
+				+'<label class="sr-only" for="name">Nombre</label>'
+				+'<div class="input-group">'
+				    +'<span class="input-group-addon"><i class="fa fa-user"></i></span>'
+					+'<input type="text" name="name" id="name" class="form-control" placeholder="Ingresa tu nombre" title="Tu nombre" autocomplete="off" required />'
+				+'</div>'
+			+'</div>'
+			+'<div class="form-group">'
+				+'<label class="sr-only" for="correo">Correo</label>'
+				+'<div class="input-group">'
+				    	+'<span class="input-group-addon"><i class="fa fa-envelope"></i></span>'
+					+'<input type="email" name="correo" id="correo" class="form-control" placeholder="Ingresa tu correo eletrónico" title="Tu correo" autocomplete="off" required />'
+				+'</div>'
+			+'</div>'
+			+'<button type="submit" class="btn btn-primary btn-block">Chatear</button>'
+		+'</form>';
 	return divForm;
 }
 
@@ -353,7 +378,7 @@ var enviarRegistro = function(){
  			dataType: 'json',
  			data: data,
  			beforeSend: ()=>{
- 				$('#chat-microtec .card-body').html('<img src="assets/imgs/cargando2.gif" class="d-block mx-auto" style="width: 60px; margin-top: 4em;" />');
+ 				$('#chat-microtec .panel-body').html('<img src="assets/imgs/cargando2.gif" class="center-block" style="width: 60px; margin-top: 4em;" />');
  			}
  		}).done(function(resp) {
  			//console.log(resp);
@@ -361,8 +386,8 @@ var enviarRegistro = function(){
 
 			$('#chat-microtec #closeSession').css('visibility', 'visible');
  				var divChat = nodoChat();
-	 			$('#chat-microtec .card-body').empty();
-	 			$('#chat-microtec .card-body').html(divChat);
+	 			$('#chat-microtec .panel-body').empty();
+	 			$('#chat-microtec .panel-body').html(divChat);
 	 			addSubmitChat();
 	 			listenMsg(resp.id);
 
@@ -370,10 +395,10 @@ var enviarRegistro = function(){
  			else{
  				//console.log('error de proceso')
  				var divAlert = nodoAlert();
-	 			$('#chat-microtec .card-body').html(divAlert);
-	 			$('#chat-microtec .card-body #alertFail').on('close.bs.alert', ev=>{
+	 			$('#chat-microtec .panel-body').html(divAlert);
+	 			$('#chat-microtec .panel-body #alertFail').on('close.bs.alert', ev=>{
 	 				var divForm = nodoForm();
-					$('#chat-microtec .card-body').html(divForm);
+					$('#chat-microtec .panel-body').html(divForm);
 					//volver a asignar el submit al formulario
 					enviarRegistro();
 				});	
@@ -381,10 +406,10 @@ var enviarRegistro = function(){
  		}).fail(function(){
  			console.log("error de peticion");
  			var divAlert = nodoAlert();
- 			$('#chat-microtec .card-body').html(divAlert);
- 			$('#chat-microtec .card-body #alertFail').on('close.bs.alert', ev=>{
+ 			$('#chat-microtec .panel-body').html(divAlert);
+ 			$('#chat-microtec .panel-body #alertFail').on('close.bs.alert', ev=>{
  				var divForm = nodoForm();
-				$('#chat-microtec .card-body').html(divForm);
+				$('#chat-microtec .panel-body').html(divForm);
 				//volver a asignar el submit al formulario
 				enviarRegistro();
 			});
@@ -412,14 +437,9 @@ var addSubmitChat = function(){
  			dataType: 'json',
  			data: data
  			}).done((resp)=>{
- 				//console.log(resp);
  				if( resp.status == 1 ){
- 					//var nodoMsg = user( resp.msg[0].mensaje, resp.msg[0].fecha );
-		  			//$('#chat-microtec .chat-content').append(nodoMsg);
-			 		//autoScroll('#chat-microtec .chat-content');
 			 		document.querySelector('#chat-microtec #form-chat').reset();
 		  			firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
-
  				}
  			}).fail(()=>{
  				console.log('Fallo el envio');
@@ -451,7 +471,7 @@ var listenMsg = function(usuario){
 	 			data: data
 	 		}).done(function(resp){
 	 			var nodoMsg;
-	 			console.log(resp);
+	 			//console.log(resp);
 	 			$('#chat-microtec #form-chat #atendio').val(resp.msg[0].atendioId);
 	 			if( resp.msg[0].remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
 					
@@ -532,7 +552,7 @@ var listenMsg = function(usuario){
 										
 										$('#chat-microtec #closeSession').css('visibility', 'hidden');
 										var divForm = nodoForm();
-										$('#chat-microtec .card-body').html(divForm);
+										$('#chat-microtec .panel-body').html(divForm);
 					 					verificarSesion();
 									}
 								}).fail(()=>{
@@ -566,7 +586,7 @@ var listenMsg = function(usuario){
 var btnAdjunto = function(){
 	//var inputFile =  $('#chat-microtec #adjunto');
 	//<input type="file" class="fileToUpload">
-	var inputHidden = '<input type="file" name="attachment" id="attachment" class="d-none fileToUpload" />';
+	var inputHidden = '<input type="file" name="attachment" id="attachment" class="hide fileToUpload" />';
 	$("#chat-microtec #form-chat #msg").after(inputHidden);
 	
 
@@ -597,16 +617,9 @@ if(tipo == "image/jpeg" ||tipo == "image/jgp" ||tipo == "image/png" || tipo == '
 	    processData: false,
 	    data: data,
 	    beforeSend: function() {
-	        swal({
-			  title: 'Cargando archivo..',
-			  onOpen: () => {
-			    swal.showLoading()
-			  },
-			  allowOutsideClick: false
-			});
+	        alertify.message("Subiendo Archivo, espero por favor");
 	    },
 	    success: function(result) {
-		    swal.close();
 		    console.log("result", result);
 		    guardarRuta_file(nombre);
 
