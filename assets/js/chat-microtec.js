@@ -631,12 +631,14 @@ var listenMsg = function(usuario){
 				$('#chat-microtec .chat-content').append(nodoMsg);
 				autoScroll('#chat-microtec .chat-content');
 
-
+				/*
 				//Parte que le da vida a la sesion y la destruye en caso de que el tiempo se haya excedido
 				if(typeof timer !== 'undefined'){
 					clearInterval(timer);
 					seg = 0;
 				}
+
+
 				timer = setInterval(()=>{
 					//console.log('contando ' + seg++);
 					seg++;
@@ -704,6 +706,7 @@ var listenMsg = function(usuario){
 					}
 				}, 1000);
 				//End verificar vida de sesion
+				*/
 				
 
 
