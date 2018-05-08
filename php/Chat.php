@@ -35,7 +35,7 @@ class Chat extends DB{
 
 	public function getLast($id = ""){
 		if( $id != ''){
-			$this->sql = "SELECT *, DATE_ADD(fecha, INTERVAL 1 HOUR) as fechaExpiracion FROM chat_microtec.chats WHERE fecha = (SELECT MAX(fecha) FROM chat_microtec.chats WHERE userId = $id)";
+			$this->sql = "SELECT *, DATE_ADD(fecha, INTERVAL 15 MINUTE) as fechaExpiracion FROM chat_microtec.chats WHERE fecha = (SELECT MAX(fecha) FROM chat_microtec.chats WHERE userId = $id)";
 			$this->runQuery([$id]);
 			return $this->data;	
 		}

@@ -6,8 +6,8 @@ require_once "autoload.php";
 class UserChat extends DB{
 
 	public function set(){
-		$this->sql = "INSERT INTO chat_microtec.usertemporal(nombre, correo) VALUES ( ?, ? )";
-		$this->runQuery( [$this->nombre, $this->correo] );
+		$this->sql = "INSERT INTO chat_microtec.usertemporal(nombre, correo, origen) VALUES ( ?, ?, ? )";
+		$this->runQuery( [$this->nombre, $this->correo, $this->origen] );
 		return $this->data;
 	}
 	public function get($id=""){

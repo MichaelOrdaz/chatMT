@@ -1,11 +1,8 @@
 <?php
-session_start();
-?>
-<h1>Entro al Sistema</h1>
-
-<ol>
-	<li><?php echo $_SESSION['userEncry']; ?></li>
-	<li><?php echo $_SESSION['name']; ?></li>
-	<li><?php echo $_SESSION['id']; ?></li>
-	<li><?php echo $_SESSION['user']; ?></li>
-</ol>
+//$sesion = "algo";
+//$val =  base64_encode(null);
+//echo strlen($val);
+$val = base64_encode( isset($sesion) ? $sesion : null );
+echo $val;
+echo "<br>";
+echo strlen($val);

@@ -5,7 +5,6 @@
  * version 1
  * abril 2018
  */
-
 var config = {
 	apiKey: "AIzaSyDslhX-yx99qdiBB4vFEa7pFl6oHjWfc_0",
 	authDomain: "firstproject-41657.firebaseapp.com",
@@ -19,6 +18,11 @@ firebase.initializeApp(config);
 $(function(){
 
 $('#chat-microtec .panel-heading').on('click', (ev)=>{
+	/*
+	aqui debo de hacer la verifcacion de la variable, por medio de un
+
+	 */
+
 	var clase = $('#chat-microtec #colapsar').children().eq(0).attr('class');
  		if( clase == 'up' ){
  			$('#chat-microtec').animate({
@@ -39,9 +43,6 @@ $('#chat-microtec .panel-heading').on('click', (ev)=>{
  			$('#chat-microtec #colapsar').children().eq(0).attr('title', 'Maximizar');
  		}
 });
-
- 	
- 	
  	/* Jose Luis */
  	$('body').on('change','.fileToUpload',function (evt) {
  		//var binario =  'path';
@@ -55,16 +56,9 @@ $('#chat-microtec .panel-heading').on('click', (ev)=>{
 			dataType: 'json',
 			data: { fn: 'consultarID'}
 		}).done((resp)=>{
-
- 			console.log("binario", binario);
- 			console.log("nombre", nombre);
- 			console.log("tipo", tipo);
-			console.log('resp.id',resp.id);
  			test_subirArchivo(resp.id, nombre, binario,tipo);
-
-			
 		}).fail(()=>{
-			console.log('error')	
+			//console.log('error')	
 		});
 
  	});
@@ -80,21 +74,6 @@ $('#chat-microtec .panel-heading').on('click', (ev)=>{
 			alertify.message('Inicia sesion por favor');
 		}
 		else{
-
-		//para cerrar la sesión lo que necesito es hacer que se efectuen las siguientes acciones.
-		//  eliminar las variables de sesion. SOLUCION una petición ajax eliminanado las variables de sesion
-		//  colapsar el chat, SOLUCION animacion con jquery
-		//  recargar el nodo. SOLUCION creo que seria la funcion checkSession
-		// tambien neceito quye cuando se cierre la sesion se mande un mesaje al manager de que el usurio cerro su sesion. SOLUCION, enviar un mensaje
-		//del add submit ya copie el codigo que manda el msg
-		
-		//para cerrar conrrectamente, primero deberia de eliminar mis variables de sesion, si fue correcto mando el mensaje de que abandono la sesion.
-		//y finalmente oculto el chat, recargando la peticion
-
-		//primero ajax que elimina las variables de sesion
-		//debeo de hacerlo al reves mandar el msnaje si no se elimna la sesion pero mama cuando envie el mensaje
-			 			
-	 			//si se elimino la sesion, mando el mensaje que el usuario abandono la coversacion
 	 			$.ajax({
 					url: 'php/Peticiones.php',
 					type: 'POST',
@@ -114,15 +93,6 @@ $('#chat-microtec .panel-heading').on('click', (ev)=>{
 						//aqui debeo de recordar que es clase. si esta abierto deberia ser down
 						var clase = $('#chat-microtec #colapsar').children().eq(0).attr('class');
 				 		if( clase == 'up' ){
-				 			/*
-				 			$('#chat-microtec').animate({
-				 				bottom: '0'
-				 			}, 1000);
-				 			$(this).children().eq(0).removeClass(clase);
-				 			$(this).children().eq(0).addClass('down');
-				 			$(this).children().eq(0).html('<i class="fas fa-sort-down fa-lg"></i>');
-				 			$(this).children().eq(0).attr('title', 'Minimizar');
-				 			*/
 				 		}
 				 		else{
 				 			$('#chat-microtec').animate({
@@ -150,13 +120,13 @@ $('#chat-microtec .panel-heading').on('click', (ev)=>{
 			 					verificarSesion();
 							}
 						}).fail(()=>{
-							console.log('Fallo al Cerrar sesion');
+							//console.log('Fallo al Cerrar sesion');
 							alertify.error("Error al cerrar sesión, comprueba que se haya cerrado, gracias");
 						});
 			 			
 					}
 				}).fail(()=>{
-					console.log('Fallo el envio');
+					//console.log('Fallo el envio');
 					alertify.error("Error el enviar mensaje, intenta nuevamente");
 				});
 
@@ -166,7 +136,6 @@ $('#chat-microtec .panel-heading').on('click', (ev)=>{
 
 });//DocumentReady
 
-var verificarSesion = function(){
 
 /**
 	para verficiar en los portales donde ya existe un usuario, que previamente se logeo, deberia hacer un proceso distinto.
@@ -189,36 +158,169 @@ var verificarSesion = function(){
 
 	necesito que cargue en la pagina los mensaje ya anteriores.
 
-	
+---------------------------------
+	Lunes 07 de myo de 2018
+	para hacer esto, lo que se me ocurre, primero que nada, a mi base le agrego el campo del portal de donde viene,
+
+	ahora para que se inicie la sesion correctamente una vez estando dentro de samtec, lo que debo de hacer es verificar si existe una variable de sesion,
+	por lo tanto no se si renonmbrar mi rachivo a php.
+	por el momento s lo renombrare a php. mi index
+
+	como primera opcion, debo de hacer la comprobacion cuando se desplieque el chat. osea debo de detactar el click en la parte azul.
 
  */
 
+//Si no detecta variables de sesion en mi peticion, quiere decir quye la sesion o expiro o cerro sesion el usuario, que el usuario no va a poder 
+			//cerrar sesion el de samtec.
+			//ahora como el usuario de samtec solo puede expirar su sesion cada dia.
+			//debo de hacer lo siguiente.
+			//cuando entre por primera vez que pasa.
+			//
+			//cuyando entre por primera vez el usuario. debe de hacerse la comprobacion de cheksesion vaa.
+			//y como es la primera vez en el dia, no habra sesion activa. de mi peticiones.php
+			//
+			//por lo tanto me devolvera 0 y solo cero de que la sesion se expiro. por que la sesion solo puede expirar. puede que tambien pueda ser destruida.
+			//la variable tambine puede ser destruida.aqunque si la variable fue destruida, pues es como si no existiera.
+			//
+			//como me puedo saltar el tiempo de vida de mis variables, pues vamos a  hacer lo  siguiente. no puede cerrar sesion y las varialbes de samtec caducan
+			//por lo tanto cada que el usario entre se crearan nuevas variables de sesion de samtec.
+			//
+			//enviarRegistro();
+			//
+			//en resumen si entra aqui en 0 es por que no existe mi variable de sesion de chat
+			//como no existe se debe registrar automaticamente.
+			//
+			//y si no llegara a encontrar las variables de sesion de samtec que inicie sesion normalmente.
+
+			//aqui lo que hago es comprbar que existen las variables de sesion de SAMTEC.
+			//si existen que se registre en automatico
+
+var verificarSesion = function(){
 //verificamos si hay sesion activa
+ 	var name = atob( $("#ndues").text() );
+ 	var user = atob( $("#ues").text() );
+ 	var dis = atob( $("#cddu").text() );
+ 	
+ 	console.log("nombre : " + name, "usuario : " + user, "cod: " + dis);
+ 	
  	$.ajax({
 		url: 'php/Peticiones.php',
 		type: 'POST',
 		dataType: 'json',
-		data: {'fn': 'checkSession'},
+		data: {'fn': 'checkSessionSamtec'},
 	}).done(function(resp) {
 		//console.log(resp);
+		
 		if( resp.status == 0 ){
-			enviarRegistro();
+			//si es 0 no hay variables de sesion de chat
+			if( name.length !== 0 && user.length !== 0 && dis.length !== 0 ){
+		 		//las variables de sesion de samtec no existen lo doy de alta.
+		 		//como la variable de sesion ya existe debo de darlo de alta en mi base de datos. y recuperar los mensajes minimo del dia de hoy.
+		 		//y asi crear mis variables de sesion de chat
+		 		
+		 		$.ajax({
+		 			url: 'php/Peticiones.php',
+		 			type: 'POST',
+		 			dataType: 'json',
+		 			data: {name: name, correo: 'automatico', origen: 'SAMTEC', fn: 'registrar'},
+		 			beforeSend: ()=>{
+		 				$('#chat-microtec .panel-body').html('<img src="assets/imgs/cargando2.gif" class="center-block" style="width: 60px; margin-top: 4em;" />');
+		 			}
+		 		}).done(function(resp) {
+		 			console.log('Se registro el usuario de SAMTEC');
+		 			//console.log(resp);
+		 			if( resp.status === 1 ){
+
+					//$('#chat-microtec #closeSession').css('visibility', 'visible');
+		 				var divChat = nodoChat();
+			 			$('#chat-microtec .panel-body').empty();
+			 			$('#chat-microtec .panel-body').html(divChat);
+			 			addSubmitChat();
+			 			listenMsg(resp.id);
+		 			}
+		 			else{
+		 				console.log('no se pudo registrar el usuario de samtec en mi tabla de usertemporal')
+		 				var divSalir = nodoLogOut();
+						$('#chat-microtec .panel-body').empty();
+						$('#chat-microtec .panel-body').html(divSalir);
+		 			}
+		 		}).fail(function(){
+		 			console.log('fallo el ajax de registro automatico')
+		 			var divSalir = nodoLogOut();
+					$('#chat-microtec .panel-body').empty();
+					$('#chat-microtec .panel-body').html(divSalir);
+		 		});
+		 	
+		 	}
+		 	//aqui lo que hago es que si por alguna razon no llegara a encontar las variables de sesion, que no debe ser nunca el caso.
+		 	//pues se registre otra vez con un nombre y correo.
+		 	//cambio el proceso, ahora si llegara a pasar esto, mas facil mandar un mensaje en el cual diga que debe de cerrar sesion y volver a iniciar
+		 	//en SAMTEC, ya que no encontro las variables de sesion.
+		 	else{
+		 		console.log('entro al else de que no hay varialbes de sesion de samtec ')
+		 		var divSalir = nodoLogOut();
+				$('#chat-microtec .panel-body').empty();
+				$('#chat-microtec .panel-body').html(divSalir);
+		 	}
+
 		}
 		//si es falso es por que la sesion aun esta vigente, entonces cambiamos el DOM con los msg de la sesion.
 		else{
-			$('#chat-microtec #closeSession').css('visibility', 'visible');
-			var divChat = nodoChat();
-			$('#chat-microtec .panel-body').empty();
-			$('#chat-microtec .panel-body').html(divChat);
-			addSubmitChat();//agrego el evento submit al chat
-			listenMsg( resp.msg[0].userId );
+			if( resp.msg.length > 0 ){
+				console.log('entro al escucha por que si hay variable de sesion de chat y ademas ya habia mensajes y los rescata');
+				//$('#chat-microtec #closeSession').css('visibility', 'visible');
+				var divChat = nodoChat();
+				$('#chat-microtec .panel-body').empty();
+				$('#chat-microtec .panel-body').html(divChat);
+				addSubmitChat();//agrego el evento submit al chat
+				listenMsg( resp.msg[0].userId );	
+			}
+			else{
+				console.log('Si hay variable de sesion de chat pero no hay mensajes, entoncs lo vulevo a registrar como un nuevo chat');
+				$.ajax({
+		 			url: 'php/Peticiones.php',
+		 			type: 'POST',
+		 			dataType: 'json',
+		 			data: {name: name, correo: 'automatico', origen: 'SAMTEC', fn: 'registrar'},
+		 			beforeSend: ()=>{
+		 				$('#chat-microtec .panel-body').html('<img src="assets/imgs/cargando2.gif" class="center-block" style="width: 60px; margin-top: 4em;" />');
+		 			}
+		 		}).done(function(resp) {
+		 			console.log('Se registro el usuario de SAMTEC');
+		 			//console.log(resp);
+		 			if( resp.status === 1 ){
+
+					//$('#chat-microtec #closeSession').css('visibility', 'visible');
+		 				var divChat = nodoChat();
+			 			$('#chat-microtec .panel-body').empty();
+			 			$('#chat-microtec .panel-body').html(divChat);
+			 			addSubmitChat();
+			 			listenMsg(resp.id);
+		 			}
+		 			else{
+		 				console.log('no se pudo registrar el usuario de samtec en mi tabla de usertemporal')
+		 				var divSalir = nodoLogOut();
+						$('#chat-microtec .panel-body').empty();
+						$('#chat-microtec .panel-body').html(divSalir);
+		 			}
+		 		}).fail(function(){
+		 			console.log('fallo el ajax de registro automatico')
+		 			var divSalir = nodoLogOut();
+					$('#chat-microtec .panel-body').empty();
+					$('#chat-microtec .panel-body').html(divSalir);
+		 		});
+			}
+			
+
 		}
 	
 	}).fail(function(){
-		console.log('Falló la petición, verificar sesión');
-		enviarRegistro();
+		//console.log('Falló la petición, verificar sesión');
+		//enviarRegistro();
+		var divSalir = nodoLogOut();
+		$('#chat-microtec .panel-body').empty();
+		$('#chat-microtec .panel-body').html(divSalir);
 	});
-
 }
 
 var autoScroll = function(nodo){
@@ -321,6 +423,7 @@ var formatearFecha = function(fecha){
 var nodoChat = function(){
 	var nodo = '<div class="chat-content">'+
 		microtec('Gracias por contactar el chat en vivo de MicroTec, ¿En que podemos ayudarle?')+
+		microtec('Le recordamos que el horario de atención es de 10:00am a 7:00pm')+
     	'</div>'+
     	'<div class="chat-input">'+
     		'<form class="form-inline" id="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
@@ -367,6 +470,13 @@ var nodoAlert = function(){
 	return divAlert;
 }
 
+var nodoLogOut = function(){
+	var divAlert = '<div class="alert alert-warning" id="alertLogout" role="alert">'
+			  +'<strong>!Upss¡</strong> Los sentimos surgió un problema al iniciar el Chat, le sugerimos, cerrar volver a iniciar sesión para poder chatear con nosotros, gracias'
+			+'</div>';
+	return divAlert;
+}
+
 var enviarRegistro = function(){
 	$('#chat-microtec #loginChat').submit(ev=>{
  		ev.preventDefault();
@@ -384,7 +494,7 @@ var enviarRegistro = function(){
  			//console.log(resp);
  			if( resp.status === 1 ){
 
-			$('#chat-microtec #closeSession').css('visibility', 'visible');
+			//$('#chat-microtec #closeSession').css('visibility', 'visible');
  				var divChat = nodoChat();
 	 			$('#chat-microtec .panel-body').empty();
 	 			$('#chat-microtec .panel-body').html(divChat);
@@ -404,7 +514,7 @@ var enviarRegistro = function(){
 				});	
  			}
  		}).fail(function(){
- 			console.log("error de peticion");
+ 			//console.log("error de peticion");
  			var divAlert = nodoAlert();
  			$('#chat-microtec .panel-body').html(divAlert);
  			$('#chat-microtec .panel-body #alertFail').on('close.bs.alert', ev=>{
@@ -417,12 +527,24 @@ var enviarRegistro = function(){
  	});//ENdSUbmitLoginChat
 }
 
+
+var statSend = false;
+function checkSubmit() {
+    if (!statSend) {
+        statSend = true;
+        return true;
+    } else {
+        alert("El formulario ya se esta enviando...");
+        return false;
+    }
+}
+
 var addSubmitChat = function(){
 
 	btnAdjunto();
 
 	$('#chat-microtec #form-chat').submit( (ev)=>{
-		ev.preventDefault();
+		ev.preventDefault();//cancelo el envio
 		if( $('#chat-microtec #msg').val().length > 0 ){
 			var data = $('#chat-microtec #form-chat').serializeArray();
  			data.push({name: 'fn', value: 'enviarMsg'});
@@ -430,23 +552,36 @@ var addSubmitChat = function(){
  			data.push({name: 'atendio', value: $('#chat-microtec #form-chat #atendio').val() });//el que escrivbe es el cliente 
  			data.push({name: 'status', value: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 ) });//SI no hay atendio el status es 0
  			
- 			//console.log(data);
-		  	$.ajax({
- 			url: 'php/Peticiones.php',
- 			type: 'POST',
- 			dataType: 'json',
- 			data: data
- 			}).done((resp)=>{
- 				if( resp.status == 1 ){
-			 		document.querySelector('#chat-microtec #form-chat').reset();
-		  			firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
- 				}
- 			}).fail(()=>{
- 				console.log('Fallo el envio');
- 				alertify.error("Error el enviar mensaje, intenta nuevamente");
- 			});
+ 			if( typeof ev.target.dataset.locked === 'undefined' || ev.target.dataset.locked == "false"){
+
+			  	$.ajax({
+		 			url: 'php/Peticiones.php',
+		 			type: 'POST',
+		 			dataType: 'json',
+		 			data: data,
+		 			beforeSend: ()=>{
+		 				ev.target.dataset.locked = "true";
+		 			}
+	 			}).done((resp)=>{
+	 				if( resp.status == 1 ){
+				 		document.querySelector('#chat-microtec #form-chat').reset();
+			  			firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
+	 				}
+	 			}).fail((jqXHR, textStatus, errorThrown)=>{
+	 				alertify.error("Error el enviar mensaje, intenta nuevamente");
+	 			}).always(function(jqXHR, textStatus,errorThrown){
+	 				ev.target.dataset.locked = "false";
+	 			});
+ 			}
+ 			else{
+ 				//console.log('formulario bloqueado')
+ 			}
+ 			
+
 		}
  	});
+
+
 }
 
 var listenMsg = function(usuario){
@@ -556,7 +691,7 @@ var listenMsg = function(usuario){
 					 					verificarSesion();
 									}
 								}).fail(()=>{
-									console.log('Fallo al Cerrar sesion');
+									//console.log('Fallo al Cerrar sesion');
 									alertify.error("Error al destruir la sesion por tiempo expirado");
 								});
 					 			
@@ -573,7 +708,7 @@ var listenMsg = function(usuario){
 
 
 	 		}).fail(function(){
-	 			console.log('fallo peticion chatId en firebase');
+	 			//console.log('fallo peticion chatId en firebase');
 	 		});
   		}
   		else{
@@ -598,7 +733,7 @@ var btnAdjunto = function(){
 
 /*Jose Luis*/
 var test_subirArchivo = function(id,nombre,binario,tipo){
-	console.log("fun js test_subirArchivo");
+	//console.log("fun js test_subirArchivo");
 
 /*test subir archivo*/
 var data = new FormData();
@@ -617,10 +752,10 @@ if(tipo == "image/jpeg" ||tipo == "image/jgp" ||tipo == "image/png" || tipo == '
 	    processData: false,
 	    data: data,
 	    beforeSend: function() {
-	        alertify.message("Subiendo Archivo, espero por favor");
+	        alertify.message("Subiendo Archivo, espere por favor");
 	    },
 	    success: function(result) {
-		    console.log("result", result);
+		   // console.log("result", result);
 		    guardarRuta_file(nombre);
 
 	    },
@@ -631,7 +766,8 @@ if(tipo == "image/jpeg" ||tipo == "image/jgp" ||tipo == "image/png" || tipo == '
 	
 }
 else{
-	console.log('formato de archivo no aceptado');
+	alertify.error("formato de archivo no aceptado. (PNG, JPG, JPEG, PDF)");
+	//console.log('formato de archivo no aceptado');
 }
 
 
@@ -650,7 +786,7 @@ var guardarRuta_file = function(nombre) {
 			status: ( $('#chat-microtec #form-chat #atendio').val() == '' ? 0: 1 )
 		},
 		success:function(resp) {
-			console.log("response", resp);
+			//console.log("response", resp);
 			document.querySelector('#chat-microtec #form-chat').reset();
 		  	firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
 		},

@@ -248,21 +248,18 @@ var initChat = function(){
 			json.chats.forEach( chat=>{
 				
 				var nodoMsg;
-				/*
-	 			if( chat.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
-					nodoMsg = user(chat.mensaje, chat.fecha);
-				}
-				else{//si no es asi lo mando microtec
-					nodoMsg = microtec(chat.mensaje, chat.fecha);
-				}
-				*/
+				
 				if( chat.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
-					
 					if( chat.file !== null ){
 						nodoMsg = userAdjunto(chat.mensaje, chat.fecha, chat.file, chat.userId);
 					}
 					else{//si no es un adjuinto
 						nodoMsg = user(chat.mensaje, chat.fecha);
+						if( chat.mensaje === 'El cliente abandonó la conversación' || chat.mensaje.trim() === 'El tiempo de la sesión expiró' ){
+							$('#containerChats #'+idUser+' .panel-body .msg').prop('disabled', true);
+							$('#containerChats #'+idUser+' .panel-body .adjunto').prop('disabled', true);
+							$('#containerChats #'+idUser+' .panel-body :submit').prop('disabled', true);
+						}
 					}
 				}
 				else{//si no es asi lo mando microtec
@@ -357,7 +354,7 @@ var listenFirebase = function(){
 						else{//si no es un adjuinto
 							nodoMsg = user(chat.mensaje, chat.fecha);
 
-							if( chat.mensaje === 'El cliente abandonó la conversación' || chat.mensaje === 'El tiempo de la sesión expiró' ){
+							if( chat.mensaje === 'El cliente abandonó la conversación' || chat.mensaje.trim() === 'El tiempo de la sesión expiró' ){
 								$('#containerChats #'+userMongo+' .panel-body .msg').prop('disabled', true);
 								$('#containerChats #'+userMongo+' .panel-body .adjunto').prop('disabled', true);
 								$('#containerChats #'+userMongo+' .panel-body :submit').prop('disabled', true);

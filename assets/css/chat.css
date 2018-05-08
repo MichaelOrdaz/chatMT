@@ -1,12 +1,13 @@
 #chat-microtec{
 	position: fixed;
 	width: 320px;
-	right: 65px;
+	left: 20px;
 	bottom: -295px;
 	height: 350px;
 	box-shadow: 0 0 6px 0px black;
 	margin: 0;
 	border-bottom: none;
+	z-index: 500;
 }
 
 

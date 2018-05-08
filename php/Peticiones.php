@@ -10,6 +10,7 @@ function registrar($post){
 	$user = new UserChat();
 	$user->nombre = $post['name'];
 	$user->correo = $post['correo'];
+	$user->origen = $post['origen'];
 	$id = $user->set();
 	if( $id > 0 ){
 		$data = array('status'=>1, 'id'=>$id);
@@ -23,11 +24,9 @@ function registrar($post){
 
 function checkSession($var=""){
 	session_start();
-	//$_SESSION['idUser'] = 1;
-	//la sesion esta iniciada
 	if( isset( $_SESSION['idUser'] ) ){
+		
 		$id = $_SESSION['idUser'];
-		//return array('status'=>1, 'id'=>$_SESSION['idUser']);
 		//si esta iniciada verificar la fecha y hora del ultimo mensaje que se mando
 		$chat = new Chat();
 		$lastMsg = $chat->getLast( $id );
@@ -59,6 +58,19 @@ function checkSession($var=""){
 		//entonces que trabaje normalmente
 		return array('status'=>0, 'msg'=>'No hay variables de sesion');
 		
+	}
+}
+
+function checkSessionSamtec($var=""){
+	session_start();
+	if( isset( $_SESSION['idUser'] ) ){
+		$id = $_SESSION['idUser'];
+		$chat = new Chat();
+		$msgs = $chat->get( $id );
+		return array('status'=>1, 'msg'=>$msgs);
+	}
+	else{
+		return array('status'=>0, 'msg'=>'No hay variables de sesion');
 	}
 }
 
