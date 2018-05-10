@@ -1,3 +1,20 @@
+<?php 
+
+session_start();
+
+
+$_SESSION['nombre'] = "Fernando Martinez Serrano";
+$_SESSION['usr'] = "fSerrano940";
+$_SESSION['dis'] = "mic015";
+
+//fSerrano940
+//67106237
+/*
+session_destroy();
+$_SESSION = array();
+*/
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,7 +29,12 @@
 	<link rel="stylesheet" href="assets/css/chat.css">
 </head>
 <body>
-<div class="panel panel-primary" id="chat-microtec">
+<div class="panel panel-primary" id="chat-microtec" >
+	<div class="hide">
+		<span id="ndues"> <?php echo base64_encode( isset( $_SESSION['nombre'] ) ? $_SESSION['nombre'] : null ); ?> </span>
+		<span id="ues">   <?php echo base64_encode( isset( $_SESSION['usr'] ) ? $_SESSION['usr'] : null ); ?> </span>
+		<span id="cddu">  <?php echo base64_encode( isset( $_SESSION['dis'] ) ? $_SESSION['dis'] : null ); ?> </span>
+	</div>
   <div class="panel-heading bg-microtec">
   	<button type="button" class="close" title="Cerrar Sesión" id="closeSession" style="color: white; visibility: hidden;">
   		<span class="end"> <i class="fa fa-sign-out"></i> </span>
@@ -20,7 +42,7 @@
   	<button type="button" class="close" id="colapsar" title="Maximizar" style="margin: 0 2px; color: white; visibility: hidden;" >
   		<span class="up"><i class="fa fa-sort-up fa-lg"></i></span>
 	</button>
-  	Chat Micro-tec
+  	Chat Micro-tec <i class="fa fa-comments" aria-hidden="true"></i>
   	</div>
   	<div class="panel-body">
   		<div class="alert alert-info" >
@@ -53,5 +75,6 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript" src="assets/alertify/alertify.min.js"></script>
 <script src="assets/js/chat-microtec.js"></script>
+
 </body>
 </html>

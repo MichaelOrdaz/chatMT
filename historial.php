@@ -99,18 +99,19 @@ else{
 	                                    </div>
 	                                </div>
 	                                <div class="ibox-content">
-	                                    
+	                                    <div class="table-responsive">                                    	
 	                                    <table class="table table-hover" id="historialConversaciones">
 	                                    	<thead>
 	                                    		<tr>
 	                                    			<th>Nombre</th>
 	                                    			<th>Fecha</th>
+	                                    			<th>Origen</th>
 	                                    		</tr>
 	                                    	</thead>
 	                                    	<tbody>
 	                                    	</tbody>
 	                                    </table>
-
+										</div>
                                     </div>
                                 </div>
 	                		</div>

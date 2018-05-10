@@ -1,14 +1,11 @@
-<?php
-session_start();
+<?php 
 
-$_SESSION['nombre'] = "Michael Ordaz Martinez";
-$_SESSION['usr'] = "Mou2018";
-$_SESSION['dis'] = "micxxx";
-/*
-session_destroy();
-$_SESSION = array();
-*/
+
+
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -24,11 +21,6 @@ $_SESSION = array();
 </head>
 <body>
 <div class="panel panel-primary" id="chat-microtec" >
-	<div class="hide">
-		<span id="ndues"> <?php echo base64_encode( isset( $_SESSION['nombre'] ) ? $_SESSION['nombre'] : null ); ?> </span>
-		<span id="ues">   <?php echo base64_encode( isset( $_SESSION['usr'] ) ? $_SESSION['usr'] : null ); ?> </span>
-		<span id="cddu">  <?php echo base64_encode( isset( $_SESSION['dis'] ) ? $_SESSION['dis'] : null ); ?> </span>
-	</div>
   <div class="panel-heading bg-microtec">
   	<button type="button" class="close" title="Cerrar Sesión" id="closeSession" style="color: white; visibility: hidden;">
   		<span class="end"> <i class="fa fa-sign-out"></i> </span>

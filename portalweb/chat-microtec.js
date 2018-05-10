@@ -86,6 +86,13 @@ $('#chat-microtec .panel-heading').on('click', (ev)=>{
 						}
 				}).done((resp)=>{
 					if( resp.status == 1 ){
+
+						//Parte que le da vida a la sesion y la destruye en caso de que el tiempo se haya excedido
+						if(typeof timer !== 'undefined'){
+							clearInterval(timer);
+							delete timer;
+						}
+
 			 			//SI el mensaje se mando correctamente, el manager estara notificado de eso asi que pude el cerrar su sesion. no tengo que limpiar nada.
 			 			//document.querySelector('#chat-microtec #form-chat').reset();
 		  				firebase.database().ref('Chat').push({idChat: resp.msg[0].idChat, msg: resp.msg[0].mensaje, userId: resp.msg[0].userId });
@@ -287,13 +294,13 @@ var formatearFecha = function(fecha){
 
 var nodoChat = function(){
 	var nodo = '<div class="chat-content">'+
-		microtec('Gracias por contactar el chat en vivo de MicroTec, ¿En que podemos ayudarle?')+
-		microtec('Horario de atención de Lunes a Viernes de 10:00am a 7:00pm, sabados de 10:00am a 2:00pm')+
+		microtecAuto('Gracias por contactar el chat en vivo de MicroTec, ¿En que podemos ayudarle?')+
+		microtecAuto('Horario de atención de Lunes a Viernes de 10:00am a 7:00pm, sabados de 10:00am a 2:00pm')+
     	'</div>'+
     	'<div class="chat-input">'+
-    		'<form class="form-inline" id="form-chat" method="POST" action="#" enctype="multipart/form-data">'+
+    		'<form class="form-inline" id="form-chat" method="POST" action="#" style="display: flex; flex-direction: row;" enctype="multipart/form-data">'+
 			  '<input type="hidden" name="atendio" id="atendio" />'+
-			  '<input class="form-control form-control-sm" name="msg" id="msg" placeholder="Escribir mensaje" autocomplete="off" />'+
+			  '<input class="form-control form-control-sm" name="msg" id="msg" placeholder="Escribir mensaje" autocomplete="off" style="width: 70%" />'+
 			  '<button type="button" id="adjunto" class="btn btn-primary btn-circle btn-sm ml" title="Seleccionar Archivo"><i class="fa fa-paperclip"></i></button>'+
 			  '<button type="submit" class="btn btn-primary btn-circle btn-sm ml" title="Enviar"><i class="fa fa-paper-plane"></i></button>'+
 			'</form>'+
@@ -359,7 +366,7 @@ var enviarRegistro = function(){
  			//console.log(resp);
  			if( resp.status === 1 ){
 
-			//$('#chat-microtec #closeSession').css('visibility', 'visible');
+			$('#chat-microtec #closeSession').css('visibility', 'visible');
  				var divChat = nodoChat();
 	 			$('#chat-microtec .panel-body').empty();
 	 			$('#chat-microtec .panel-body').html(divChat);
@@ -507,7 +514,7 @@ var listenMsg = function(usuario){
 				timer = setInterval(()=>{
 					//console.log('contando ' + seg++);
 					seg++;
-					if( seg >= 600 ){
+					if( seg >= 900 ){
 						//console.log('se cierra la sesion');
 						clearInterval(timer);
 						delete timer;

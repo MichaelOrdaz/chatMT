@@ -27,24 +27,22 @@ $(document).ready(function(){
 	$('#logout').click(function(event) {
 		event.preventDefault();
 		$.ajax({
-		url: "php/peticionesManager.php",
+		url: "php/cs.php",
 		type: "POST",
-		dataType: "json",
-		data: {'fn': 'logOut'}
+		dataType: "json"
 		}).done(function(json){
 			//console.log('success');
 			if(json.status === 1){
-				window.location.href = 'manager';
+				window.location.href = 'manager.html';
 			}
 			else{
-				alertify.error('No se cerró la sesión, intenta nuevamente');
+				alertify.error('Error al cerrar la sesión, intenta nuevamente');
 			}
 		}).fail(function(jqXHR, textStatus, errorThrown){
 			alertify.error('No se cerró la sesión, intenta nuevamente');
 			console.error(jqXHR);
 			console.error(textStatus);
 		});
-
 	});
 
 
@@ -77,7 +75,7 @@ $(document).ready(function(){
 					var nodoMsg;
 					if( item.remitente == 1 ){//si remitente es uno quiere decir que lo mando el usuario
 						
-						if( item.file !== null ){
+						if( item.file !== null && item.file !== ""){
 							nodoMsg = userAdjunto(item.mensaje, item.fecha, item.file, item.userId);
 						}
 						else{//si no es un adjuinto
@@ -86,7 +84,7 @@ $(document).ready(function(){
 					}
 					else{//si no es asi lo mando microtec
 
-						if( item.file !== null ){
+						if( item.file !== null && item.file !== ""){
 							nodoMsg = microtecAdjunto(item.mensaje, item.fecha,item.file, item.userId);
 						}
 						else{
@@ -149,6 +147,7 @@ function getChats(){
 				body += '<tr data-user="'+chat.userId+'">'
 					+'<td>'+chat.nombre+'</td>'
 					+'<td>'+chat.fecha+'</td>'
+					+'<td>'+chat.origen+'</td>'
 				+'</tr>';
 			});
 
@@ -196,10 +195,11 @@ var user = function(msg, fecha){
 	return nodo;
 }
 
+
 var userAdjunto = function(msg, fecha, file, id){
 	fecha = fecha || "1970-01-01 00:00:00";
-	var nodo = '<div class="user" style="background: #EBEBEB">'+
-		"<a  href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'>" + msg + "</a> "+
+	var nodo = '<div class="user userAdjunto text-center" style="background: #EBEBEB">'+
+		"<a href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'> <img src='assets/imgs/Descargar2.png' height='50' title='"+msg+"' alt='"+msg+"' /> </a> "+
 		'<span class="fecha">'+ formatearFecha(fecha) +'</span>'+
 	'</div>';
 	return nodo;
@@ -223,8 +223,8 @@ var microtecAdjunto = function(msg, fecha, file, id){
 	var nodo = '<div class="microtec">'
     			+'<div class="media">'
 				  +'<img class="media-object pull-right img-circle" src="assets/imgs/logomt.jpg" alt="logo-micro-tec" />'
-				  +'<div class="media-body bg-primary">'
-				  	+"<a href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'>" + msg + "</a> "
+				  +'<div class="media-body bg-primary text-center">'
+				  	+"<a href='https://www.micro-tec.com.mx/pagina/chatMT/php/d_doc.php?f=" + id + "&p=" + file + "'> <img src='assets/imgs/Descargar2.png' height='50' title='"+msg+"' alt='"+msg+"' /> </a>"
 				  	+'<span class="fecha">'+ formatearFecha(fecha) +'</span>'
 				  +'</div>'
 				+'</div>'

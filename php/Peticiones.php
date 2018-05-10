@@ -1,7 +1,27 @@
-<?php 
+<?php
 header("Content-type: application/json");
+//permitir dominios cruzados
+header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+if (strstr($_SERVER['HTTP_REFERER'], "promotormicrotec.mx")) {
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Allow-Methods: GET, POST');
+        header('Access-Control-Max-Age: 86400');
+    }
+}
+//end allowed cross domain
+
 require_once "autoload.php";
 date_default_timezone_set('America/Mexico_City');
+
+include ("/var/www/api/antisql.php");
+
 
 $fn = $_POST['fn'];
 
@@ -10,7 +30,26 @@ function registrar($post){
 	$user = new UserChat();
 	$user->nombre = $post['name'];
 	$user->correo = $post['correo'];
-	$user->origen = $post['origen'];
+	$user->usuario = 'no aplica';
+	$user->origen= 'Portal Web';
+	$id = $user->set();
+	if( $id > 0 ){
+		$data = array('status'=>1, 'id'=>$id);
+		$_SESSION['idUser'] = $id;
+	}
+	else{
+		$data = array('status'=>0);
+	}
+	return $data;
+}
+
+function registrarSamtec($post){
+	session_start();
+	$user = new UserChat();
+	$user->nombre = $post['name'];
+	$user->correo = $post['correo'];
+	$user->usuario = $post['user'];
+	$user->origen = 'Samtec';
 	$id = $user->set();
 	if( $id > 0 ){
 		$data = array('status'=>1, 'id'=>$id);
@@ -102,7 +141,7 @@ function enviarMsg($post){
 		$data = array('status'=>1, 'msg'=>$infoMsg);
 	}
 	else{
-		$data = array('status'=>0, 'msg'=>'mensaje no enviado');
+		$data = array('status'=>0, 'msg'=>'mensaje no enviado', 'sesion'=>$_SESSION['idUser']);
 	}
 	return $data;
 }
@@ -153,7 +192,6 @@ function test_subirArchivo($post){
 	return $data;
 }
 /*jose Luis*/
-
 
 $data = $fn($_POST);
 echo json_encode($data);

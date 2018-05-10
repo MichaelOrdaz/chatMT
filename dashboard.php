@@ -108,6 +108,7 @@ else{
 														<tr>
 															<th>Cliente</th>
 															<th>Fecha</th>
+															<th>Origen</th>
 															<th>Chatear</th>
 														</tr>
 													</thead>

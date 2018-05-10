@@ -2,47 +2,9 @@
 header("Content-type: application/json");
 require_once "autoload.php";
 date_default_timezone_set('America/Mexico_City');
+include ("/var/www/api/antisql.php");
 
 $fn = $_POST['fn'];
-
-/*
-
-despues de logearse las variables de sesion disponibles son:
- $_SESSION['userEncry'];
- $_SESSION['name'];
- $_SESSION['id'];
- $_SESSION['user'];
- */
-
-/*
-function login($post){
-	session_start();
-	$soporte = new UserSoporte();
-	$info = $soporte->get($post['user']);
-	if( $info ){
-		$_SESSION['idSoporte'] = $info[0]->idSoporte;
-		return array('status'=>1, 'data'=>$info);
-	}
-	else{
-		return array('status'=>0, 'msg'=>'No hay registro');;
-	}
-}
-*/
-/*
-function checkSession($var=""){
-	session_start();
-	//la sesion esta iniciada
-	if( isset( $_SESSION['idSoporte'] ) ){
-		$id = $_SESSION['idSoporte'];
-		$soporte = new UserSoporte();
-		$data = $soporte->getxId($id);
-		return array('status'=>1, 'msg'=>$data);
-	}
-	else{
-		return array('status'=>0, 'msg'=>'No hay variables de sesion');
-	}
-}
-*/
 
 function logOut($var=""){
 	session_start();
@@ -92,7 +54,7 @@ function getOne($post){
 function asignarManager( $post ){
 	$soporte = $post['id'];
 	$chat = new Chat();
-	$chat->asignarManager( $post['cliente'], $soporte );
+	$res = $chat->asignarManager( $post['cliente'], $soporte );
 	return array('status'=>1);
 
 }
@@ -176,6 +138,16 @@ function getCoversacion($post = ""){
 
 }
 
+function getUserSamtec( $post = "" ){
+	$user = new UserChat();
+	$datos = $user->getSamtec( $post['username'] );
+	if( $datos ){
+		return array('status'=>1, 'datos'=>$datos);
+	}
+	else{
+		return array('status'=>1, 'datos'=>'Usuario no encontrado');
+	}
+}
 $data = $fn($_POST);
 echo json_encode($data);
 ?>

@@ -131,3 +131,8 @@ img.filterGray{
 	cursor: pointer;
 	font-weight: bold;
 }
+
+
+#historialConversaciones tbody tr{
+	cursor: pointer;
+}

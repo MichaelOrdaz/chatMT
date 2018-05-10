@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+  <html lang="es">
+    <head>
+        <meta charset="utf-8">
+		<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+        <title>MicroTec Distribuidor Autorizado Telcel</title>
+        <meta name="Description" content="Los precios más bajos en celulares y accesorios. Ofrecemos Planes tarifarios Telcel, Celulares al contado y a crédito, Tiempo Aire, Telefonía Fija para Negocios, Pago de servicios y más... Presentes en: Puebla, Oaxaca, Veracruz y Tlaxcala. Visita nuestra tienda en línea.">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+		<!-- Style -->
+        <link rel="stylesheet" href="css/main.css">
+		<!-- Responsiv -->
+		<link rel="stylesheet" href="css/responsive.css">
+        <!-- Font awesome -->
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+
+        <!--<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">-->
+
+       	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600" rel="stylesheet">
+		<!-- Bootstrp -->
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<!-- Animations min -->
+		<link rel="stylesheet" href="css/animations.min.css">
+		<!-- Lightbox -->
+		<link rel="stylesheet" href="css/lightbox.css" />
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100326163-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'UA-100326163-1');
+		</script>
+
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <!-- Sweet Alert -->
+        <link rel="stylesheet" href="css/sweetalert.min.css" />
+
+		<link rel="stylesheet" type="text/css" href="css/modal/default.css" />
+		<link rel="stylesheet" type="text/css" href="css/modal/component.css" />
+	
+	<!-- estilos para el chat de microtec Michael -->
+		<
+		<link rel="stylesheet" type="text/css" href="js/alertify/css/alertify.min.css">
+		<link rel="stylesheet" type="text/css" href="js/alertify/css/themes/bootstrap.min.css">
+		<link rel="stylesheet" href="css/chat.css">
+	<!-- fin de los estilos de chat de microtec -->
+		
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+            
+            <!--[if lt IE 9]>
+              <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+              <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+            <![endif]-->
+
+    	<script type="text/javascript">
+    		window.onload = function() {
+    			$('body').css('display','block');
+  			}
+		    if (window.location.protocol == "http:") {
+		        var restOfUrl = window.location.href.substr(5);
+		        window.location = "https:" + restOfUrl;
+		    }
+		</script>
+		<!-- Facebook Pixel Code -->
+		<script>
+		  !function(f,b,e,v,n,t,s)
+		  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+		  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+		  if(!f.fbq)f.fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+		  n.queue=[];t=b.createElement(e);t.async=!0;
+		  t.src=v;s=b.getElementsByTagName(e)[0];
+		  s.parentNode.insertBefore(t,s)}(window, document,'script',
+		  'https://connect.facebook.net/en_US/fbevents.js');
+		  fbq('init', '381740732278987');
+		  fbq('track', 'PageView');
+		</script>
+		<noscript><img height="1" width="1" style="display:none"
+		  src="https://www.facebook.com/tr?id=381740732278987&ev=PageView&noscript=1"
+		/></noscript>
+		<!-- End Facebook Pixel Code -->
+    
+    <body style="display: none;">
+
+
+
+<!-- FACEBOOK CHAT -->
+<!--
+ <div id="b-c-facebook" class="chat_f_vt" style="display: block;">
+  <div id="chat-f-b" onclick="chatFB();" class="chat-f-b">
+         <img class="chat-logo" src="img/facebook-icon.png" style="display: inline-block;">
+   <label style="display: inline-block; margin-top: 10px;"> Chat en Línea</label>
+     </div>
+  <div id="f-chat-conent" class="f-chat-conent" style="display: none;">
+   <span style="vertical-align: bottom; width: 250px; height: 310px;">
+   <iframe id="iframeFacebook" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FMicrotecTelceI%2F&tabs=messages&width=250&height=300&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false&appId=871815366277410" width="250" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+   </span>
+  </div>
+ </div>
+-->
+ <!-- FIN FACEBOOK CHAT -->
+ <!-- Chat Microtec Michael -->
+
+<div class="panel panel-primary" id="chat-microtec">
+  <div class="panel-heading bg-microtec">
+  	<button type="button" class="close" title="Cerrar Sesión" id="closeSession" style="color: white; visibility: hidden;">
+  		<span class="end"> <i class="fa fa-sign-out"></i> </span>
+	</button>
+  	<button type="button" class="close" id="colapsar" title="Maximizar" style="margin: 0 2px; color: white; visibility: hidden;" >
+  		<span class="up"><i class="fa fa-sort-up fa-lg"></i></span>
+	</button>
+  	<i class="fa fa-comments" aria-hidden="true"></i> Chat Micro-tec
+  	</div>
+  	<div class="panel-body">
+  		<div class="alert alert-info" >
+  			Para poder Chatear con nosotros por favor llena el formulario.
+  		</div>
+  		<form action="#" method="GET" accept-charset="utf-8" role="formulario" id="loginChat">
+			<div class="form-group">
+				<label class="sr-only" for="name">Nombre</label>
+				<div class="input-group">
+				    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+					<input type="text" name="name" id="name" class="form-control" placeholder="Ingresa tu nombre" title="Tu nombre" autocomplete="off" required />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="sr-only" for="correo">Correo</label>
+				<div class="input-group">
+				    	<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+					<input type="email" name="correo" id="correo" class="form-control" placeholder="Ingresa tu correo eletrónico" title="Tu correo" autocomplete="off" required />
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary btn-block">Chatear</button>
+		</form>
+  	</div>
+</div>
+
+ <!-- Fin chat Microtec -->
+
+
+    <!-- HEADER -->
+	<header id="header">
+		<nav id="head-nav" class="navbar topnavbar navbar-fixed-top" role="navigation" data-spy="affix" data-offset-top="200" style="background: #2c386c; border-top:5px solid #f47832; height: 70px;">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<i class="fa fa-bars"></i>
+					</button>
+					<a href="#" class="navbar-brand header"><img src="img/logo.png"></a>
+				</div> 
+				<div class="collapse navbar-collapse" id="navbar">
+					<ul class="nav pull-right navbar-nav" id="main_navigation_menu">
+						<li class="active"><a href="#">INICIO</a></li>
+						<li><a href="http://www.promotormicrotec.mx/smart/" target="_blank">FRANQUICIAS</a></li>
+						<li><a href="sucursales.html">SUCURSALES</a></li>
+						<li><a href="tienda_tmp.html">TIENDA</a></li>
+						<li><a href="nosotros.html">NOSOTROS</a></li>
+						<li><a href="bolsa.html">INTÉGRATE</a></li>
+						<li><a href="contacto.html">CONTACTO</a></li>
+						<li class="active"><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</nav> 
+	</header> 
+	<!-- FIN HEADER -->
+
+
+<!-- BOTONES SOCIALES -->
+ <div class="social">
+  <ul>
+   
+   <li>
+   <a href="#" id="btnPromociones" class="promociones"><h3 class="rotar90" style="margin-top: 165px; font-weight: 200;">Crédito&nbsp;Microtec</h3></a>
+   <div class="promociones-hover">
+    <center><h3>El celular  que prefieras <br>¡Págalo como quieras!</h3></center><br>
+    	<center>
+    	
+    	<!--
+            <div class="form-group formpro">
+              <input class="form-control input-lg required" type="text" id="nombre-promocion" name="nombre-promocion" class="form-control" placeholder="Nombre *" style="font-size: 18px; color: #111; width: 75%;"><br>
+              <input class="form-control input-lg required" type="text" id="correo-promocion" name="correo-promocion" class="form-control" placeholder="Correo electrónico *" style="font-size: 18px; color: #111; width: 75%;"><br>
+              <button class="btn btn-block btn-lg btn-success" id="btn-enviar-promocion" style="width: 75%;"><i class="icon icon-paper-plane"></i>Envíar</button>
+            </div>
+        -->
+        <br>
+       
+        </center><center><li class="active"><a href="credito.html" style="background-color: #5cb85c;"> <span style="font-size: 20px;">Más información</span></a></li>
+        
+        </center>
+   </div>
+   
+   
+   
+   <li><a href="https://www.facebook.com/MicrotecTelceI/" class="icon-facebook fa fa-facebook"></a></li>
+   <li><a href="https://twitter.com/MicrotecTelceI" class="icon-twitter fa fa-twitter"></a></li>
+   <li><a style="background: url(img/fondinsta.png)"  href="https://instagram.com/microtecoficial/" class="icon-instagram fa fa-instagram"></a></li>
+   <li id="wsapp"></li>
+  </ul>
+ </div>
+ <!-- FIN BOTONES SOCIALES -->
+
+	<!-- SLIDER INICIO -->
+	<div id="carousel" style="margin-top: 65px;">
+		<div id="inicio-slider" class="carousel slide" data-ride="carousel">
+			<ol class="carousel-indicators">
+				<li data-target="#inicio-slider" data-slide-to="0" class="active"></li>
+				<li data-target="#inicio-slider" data-slide-to="1"></li>
+				<li data-target="#inicio-slider" data-slide-to="2"></li>
+				<li data-target="#inicio-slider" data-slide-to="3"></li>
+				<!-- <li data-target="#inicio-slider" data-slide-to="4"></li>
+				<li data-target="#inicio-slider" data-slide-to="5"></li>
+				<li data-target="#inicio-slider" data-slide-to="6"></li> -->
+			</ol>
+			<div class="carousel-inner">
+				<div class="item active">
+					<center><img src="img/slider/banner_std_01.png" id="slide-img1"></center>
+				</div>
+				<div class="item">
+					<center><img src="img/slider/banner_std_02.png" id="slide-img2"></center>
+				</div>
+				<div class="item">
+					<center><img src="img/slider/banner_std_04.png" id="slide-img3"></center>
+				</div>
+				<div class="item">
+					<center><img src="img/slider/banner_std_05.png" id="slide-img4"></center>
+				</div>
+
+				<!-- <div class="item">
+					<center><img src="img/slider/9Web.png" id="slide-img5"></center>
+				</div>
+				<div class="item">
+					<center><img src="img/slider/10Web.png" id="slide-img6"></center>
+				</div>
+				<div class="item">
+					<center><img src="img/slider/11Web.png" id="slide-img7"></center>
+				</div> -->
+
+			</div>
+
+			<a class="left carousel-control" href="#inicio-slider" data-slide="prev" style="background:transparent;">
+				<span class="fa fa-angle-left" style="font-size: 100px; margin-top: 110px;"></span>
+			</a>
+			<a class="right carousel-control" href="#inicio-slider" data-slide="next" style="background:transparent;">
+				<span class="fa fa-angle-right" style="font-size: 100px; margin-top: 110px;"></span>
+			</a>
+		</div>
+	</div> 
+	<!-- FIN SLIDER INICIO -->
+
+	<section id="pagos">
+		
+		<div class="row" style="width: calc(100% + 15px); background-color: #f47832;">
+			<div class="col-xs-12 col-sm-4 col-md-4">
+				<div style="text-align: center;">
+					<a style="color: #FFF" href="http://www.promotormicrotec.mx/smart/" target="_blank"><h4 style="font-weight: 400;">PON TU PROPIA <strong>TIENDA</strong></h4>
+					</a>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4">
+				<div style="text-align: center;">
+				<a style="color: #FFF;" href="#" onclick="$('#modal-vt').nifty('show');"><h4 style="font-weight: 400;">VENDE <strong>TIEMPO AIRE</strong></h4></a>
+				</div>
+			</div>
+			<!--
+			<div class="col-xs-12 col-sm-4 col-md-4">
+				<div style="text-align: center;">
+				<a style="color: #FFF;" href="http://www.promotormicrotec.mx/"><h4 style="font-weight: 400;">INTEGRATE COMO <strong>PROMOTOR</strong></h4></a>
+				</div>
+			</div>
+			-->
+		</div>
+
+		<!-- SLIDER PAGOS TIPO MARQUESINA -->
+		<div style="background-color: #f2f2f2;">
+			<div class="text-center" style="padding:2% 0%">
+				<h1 style="text-align: center;">Elige tu forma de pago</h1>
+			</div>
+			<div id="jssor_1" style="position:relative; margin:0 auto; top:0px; left:0px; width:1000px; height:250px; overflow:hidden; visibility:hidden;" class="row">
+				<div data-u="loading" style="position:absolute;top:0px;left:0px;background-color:rgba(0,0,0,0.7);">
+					<div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
+					<div style="position:absolute; display:block; background:url('img/loading.gif') no-repeat center center; top:0px; left:0px; width:100%; height:100%;"></div>
+				</div>
+				<div data-u="slides" style="cursor:default; position:relative; top:0px; left:0px; width: 100%; height:250px; overflow:hidden;">
+					<div class="col-md-4 col-sm-4 col-xs-12 content text-center">
+						<h3><div style="background-image: url('img/pagos/planes.png'); width: 64px; height: 64px; display: inline-block; vertical-align: middle;"></div> Planes</h3>
+						<br>
+						<p style="font-size: 20px; text-align: justify; font-weight: 200;">
+							Estrena el mejor equipo, con los mejores beneficios de un plan.
+						</p>
+					</div>
+					<div class="col-md-4 col-sm-4 col-xs-12 content text-center">   
+						<h3><div style="background-image: url('img/pagos/apartado.png'); width: 64px; height: 64px; display: inline-block; vertical-align: middle;"></div> Apartado</h3>
+						<br>
+						<p style="font-size: 20px; text-align: justify; font-weight: 200;">Elige el equipo y apártalo, asegura el mejor precio y si al final quieres otro cámbialo.</p>
+					</div>
+					<div class="col-md-4 col-sm-4 col-xs-12 content text-center">
+						<h3><div style="background-image: url('img/pagos/decontado.png'); width: 64px; height: 64px; display: inline-block; vertical-align: middle;"></div> De contado</h3><br>
+						<p style="font-size: 20px; text-align: justify; font-weight: 200;">Estrena celular con el mejor precio en los mejores equipos.</p>
+					</div>
+					<div class="col-md-4 col-sm-4 col-xs-12 content text-center">
+						<h3><div style="background-image: url('img/pagos/12pagos.png'); width: 64px; height: 64px; display: inline-block; vertical-align: middle;"></div> 12 pagos</h3>
+						<br>
+						<p style="font-size: 20px; text-align: justify; font-weight: 200;">
+							Estrena celular de Inmediato y págalo en 12 cómodas mensualidades.
+						</p> 
+					</div>
+					<div class="col-md-4 col-sm-4 col-xs-12 content text-center">
+						<h3><div style="background-image: url('img/pagos/tarjpart.png'); width: 64px; height: 64px; display: inline-block; vertical-align: middle;"></div> Amigo Kit</h3>
+						<br>
+						<p style="font-size: 20px; text-align: justify; font-weight: 200;">
+							Disfruta de un amigo que siempre tiene las mejores promociones.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- SLIDER PAGOS TIPO MARQUESINA -->
+	</section>
+
+		<!-- MODAL SUBIR CV -->
+		<div class="md-modal colored-header custom-width md-effect-9" id="modal-vt">
+			<div class="md-content">
+				<div class="modal-header">
+					<h3>Vender Tiempo Aire</h3>
+					<button type="button" class="close" onclick="$('#modal-vt').nifty('hide');">&times;</button>
+				</div>
+				<div class="modal-body form">
+					<div class="form-group">
+						<label>Nombre</label> <input id="nom" name="nom" type="text" class="form-control input-lg" placeholder="Nombre completo">
+					</div>
+					<div class="form-group">
+						<label>Apellido Paterno</label> <input id="apat" name="apat" type="text" class="form-control input-lg" placeholder="Apellido Paterno">
+					</div>
+					<div class="form-group">
+						<label>Apellido Materno</label> <input id="amat" name="amat" type="text" class="form-control input-lg" placeholder="Apellido Materno">
+					</div>
+					<div class="form-group">
+						<label>Tel&eacute;fono Celular</label> <input id="cel" name="cel" type="text" onKeyPress="return soloNum(event)" maxlength="10" minlength="10" class="form-control input-lg" placeholder="Celular (10 Digitos)">
+					</div>
+					<div class="form-group">
+						<label>Correo</label> <input id="email" name="email" type="text" class="form-control input-lg" placeholder="email@mail.com">
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-lg" onclick="$('#modal-vt').nifty('hide');">Cancelar</button>
+					<button id="btn-Aceptar" type="button" class="btn btn-success btn-lg">Aceptar</button>
+				</div>
+			</div>
+		</div>
+		<div class="md-overlay"></div>
+
+	<!-- DISPOSITIVOS SLIDER -->
+	<section id="slider">
+		<div class="container-full" style="background-color: #fcfcfc;">
+			<div class="slider">
+				<div id="main-slider" class="carousel slide carousel-fade">
+					<div class="carousel-inner">
+						<div class="active item">
+							<div class="container slide-element">
+
+								<div class="device">
+									<img src="img/equipos/iphone_x.png" >
+									<div class="content_slide">
+										<h1><span class="device-modelo">Apple iPhone X</span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: 5.8 Pulgadas<br>
+											Camara Dual: 12 / 7 Mpx <br>
+											Memoria: 64/256 Gb<br>
+											iOS 11
+										</p>
+									</div>
+								</div>
+
+								<div class="device2">
+									<img src="img/equipos/iphone_8.png">
+									<div class="content_slide">
+										<h1><span class="device-modelo">Apple iPhone 8</span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: 4.7 Pulgadas<br>
+											Camara Dual: 12 / 7 Mpx <br>
+											Memoria: 64/256 Gb<br>
+											iOS 11
+										</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="container slide-element">
+								<div class="device">
+									<img src="img/equipos/samsung_s8.png" style="margin-top: -7%;">
+									<div class="content_slide">
+										<h1><span>Samsung S8 </span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: 5.8 Pulgadas<br>
+											Camara: 12 / 8 Mpx <br>
+											Memoria: 64 Gb<br>
+											Versi&oacute;n: Android 7.0
+										</p>
+									</div>
+								</div>
+
+								<div class="device2">
+									<img src="img/equipos/samsung_note_8.png" >
+									<div class="content_slide">
+										<h1><span class="device-modelo">Samsung Note 8</span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: 6.3 Pulgadas<br>
+											Camara Dual: 12 / 7 Mpx <br>
+											Memoria: 64 Gb<br>
+											Versi&oacute;n: Android 7.1.1
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="container slide-element">
+								<div class="device">
+									<img src="img/equipos/moto_g5_plus.png" >
+									<div class="content_slide">
+										<h2></h2>
+										<h1><span>Moto G5 Plus</span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: 5 Pulgadas<br>
+											Camara: 13 / 5 Mpx <br>
+											Memoria: 32 Gb<br>
+											Versi&oacute;n: Android 7.1.1
+										</p>
+									</div>
+								</div>
+
+								<div class="device2">
+									<img src="img/equipos/moto_c4g.png" >
+									<div class="content_slide">
+										<h2></h2>
+										<h1><span>Moto C4 G</span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: 5 Pulgadas<br>
+											Camara: 5 / 2 Mpx <br>
+											Memoria: 16 Gb<br>
+											Versi&oacute;n: Android 7.1.1
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item">
+							<div class="container slide-element">
+								<div class="device">
+									<img src="img/equipos/samsung_grand_prime_plus.png" >
+									<div class="content_slide">
+										<h1><span>Samsung Grand Prime +</span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: 5 Pulgadas<br>
+											Camara: 8 Mpx <br>
+											Memoria: 8 Gb<br>
+											Versi&oacute;n: Android 6.0
+										</p>
+									</div>
+								</div>
+
+								<div class="device2">
+									<img src="img/equipos/nokia3.png" style="margin-top: -7%;">
+									<div class="content_slide">
+										<h1><span>Nokia 3</span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: 5 Pulgadas<br>
+											Camara: 8 / 8 Mpx <br>
+											Memoria: 16 Gb<br>
+											Versi&oacute;n: Android 7.1.1
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="item">
+							<div class="container slide-element">
+								<div class="device">
+									<img src="img/equipos/nokia_3310.png" style="margin-top: -5%;">
+									<div class="content_slide">
+										<h1><span>Nokia 3310</span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: 2.4 Pulgadas<br>
+											Camara: 2 Mpx <br>
+											Memoria: 16 Gb<br>
+										</p>
+									</div>
+								</div>
+								<div class="device2">
+									<img src="img/equipos/yolo_nano.png">
+									<div class="content_slide">
+										<h1><span>Yolo Nano</span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: .66 Pulgadas<br>
+											Camara: S/C <br>
+											Memoria: 32 Gb<br>
+											Versi&oacute;n: MP3
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+		
+						<div class="item">
+							<div class="container slide-element">
+								<div class="device">
+									<img src="img/equipos/shock_5.png">
+									<div class="content_slide">
+										<h1><span class="device-modelo">RT Shock 5</span></h1>
+										<p class="device-descripcion" style="color: #222"> 
+											Pantalla: 4.5 Pulgadas<br>
+											Camara: 5 Mpx <br>
+											Memoria: 4 Gb<br>
+											Versi&oacute;n: Android 5.1
+										</p>
+									</div>
+								</div>
+								<div class="device2">
+									<img src="img/equipos/nokia_5.png">
+									<div class="content_slide">
+										<h2></h2>
+										<h1><span>Nokia 5</span></h1>
+										<p class="device-descripcion" style="color: #222">
+											Pantalla: 5.2 Pulgadas<br>
+											Camara: 13 / 8 Mpx <br>
+											Memoria: 16 Gb<br>
+											Versi&oacute;n: Android 7.1.1
+										</p>
+									</div>
+								</div>
+								
+							</div>
+						</div>	
+					</div> 
+
+					<a class="carousel-control left" href="#main-slider" data-slide="prev"><i class="fa fa-angle-left" style="color: #000;"></i></a>
+					<a class="carousel-control right" href="#main-slider" data-slide="next"><i class="fa fa-angle-right" style="color: #000;"></i></a>
+
+				</div>
+			</div>
+		</div>
+	</section> 		
+	<!-- FIN DISPOSITIVOS SLIDER -->	
+
+	<!-- PROMOCIONES SLIDER  -->
+	<section>
+		<div class="container-full">
+			<div class="bm-remove animate" data-anim-type="fadeInLeft">
+				<div class="carousel slide" id="promos-slider">
+					<div class="carousel-inner">
+						
+						<!-- <div class="item active" id="slide-1">
+							<div class="container">
+								<div class="row bm-remove animate" data-anim-type="zoomInUp" style="padding-top: 100px;">
+									<div class="about_content">
+										<div class="col-md-6">
+											<div class="imac">
+												<img src="img/planes/plan_1500_moto_c4g.png" class="max">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="web_content">
+												<h1>Plan TELCEL MAX SIN L&Iacute;MITE 1500</h1>
+
+												<p>Contrata un plan <strong>TMSL 1500</strong> y ll&eacute;vate un Moto C 4g con llamadas y mensajes ilimitados, 1000 mb para redes sociales y y DOBLE DE MEGAS (3000 mb) para navegar hasta el 21 de Enero.</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="item" id="slide-2">
+							<div class="container">
+								<div class="row bm-remove" style="padding-top: 100px;">
+									<div class="about_content">
+										<div class="col-md-6">
+											<div class="web_content">
+												<h1>Plan TELCEL MAX SIN L&Iacute;MITE 2000</h1>
+
+												<p>Contrata un plan <strong>TMSL 2000</strong> y ll&eacute;vate un iPhone SE de 32 gb con llamadas y mensajes ilimitados, 1000 mb para redes sociales y y DOBLE DE MEGAS (4000 mb) para navegar hasta el 21 de Enero.</p>
+											</div>	
+										</div>
+										<div class="col-md-6">
+											<div class="imac">
+												<img src="img/planes/plan_2000_iphone_se32.png" class="max">
+											</div>
+										</div>
+									</div>
+								</div>												
+							</div>
+						</div> -->
+
+						<div class="item active" id="slide-1">
+							<div class="container">
+								<div class="row bm-remove" style="padding-top: 100px;">
+									<div class="about_content">
+										<div class="col-md-6">
+											<div class="imac">
+												<img src="img/planes/plan_3000.jpg" class="max">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="web_content">
+												<h1>Plan TELCEL MAX SIN L&Iacute;MITE 3000</h1>
+												<p>Contrata un plan <strong>TMSL 3000</strong> y ll&eacute;vate un Lg K4 Lite con llamadas y mensajes ilimitados, redes sociales ilimitadas y DOBLE DE MEGAS (6,000 mb) para navegar por promoci&oacute;n.</p>
+											</div>
+										</div>
+									</div>
+								</div>												
+							</div>
+						</div>
+
+						<div class="item" id="slide-1">
+							<div class="container">
+								<div class="row bm-remove" style="padding-top: 100px;">
+									<div class="about_content">
+										<div class="col-md-6">
+											<div class="web_content">
+												<h1>Plan TELCEL MAX SIN LÍMITE 5000</h1>
+
+												<p>Contrata un plan <strong>TMSL 5000</strong> y ll&eacute;vate un Alcatel U5 Plus con llamadas y mensajes ilimitados, redes sociales ilimitadas y DOBLE DE MEGAS (10,000 mb) para navegar por promoci&oacute;n.</p>
+											</div>	
+										</div>
+										<div class="col-md-6">
+											<div class="imac">
+												<img src="img/planes/plan_5000.jpg" class="max">
+											</div>
+										</div>
+									</div>
+								</div>												
+							</div>
+						</div>
+
+						<div class="item" id="slide-3">
+							<div class="container">
+								<div class="row bm-remove" style="padding-top: 100px;">
+									<div class="about_content">
+										<div class="col-md-6">
+											<div class="imac">
+												<img src="img/planes/plan_6000.jpg" class="max">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="web_content">
+												<h1>Plan TELCEL MAX SIN L&Iacute;MITE 6000</h1>
+												<p>Contrata un plan <strong>TMSL 6000</strong> y ll&eacute;vate un Samsung A3 2017 con llamadas y mensajes ilimitados, redes sociales ilimitadas y DOBLE DE MEGAS (12,000 mb) para navegar por promoci&oacute;n.</p>
+											</div>
+										</div>
+									</div>
+								</div>												
+							</div>
+						</div>
+
+						<!-- <div class="item" id="slide-6">
+							<div class="container">
+								<div class="row bm-remove" style="padding-top: 100px;">
+									<div class="about_content">
+										<div class="col-md-6">
+											<div class="web_content">
+												<h1>Plan TELCEL MAX SIN L&Iacute;MITE 6500</h1>
+
+												<p>Contrata un plan <strong>TMSL 6500</strong> y ll&eacute;vate un iPhone 8 de 64 gb con llamadas y mensajes ilimitados, redes sociales ilimitadas y y DOBLE DE MEGAS (13,000 mb) para navegar hasta el 21 de Enero.</p>
+											</div>	
+										</div>
+										<div class="col-md-6">
+											<div class="imac">
+												<img src="img/planes/plan_6500_iphone_8_64.png" class="max">
+											</div>
+										</div>
+									</div>
+								</div>												
+							</div>
+						</div> -->					
+
+					</div>
+
+					<a class="left carousel-control" data-slide="prev" href="#promos-slider" style="background: transparent;"><span class="fa fa-angle-left" style="font-size: 100px; margin-top: 140px;color: #000;"></span></a>
+					<a style="background:transparent;" class="right carousel-control" data-slide="next" href="#promos-slider"><span class="fa fa-angle-right" style="font-size: 100px; margin-top: 140px;color: #000;"></span></a>
+
+				</div>
+			</div>
+		</div>
+	</section> 
+	<!-- FIN PROMOCIONES SLIDER -->
+
+
+	<!-- INICIO TESTIMONIOS SLIDER -->
+	<section id="contact">
+		<div class="container-full" style="background-image: url('img/testimonios.jpg'); background-size: cover;">
+			<div class="bm-remove animate" data-anim-type="fadeInLeft">
+				<div class="carousel slide" id="testimonios-slider">
+					<div class="carousel-inner">
+						<div class="item active" id="slide1">
+							<div class="container">
+								<div class="content text-center">
+									<a href="#"><i class="fa fa-facebook"></i></a>
+
+									<p>“Excelente trato, servicio y disponibilidad, Gracias. En la tienda todo muy bien y en línea excelente servicio.”</p>
+									<p>Saul Erick Sanchez Caballero</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="item" id="slide2">
+							<div class="container">
+								<div class="content text-center">
+									<a href="#"><i class="fa fa-twitter"></i></a>
+
+									<p>“Gracias por la excelente atención, me parecio muy buena la atención.”</p>
+									<p>Andres Gomez</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="item" id="slide3">
+							<div class="container">
+								<div class="content text-center">
+									<a href="#"><i class="fa fa-twitter"></i></a>
+
+									<p>“Muy buen servicio, los recomiendo, no sólo tienen muy buena variedad de teléfonos, te atienden y te explican bien y te sugieren lo que más te acomode (compré un plan). Muy recomendable.”</p>
+									<p>Javier Martínez de Escobar</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<a class="left carousel-control" data-slide="prev" href="#testimonios-slider"><span class="icon-prev"></span></a>
+					<a class="right carousel-control" data-slide="next" href="#testimonios-slider"><span class="icon-next"></span></a>
+
+				</div>
+			</div>
+		</div>
+	</section> 
+	<!-- FIN TESTIMONIOS SLIDER-->
+
+	<!-- APLICACIONES  -->
+	<section style="background-color: #fcfcfc;">
+		<div class="container-full" style="background:url(img/f_aps.png); background-size: cover; margin-top: 50px;">
+							<div class="col-md-12">
+						<div class="text">
+							<h1 class="section-title" style="color: #222">Nuestras Aplicaciones</h1>
+							<h3 class="section-subtitle" style="color: #222">Disponible en Android / iOS</h3>
+						</div>
+					</div>
+			<div class="container">
+				<div class="row padding bm-remove animate" data-anim-type="fadeInDownLarge" style="margin-top: -100px;">
+					<ul>
+						<li class="col-xs-12 col-sm-12">
+							<div class="text-center">
+								<h3 style="color: #222">Franquicias</h3>
+								<div class="web_content">
+									<p style="color: #000;">Haz que tu negocio sea mas productivo, complementa tu negocio de cualquier giro con 	productos de telefonía celular como Tiempo Aire, Teléfonos celulares, Chips, Accesorios.</p>
+								</div>
+								<div align="center" style="margin-bottom: 2%">
+									<a href="franquicias.html">
+										<img src="img/i_microfra.png">
+									</a>
+								</div>
+								<div class="col-xs-6 col-sm-6" align="right">
+									<a href="https://play.google.com/store/apps/details?id=com.microtec.microfra&hl=es" target="_blank">
+										<img src="img/android.png">
+									</a>
+								</div>
+								<div class="col-xs-6 col-sm-6">
+									<a href="https://itunes.apple.com/mx/app/franquicias-microtec/id1111276887?l=es&mt=8" target="_blank">
+										<img src="img/ios.png">
+									</a>
+								</div>
+							</div>
+						</li>
+						<!--
+						<li class="col-xs-12 col-sm-6">
+							<div class="text-center">
+								<h3 id="promotec-title">PromoTec</h3>
+								<div class="web_content">
+									<p id="promotec-text">Con esta aplicación tendrás una tienda móvil en tu Celular o Tablet, podrás vender prácticamente todos los productos y servicios de telefonía celular.</p>
+								</div>
+								<div align="center" style="margin-bottom: 2%">
+									<a href="http://www.promotormicrotec.mx">
+										<img src="img/i_promotec.png" alt="">
+									</a>
+								</div>
+								<div class="col-xs-6 col-sm-6" align="right">
+									<a href="https://play.google.com/store/apps/details?id=com.promotormicrotec.promotec&hl=es" target="_blank">
+									<img src="img/android.png">
+								</div>
+								<div class="col-xs-6 col-sm-6">
+									<a href="https://itunes.apple.com/mx/app/promotec/id1093302288?mt=8" target="_blank">
+										<img src="img/ios.png">
+									</a>
+								</div>
+							</div>
+						</li>
+						-->
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- FIN APLICACIONES -->
+
+	<!--  PIE DE PAGINA -->
+	<footer id="footer">
+		<div class="container-full">
+			<div class="container">
+				<div class="bm-remove animate" data-anim-type="fadeInDownLarge">
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						<div class="float_left">
+							<img src="img/distri.png">
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						<div class="float_right">
+							<p>© Microtecnología del Golfo S.A. de C.V.</p>
+						</div>
+					</div>
+				</div>
+				<div class="span1">
+					<a id="gototop" class="gototop pull-right" href="#"><i class="icon-angle-up"></i></a>
+				</div>
+			</div>
+		</div>
+	</footer> 		
+	<!-- FIN PIE DE PAGINA -->
+	<!-- este escript es importante es el que permite la comunicacion del chat, es el socket de firebase -->
+	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+
+	<!--<script src="js/vendor/jquery-1.10.2.min.js"></script>-->
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="js/plugins.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/animations.min.js"></script>
+	<script src="js/jquery.scrollUp.min.js"></script>
+	<script src="js/lightbox.min.js"></script>
+
+	<script src="js/visible.min.js"></script>
+	<script src="js/jquery.nav.js"></script>
+
+	<!-- Sweet Alert -->
+	<script src="js/sweetalert.min.js"></script>
+		
+	<script src="js/modal/classie.js"></script>
+	<script src="js/modal/modalEffects.js"></script>
+	<script src="js/nifty.js"></script>
+	<script src="js/inicio.js"></script>
+
+	<script src="js/jssor.slider-23.1.6.min.js"></script>
+
+	<!-- Script michael para Chat microtec -->
+	<script src="js/popover/popover.js"></script>
+	<script src="js/alertify/alertify.min.js"></script>
+	<script src="js/chat-microtec.js"></script>
+
+
+	<!-- final script michael chat-->
+	<script type="text/javascript">
+		isMobile();
+		function isMobile(){
+			var device = navigator.userAgent;
+		    if (device.match(/Iphone/i)|| device.match(/Ipod/i)|| device.match(/Android/i)|| device.match(/J2ME/i)|| device.match(/BlackBerry/i)|| device.match(/iPhone|iPad|iPod/i)|| device.match(/Opera Mini/i)|| device.match(/IEMobile/i)|| device.match(/Mobile/i)|| device.match(/Windows Phone/i)|| device.match(/windows mobile/i)|| device.match(/windows ce/i)|| device.match(/webOS/i)|| device.match(/palm/i)|| device.match(/bada/i)|| device.match(/series60/i)|| device.match(/nokia/i)|| device.match(/symbian/i)|| device.match(/HTC/i))
+		 	{ 
+		 		$("#wsapp").html('<a href="https://api.whatsapp.com/send?l=es&amp;phone=5212224142048&text=Hola estoy interesado en" class="icon-whatsapp fa fa-whatsapp"></a>');
+			}
+			else
+			{
+				$("#wsapp").html('<a href="https://web.whatsapp.com/send?l=es&phone=5212224142048&text=Hola estoy interesado en" class="icon-whatsapp fa fa-whatsapp"></a>');
+			}
+		}
+
+		function chatFB(){
+		if($('#f-chat-conent').css('display') == 'none'){
+   			$('#f-chat-conent').show();
+   		}
+   		else{
+   			$('#f-chat-conent').hide();
+   		}
+	}
+        jQuery(document).ready(function ($) {
+            var jssor_1_options = {
+              $AutoPlay: 1,
+              $AutoPlaySteps: 1,
+              $SlideDuration: 160,
+              $SlideWidth: 330,
+              $SlideSpacing: 10,
+              $Cols: 3,
+              $ArrowNavigatorOptions: {
+                $Class: $JssorArrowNavigator$,
+                $Steps: 1
+              },
+              $BulletNavigatorOptions: {
+                $Class: $JssorBulletNavigator$,
+                $SpacingX: 3,
+                $SpacingY: 3
+              }
+            };
+
+            var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+            function ScaleSlider() {
+                var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+                if (refSize) {
+                    refSize = Math.min(refSize, 1000);
+                    jssor_1_slider.$ScaleWidth(refSize);
+                }
+                else {
+                    window.setTimeout(ScaleSlider, 100);
+                }
+            }
+            ScaleSlider();
+            $(window).bind("load", ScaleSlider);
+            $(window).bind("resize", ScaleSlider);
+            $(window).bind("orientationchange", ScaleSlider);
+        });
+    </script>
+
+    </body>
+</html>

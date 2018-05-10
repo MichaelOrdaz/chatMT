@@ -30,6 +30,8 @@ $(document).ready(function(){
 	});
 */
 
+
+
 //salir de sesion
 	$('#logout').click(function(event) {
 		event.preventDefault();
@@ -122,63 +124,7 @@ $(document).ready(function(){
 	  		//cambiar el nombre de la conmversacion al del usuario
 	  		$('#containerChats #'+info.id+ '[data-toggle="popover"]');
 	  		$('#containerChats #'+info.id+ ' .panel-heading a').text(info.nombre);
-
-	  		////////////////////////
-	  		if( info.origen === "Portal Web" ){
-	  			var contentPopover = "<p> <b> correo:</b> "+info.correo+"</p>"+
-	  			"<p> <b> origen:</b> "+info.origen+"</p>";
-	  			//añado el popover
-	  			$('#containerChats #'+info.id+ ' .panel-heading a').popover({container: 'body', title: "<b>"+info.nombre+"</b>", content: contentPopover, trigger: 'hover', html: true, placement: 'top'});
-	  		
-	  		}
-	  		else if( info.origen === "Samtec" ){
-
-	  			//peticion para recuperar los datos del usuario de samtec
-	  			$.ajax({
-					url: "php/peticionesManager.php",
-					type: "POST",
-					dataType: "json",
-					data: {'fn': 'getUserSamtec', 'username': info.usuario }
-					//async: false
-				}).done(function(json){
-
-					if(json.status === 1){
-						//var contentPopover = "Si debe ejecutarlo";
-						
-						var contentPopover = "<p> <b> correo:</b> "+ json.datos[0].email +"</p>"+
-	  					"<p> <b> origen:</b> "+info.origen+"</p>"+
-	  					"<p> <b> celular:</b> "+json.datos[0].celular+"</p>"+
-	  					"<p> <b> Sucursal:</b> "+json.datos[0].sucursal+"</p>"+
-	  					"<p> <b> Distribuidor:</b> "+json.datos[0].dis+"</p>"+
-	  					"<p> <b> Tienda:</b> "+json.datos[0].tipo+"</p>";
-						
-					}
-					else{
-						var contentPopover = "<p> <b>No se encontrarón datos</b> </p>";
-					}
-
-					//añado el popover
-	  				$('#containerChats #'+info.id+ ' .panel-heading a').popover({container: 'body', title: "<b>"+info.nombre+"</b>", content: contentPopover, trigger: 'hover', html: true, placement: 'top'});
-	  		
-
-				}).fail(function(jqXHR, textStatus, errorThrown){
-					var contentPopover = "<p> <b>Error al obtener los datos</b> </p>";
-					console.error(jqXHR);
-					console.error(textStatus);
-				});
-	  		}
-	  		else if( info.origen === "Control Movil" ){
-	  			var contentPopover = "<p> <b> correo:</b> "+info.correo+"</p>"+
-	  			"<p> <b> origen:</b> "+info.origen+"</p>";
-	  			//añado el popover
-	  			$('#containerChats #'+info.id+ ' .panel-heading a').popover({container: 'body', title: "<b>"+info.nombre+"</b>", content: contentPopover, trigger: 'hover', html: true, placement: 'top'});
-	  		
-	  		}
-			
-	  		//añado el popover
-	  		//$('#containerChats #'+info.id+ ' .panel-heading a').popover({container: 'body', title: "<b>"+info.nombre+"</b>", content: contentPopover, trigger: 'hover', html: true, placement: 'top'});
-	  		//////////////////////////
-	  		//$('#containerChats #'+info.id+ ' .panel-heading a').popover({container: 'body', title: info.nombre, content: info.correo, trigger: 'hover', placement: 'top'});
+	  		$('#containerChats #'+info.id+ ' .panel-heading a').popover({container: 'body', title: info.nombre, content: info.correo, trigger: 'hover', placement: 'top'});
 	  		
 	  		//agrego el evento click de cerrar al panel
   			addClickClose('div#'+info.id+' div.panel-heading > span.cerrar', info.id);
@@ -218,20 +164,20 @@ var ajaxChatDetenidos = function(){
 
 				tbody += '<tr style="background: '+bg+'"><td>'+chat.nombre+'</td>'+'<td>'+chat.ultimoMsg+'</td>'+
 				'<td>'+chat.origen+'</td>'+
-				'<td><button type="button" class="btn btn-primary initChat" data-chat="'+chat.userId+'" data-correo="'+chat.correo+'" data-origen="'+chat.origen+'" data-username="'+chat.usuario+'" >Chatear</button></td></tr>';
+				'<td><button type="button" class="btn btn-primary initChat" data-chat="'+chat.userId+'" data-correo="'+chat.correo+'">Chatear</button></td></tr>';
 			
 
 			});
 			$('#chats-detenidos tbody').html( tbody );
 		
-			$('#badgeChat').html( (json.chats.length > 0 ? json.chats.length : "0") );
+			$('#badgeChat').html( (json.chats.length > 0 ? json.chats.length : 0) );
 			//console.log( 'tamaño de cuantos chat son contenstar ' + json.chats.length );
 			initChat();
+
 		}
 		else{
 			$('#chats-detenidos tbody').empty();
 			$('#chats-detenidos tbody').html('<tr> <td colspan="4"> Sin Conversaciones </td> </tr>');
-			$('#badgeChat').html( "0" );
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown){
 		console.error(jqXHR);
@@ -244,77 +190,27 @@ var ajaxChatDetenidos = function(){
 var initChat = function(){
 	
 	$('button.initChat').on('click', ev=>{
-		var idUser = ev.target.dataset.chat;//rescato el id del usuarioen mi tabla usertemporal
-		var email = ev.target.dataset.correo;//recupero el correo con el que se registro. aunque si es se registra desde samtec, pues el usuario tendra
-		//como correo un valor de automatico.
-		var origenChat = ev.target.dataset.origen;//recupero el origen del chat, puede ser portal web, samtec o control movil.
-		var username = ev.target.dataset.username;//recupero el origen del chat, puede ser portal web, samtec o control movil.
+		var idUser = ev.target.dataset.chat;
+		var email = ev.target.dataset.correo;
 		console.log( idUser);
-  		var newChat = nodoChatSoporte(idUser);//hago el nodo de soporte con el id del usuario de la base de datos.
-  		$('#containerChats').append(newChat);//añado el nodo al DOM
-  		ev.target.disabled = true;//desabilito el boton y le doy una animacion hasta desaparecerlo.
-  		ev.target.parentNode.parentNode.style.opacity = '0'; 
+  		var newChat = nodoChatSoporte(idUser);
+  		$('#containerChats').append(newChat);
+  		ev.target.disabled = true;
+  		ev.target.parentNode.parentNode.style.opacity = '0';
   		ev.target.parentNode.parentNode.style.transition = 'all ease 1s';
   		ev.target.parentNode.parentNode.addEventListener('transitionend', ()=>{
   			ev.target.parentNode.parentNode.style.display = 'none';
   		}, false);
 
-  		var nombreCliente = ev.target.parentNode.parentNode.firstElementChild.textContent;//recupero el nombre del cliente en la tabla.
-  		var selector = 'div#'+idUser+' .form-chat';//creo el selector para el formulario
-  		var formulario = nodoFormChat();//creo el nodo del formulario del chat
-  		$('#containerChats #'+idUser+' .panel-body .chat-input').html(formulario);//lo añado al panel
+  		var nombreCliente = ev.target.parentNode.parentNode.firstElementChild.textContent;
+  		var selector = 'div#'+idUser+' .form-chat';
+  		var formulario = nodoFormChat();
+  		$('#containerChats #'+idUser+' .panel-body .chat-input').html(formulario);
 
-  		//cambiar el nombre de la conmversacion al del usuario y añadir el popover.
+  		//cambiar el nombre de la conmversacion al del usuario
   		$('#containerChats #'+idUser+ '[data-toggle="popover"]');
   		$('#containerChats #'+idUser+ ' .panel-heading a').text(nombreCliente);
-
-  		if( origenChat === "Portal Web" ){
-  			var contentPopover = "<p> <b> correo:</b> "+email+"</p>"+
-  			"<p> <b> origen:</b> "+origenChat+"</p>";
-  			//añado el popover
-  			$('#containerChats #'+idUser+ ' .panel-heading a').popover({container: 'body', title: "<b>"+nombreCliente+"</b>", content: contentPopover, trigger: 'hover', html: true, placement: 'top'});
-  		}
-  		else if( origenChat === "Samtec" ){
-
-  			//peticion para recuperar los datos del usuario de samtec
-  			$.ajax({
-				url: "php/peticionesManager.php",
-				type: "POST",
-				dataType: "json",
-				data: {'fn': 'getUserSamtec', 'username': username }
-				//async: false
-			}).done(function(json){
-
-				if(json.status === 1){
-					var contentPopover = "<p> <b> correo:</b> "+ json.datos[0].email +"</p>"+
-  					"<p> <b> origen:</b> "+origenChat+"</p>"+
-  					"<p> <b> celular:</b> "+json.datos[0].celular+"</p>"+
-  					"<p> <b> Sucursal:</b> "+json.datos[0].sucursal+"</p>"+
-  					"<p> <b> Distrubuidor:</b> "+json.datos[0].dis+"</p>"+
-  					"<p> <b> Tienda:</b> "+json.datos[0].tipo+"</p>";
-				}
-				else{
-					var contentPopover = "<p> <b>No se encontrarón datos</b> </p>";
-				}
-				//añado el popover
-  				$('#containerChats #'+idUser+ ' .panel-heading a').popover({container: 'body', title: "<b>"+nombreCliente+"</b>", content: contentPopover, trigger: 'hover', html: true, placement: 'top'});
-			
-			}).fail(function(jqXHR, textStatus, errorThrown){
-				var contentPopover = "<p> <b>Error al obtener los datos</b> </p>";
-				console.error(jqXHR);
-				console.error(textStatus);
-			});
-
-  		}
-  		else if( origenChat === "Control Movil" ){
-  			var contentPopover = "<p> <b> correo:</b> "+email+"</p>"+
-  			"<p> <b> origen:</b> "+origenChat+"</p>";
-  			//añado el popover
-  			$('#containerChats #'+idUser+ ' .panel-heading a').popover({container: 'body', title: "<b>"+nombreCliente+"</b>", content: contentPopover, trigger: 'hover', html: true, placement: 'top'});
-  		}
-		
-  		//añado el popover
-  		//$('#containerChats #'+idUser+ ' .panel-heading a').popover({container: 'body', title: "<b>"+nombreCliente+"</b>", content: contentPopover, trigger: 'hover', html: true, placement: 'top'});
+  		$('#containerChats #'+idUser+ ' .panel-heading a').popover({container: 'body', title: nombreCliente, content: email, trigger: 'hover', placement: 'top'});
   		
   		//agrego el evento click de cerrar al panel
   		addClickClose('div#'+idUser+' div.panel-heading > span.cerrar', idUser);
@@ -330,7 +226,7 @@ var initChat = function(){
 			//el ajax lo hago simplemente para amarrar al cliente con un usuario de Soporte
 			//aqui tambien guardo en localStorage la informacion del cliente.
 			var paneles = JSON.parse( localStorage.getItem('paneles') );
-			paneles.paneles.push( {nombre: nombreCliente, id: idUser, correo: email, origen: origenChat, usuario: username} );
+			paneles.paneles.push( {nombre: nombreCliente, id: idUser, correo: email} );
 			localStorage.setItem('paneles', JSON.stringify(paneles) );
 
 		}).fail(function(jqXHR, textStatus, errorThrown){
