@@ -1,0 +1,139 @@
+#chat-microtec{
+	position: fixed;
+	width: 320px;
+	right: 72px;
+	bottom: -295px;
+	height: 350px;
+	box-shadow: 0 0 6px 0px black;
+	margin: 0;
+	border-bottom: none;
+	z-index: 500;
+}
+
+#chat-microtec .alert{
+	transform: scale(.9);
+}
+
+#chat-microtec .panel-heading{
+	cursor: pointer;
+	font-size: 120%;
+	padding: 15px;
+}
+
+#chat-microtec .bg-microtec{
+	background: rgb(44, 56, 108);
+}
+
+
+#chat-microtec .chat-input input{
+	width: 205px;
+}
+
+#chat-microtec .chat-input textarea{
+	resize: none;
+	max-height: 3rem;
+	overflow-y: auto;
+	width: 205px;
+}
+
+#chat-microtec .btn-circle{
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-o-border-radius: 50%;
+	-ms-border-radius: 50%;
+}
+
+#chat-microtec .chat-input{
+	position: absolute;
+	bottom: 3px;
+	left: inherit;
+	border-top: 2px gray solid;
+	padding-top: 2px;
+}
+
+#chat-microtec .chat-content{
+	overflow-y: auto;
+	height: 225px;
+	transform: scale(.9);
+	/*position: relative;*/
+}
+
+#chat-microtec .chat-content .microtec img{
+	width: 40px;
+	height: 40px;
+}
+#chat-microtec .chat-content .fecha{
+	display: block;
+	text-align: right;
+	width: 100%;
+	font-style: italic;
+	font-size: .7em;
+	text-decoration: none !important;
+}
+
+#chat-microtec .user, #chat-microtec .microtec .media-body{
+	word-wrap: break-word;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-o-border-radius: 4px;
+	-ms-border-radius: 4px;
+	padding: 3px;
+}
+
+#chat-microtec .microtec .media-body{
+	color: white;
+}
+
+#chat-microtec .user, #chat-microtec .microtec{
+	margin: 4px 0;
+}
+
+#chat-microtec .ml{
+	margin-left: 2px;
+}
+
+#chat-microtec .userAdjunto{
+	background: #EBEBEB;
+	font-weight: bold;
+	color: navy;
+}
+#chat-microtec .userAdjunto a{
+	text-decoration: underline;
+	cursor: pointer;
+}
+#chat-microtec .user{
+	color: black;
+}
+/*
+#chat-microtec .userAdjunto a:after{
+	content: url("../imgs/iconfile2.png");
+}
+*/
+#chat-microtec .media-body a{
+	text-decoration: underline;
+	cursor: pointer;
+	font-weight: bold;
+}
+/*
+#chat-microtec .media-body a:after{
+	content: url("../imgs/iconfile.png");
+}
+*/
+
+#chat-microtec .text-white{
+	color: white !important;
+}
+
+#chat-microtec .text-center{
+	text-align: center;
+}
+
+#chat-microtec .boxShadow{
+	box-shadow: 0 0 6px 0 gray;
+	-webkit-box-shadow: 0 0 6px 0 gray;
+	-moz-box-shadow: 0 0 6px 0 gray;
+	-ms-box-shadow: 0 0 6px 0 gray;
+	-o-box-shadow: 0 0 6px 0 gray;
+}

@@ -63,12 +63,9 @@ function registrarSamtec($post){
 
 function checkSession($var=""){
 	session_start();
-	if( isset( $_SESSION['idUser'] ) || isset( $var['storageId'] ) ){
+	if( isset( $_SESSION['idUser'] ) ){
 		
-		if( isset($_SESSION['idUser']) ){ $id=$_SESSION['idUser']; }
-		else{ $id = $var['storageId']; }
-		
-		//$id = $_SESSION['idUser'];
+		$id = $_SESSION['idUser'];
 		//si esta iniciada verificar la fecha y hora del ultimo mensaje que se mando
 		$chat = new Chat();
 		$lastMsg = $chat->getLast( $id );
@@ -118,17 +115,11 @@ function checkSessionSamtec($var=""){
 
 function logOut($var = ""){
 	session_start();
-	if( isset( $_SESSION['idUser'] ) ){
-		$_SESSION = array();
-		if (session_destroy() )
-			return array( 'status'=> 1, 'accion' => 'sesion destruida' );
-		else
-			return array( 'status'=> 0, 'accion' => 'error al destruir sesion' );	
-	}
-	else{
-		//si es falso
-		return array('status'=>1, 'accion'=>'destruir localmente'); 
-	}
+	$_SESSION = array();
+	if (session_destroy() )
+		return array( 'status'=> 1, 'accion' => 'sesion destruida' );
+	else
+		return array( 'status'=> 0, 'accion' => 'error al destruir sesion' );
 }
 
 
@@ -138,7 +129,7 @@ function enviarMsg($post){
 	$chat->file = null;
 	$chat->ruta = null;
 	$chat->mensaje = $post['msg'];
-	$chat->userId = isset( $_SESSION['idUser'] ) ? $_SESSION['idUser'] : $post['storageId'];
+	$chat->userId = $_SESSION['idUser'];
 	$chat->remitente = $post['remitente'];
 	$chat->atendioId = $post['atendio'];
 	$chat->status = $post['status'];
@@ -150,7 +141,7 @@ function enviarMsg($post){
 		$data = array('status'=>1, 'msg'=>$infoMsg);
 	}
 	else{
-		$data = array('status'=>0, 'msg'=>'mensaje no enviado', 'sesion'=>isset( $_SESSION['idUser'] ) ? $_SESSION['idUser'] : $post['storageId']);
+		$data = array('status'=>0, 'msg'=>'mensaje no enviado', 'sesion'=>$_SESSION['idUser']);
 	}
 	return $data;
 }
@@ -174,16 +165,17 @@ function consultarID($post){
 	return array('id'=>$_SESSION['idUser']);
 }
 
+
 /* jose Luis*/
 function test_subirArchivo($post){
 	session_start();
-	$usuario = isset( $_SESSION['idUser'] ) ? $_SESSION['idUser'] : $post['storageId'];
+
 	$chat = new Chat();
 	$chat->file = $post['nombre'];
-	$chat->ruta = md5($post['nombre'].$usuario);
+	$chat->ruta = md5($post['nombre'].$_SESSION['idUser']);
 
 	$chat->mensaje = 'archivo adjunto '. $post['nombre'];
-	$chat->userId = $usuario;
+	$chat->userId = $_SESSION['idUser'];
 	$chat->remitente = 1;
 	$chat->atendioId = $post['atendio'];
 	$chat->status = $post['status'];
